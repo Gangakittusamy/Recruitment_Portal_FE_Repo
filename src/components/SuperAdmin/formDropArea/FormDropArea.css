@@ -1,0 +1,18 @@
+.FormDropArea {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  border-radius: 10px;
+}
+
+.FormDropAreaMain {
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+.FormDropAreaCard {
+  width: 300px;
+}
+.FormDiv {
+  height: 500px;
+  overflow: auto;
+}

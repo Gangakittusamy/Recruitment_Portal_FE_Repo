@@ -1,0 +1,103 @@
+/* .UploadButton {
+    display: flex;
+   height: 38px;;
+    padding: 9px;
+    color: darkslategrey;
+    border: 2px solid lightgrey;
+    cursor: pointer;
+} */
+
+.RequirtersGrid {
+    display: grid;
+    /* grid-template-columns: auto auto; */
+    gap: 10px;
+}
+
+.ButtonsEnd {
+    display: flex;
+    justify-content: end;
+    margin-right: 33px;
+    column-gap: 50px;
+}
+
+.backgroundStyle {
+    border: 1px solid #CCCCCC;
+    width: 55%;
+    padding: 10px;
+    /* box-shadow: 1px 2px 5px #888888; */
+    height: 60px;
+    border-radius: 10px;
+
+}
+.buttonbg{
+
+padding: 10px 24px;
+gap: 10px;
+color: black;
+border-radius: 10px;
+}
+.recrirtersForm{
+    background: #FAFAFB !important;
+    border-top-style: none !important;
+    border-radius: 0px !important;
+    border-left-style: none !important;
+    border-right-style: none !important;
+}
+.recrirtersForm :hover{
+    background: #1212de !important;
+}
+.p-inputtext:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #FAFAFB !important;
+    border-color: #010102 !important;
+}
+.p-float-label input:focus ~ label, .p-float-label input:-webkit-autofill ~ label, .p-float-label input.p-filled ~ label, .p-float-label textarea:focus ~ label, .p-float-label textarea.p-filled ~ label, .p-float-label .p-inputwrapper-focus ~ label, .p-float-label .p-inputwrapper-filled ~ label {
+    top: 0.85rem !important;
+    left: 3px;
+    color: black;
+    font-weight: 600;
+    font-size: 15px !important;
+}
+.UploadButton {
+    color:  #8083A3 !important;
+    background: #E6E6E6 !important;
+}
+.p-button.p-fileupload-choose {
+    position: relative;
+    overflow: hidden;
+    background: #E6E6E6 !important;
+    border: 1px solid #a4a5a6 !important;
+    color: #8083A3 !important;
+    padding: 0.75rem 1.25rem;
+}
+.p-calendar .p-inputtext {
+    flex: 1 1 auto;
+    width: 1%;
+    border-top-style: none !important;
+    border-left-style: none !important;
+    border-right: none !important;
+    background: #FAFAFB;
+}
+.p-calendar .p-inputtext:hover {
+   
+    background: #FAFAFB !important;
+}
+.p-inputtext:enabled:hover {
+    border-color: #121213 !important;
+}
+.p-inputtext:enabled:focus {
+    outline: 0 none;
+    background: #FAFAFB !important;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #c7d2fe;
+    /* border-color: #6366F1; */
+}
+
+@media only screen and (max-width: 750px){
+    .RequirtersGrid {
+        
+        grid-template-columns: auto ;
+        
+    }
+  }

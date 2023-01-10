@@ -1,0 +1,36 @@
+.designBox {
+  height: 40px;
+  width: 310px;
+  border-color: black;
+  border-width: 2px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  display: flex;
+}
+
+.ReplicateLable {
+  white-space: nowrap;
+}
+
+.ReplicateInputBox {
+  width: 150px;
+  height: 25px;
+}
+
+.designBoxSub {
+  padding-left: 4px;
+
+  display: flex;
+  align-items: center;
+  width: 290px;
+  justify-content: space-between;
+}
+
+.apple {
+  justify-content: center;
+}
+
+.orange {
+  visibility: hidden;
+}

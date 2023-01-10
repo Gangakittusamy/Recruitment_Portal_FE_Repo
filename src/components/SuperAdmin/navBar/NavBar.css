@@ -1,0 +1,14 @@
+.NavBar_Main {
+  height: 10vh;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 1001;
+}
+.NavBar_Division {
+  width: 20%;
+}
+.NavBar_Search {
+  width: 60%;
+}
