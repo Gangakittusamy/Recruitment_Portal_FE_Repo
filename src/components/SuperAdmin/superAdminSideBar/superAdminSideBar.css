@@ -1,0 +1,18 @@
+.sideBarOnClick {
+  cursor: pointer !important;
+}
+.super_Admin_Sidebar_Dashboard {
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21px;
+  color: #18181b;
+}
+.super_Admin_Sidebar_Recruiter {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  color: #a1a1aa;
+  text-transform: uppercase;
+}

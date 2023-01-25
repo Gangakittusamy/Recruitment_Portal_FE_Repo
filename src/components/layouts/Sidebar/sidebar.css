@@ -1,0 +1,101 @@
+.accordion__button {
+  background-color: #3b3f42 !important;
+  color: #f4f4f4 !important;
+  cursor: pointer !important;
+  padding: 10px !important;
+  text-align: left !important;
+  border: none !important;
+  width: 88.8% !important;
+}
+.accordion__panel {
+  padding: 2px 10px 2px 10px !important;
+  animation: fadein 0.35s ease-in !important;
+}
+
+.alignTwo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.name {
+  color: #96999a !important;
+  font-size: 15px;
+  display: flex;
+  margin-top: 33px;
+}
+.nameOne {
+  color: #f6f6f6 !important;
+  font-size: 15px;
+  display: flex;
+}
+.cardSidebar {
+  background: white;
+  width: 262px;
+}
+.cardbottomstyle {
+  display: flex;
+  height: 35px;
+  justify-content: start;
+  border: 2px solid #3b3f42;
+  font-family: Arial, Helvetica, sans-serif;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  border-bottom-width: 6px;
+  margin-left: -3px;
+  width: 265px;
+  padding: 3px;
+}
+.margin-10 {
+  margin-left: 10px;
+}
+.nameThree {
+  position: relative;
+  left: 20px;
+}
+.detail {
+  color: #96999a !important;
+  font-size: 13px;
+  display: flex;
+  margin-top: 33px;
+}
+
+.rectanglebox {
+  display: grid;
+  grid-template-columns: 0.2fr 1fr;
+  width: 140px !important;
+  height: 25px;
+  background-color: #ffffff;
+  color: black;
+  border-color: #3b3f42;
+  margin: 1px;
+  padding: 5px;
+  font-size: 11px;
+  font-weight: normal;
+  text-align: left;
+}
+.rectangleboxQuick {
+  display: grid;
+  grid-template-columns: 0.2fr 1fr;
+  width: 300px !important;
+  height: 25px;
+  background-color: #ffffff;
+  color: black;
+  border-color: #3b3f42;
+  margin: 1px;
+  padding: 5px;
+  font-size: 11px;
+  font-weight: normal;
+  text-align: left;
+}
+
+.imagedesign {
+  width: 70%;
+  padding: 1px;
+}
+
+.height {
+  height: 10px;
+}
+.background {
+  background-color: #3b3f42;
+}

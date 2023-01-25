@@ -1,0 +1,16 @@
+.settingscard{
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     /* background: beige; */
+     /* width: 19%; */
+ }
+ .Settings_Background {
+     background: khaki;
+     padding: 28px;
+     margin-top: 23px;
+     box-shadow: 2px 2px 2px 2px grey;
+ }
+ .text_hover:hover{
+     color: blue;
+ }

@@ -1,0 +1,56 @@
+.cardQuick {
+    background-color: white;
+    width: 468px;
+    height: 23px;
+    border-radius: -7px;
+    display: inline-table;
+    padding: 11px;
+    border: 2px solid #f6f5f5;
+}
+
+.boder-StyleQuick {
+    border: 2px solid darkgrey;
+    padding: 5px;
+    display: inline-grid;
+    border-style: dotted;
+}
+
+.namesQuick {
+    display: flex;
+    justify-content: space-around;
+}
+
+.subName {
+
+    position: relative;
+    color: darkgrey;
+    right: 180px;
+    /* margin-left: 83px; */
+    color: darkgrey;
+
+}
+
+.previewQuick {
+    margin-top: -7px;
+    display: flex;
+    color: blue;
+    cursor: pointer;
+    justify-content: end;
+}
+
+.sidebarheader {
+    display: flex;
+    background: #f0f1f3;
+    padding: 15px;
+    color: #111111;
+}
+
+.cardQuickPreview {
+
+    background-color: white;
+    width: 430px;
+    height: 23px;
+    border-radius: -7px;
+    display: table;
+    border: 2px solid #f6f5f5;
+}

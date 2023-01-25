@@ -1,0 +1,26 @@
+.p-speeddial {
+  position: inherit !important;
+}
+.p-speeddial-action {
+  width: 2rem !important;
+  margin-right: 8px !important;
+  margin-left: 0px !important;
+  height: 2rem !important;
+  background: #ffff !important;
+  color: #19df5f !important;
+}
+.p-speeddial-action:hover {
+  color: #c3e70f !important;
+  background: #ffff !important;
+}
+.p-speeddial-button.p-button.p-button-icon-only {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+.p-speeddial-direction-right {
+  align-items: center !important;
+  height: 10px !important;
+}
+.p-column-title{
+  color: black;
+}

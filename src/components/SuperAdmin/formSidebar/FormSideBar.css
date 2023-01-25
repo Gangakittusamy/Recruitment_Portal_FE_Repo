@@ -1,0 +1,12 @@
+.rectanglebox1 {
+  display: grid;
+  grid-template-columns: 2fr;
+  width: 135px !important;
+  height: 28px;
+  background-color: #ffffff;
+  color: black;
+  border-color: #3b3f42;
+  font-size: 13px;
+  font-weight: normal;
+  gap: 5px;
+}

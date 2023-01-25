@@ -1,0 +1,57 @@
+.p-component {
+  white-space: nowrap;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #163fc3 !important;
+  border-color: #000000 !important;
+  color: #f1f1f1 !important;
+}
+.p-paginator .p-paginator-pages .p-paginator-page {
+  background-color: transparent;
+  border: 0 none;
+  color: #6c757d;
+  min-width: 3rem;
+  height: 3rem;
+  margin: 0.143rem;
+  transition: box-shadow 0.2s;
+  border-radius: 11% !important;
+}
+.p-paginator {
+  display: flex !important;
+  justify-content: start !important;
+  position: relative;
+}
+.p-paginator .p-dropdown {
+  position: absolute;
+  right: 0;
+}
+.p-dropdown-label {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.p-speeddial {
+  position: inherit !important;
+}
+.p-speeddial-action {
+  width: 2rem !important;
+    margin-right: 8px !important;
+    margin-left: 0px !important;
+    height: 2rem !important;
+    background: #ffff !important;
+    color: #19df5f !important;
+}
+.p-speeddial-action:hover {
+  color: #c3e70f !important;
+    background: #ffff !important;
+  
+}
+.p-speeddial-button.p-button.p-button-icon-only {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+.p-speeddial-direction-right {
+  align-items: center !important;
+  height: 10px !important;
+}

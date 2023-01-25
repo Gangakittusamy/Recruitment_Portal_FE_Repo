@@ -1,0 +1,10 @@
+.formSubmission_main {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 25px;
+}
+
+.formSubmission {
+  border: 1px solid gray;
+  border-radius: 5px;
+}

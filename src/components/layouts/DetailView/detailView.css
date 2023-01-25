@@ -1,0 +1,119 @@
+.cardQuick {
+     background-color: white;
+     width: 468px;
+     height: 23px;
+     border-radius: -7px;
+     display: table;
+     padding: 11px;
+     border: 2px solid #f6f5f5;
+}
+
+.TextOne {
+
+     display: flex;
+     justify-content: start;
+}
+
+.Texttwo {
+
+     display: flex;
+     justify-content: space-between;
+     padding: 3px;
+
+}
+
+.customize {
+     color: royalblue;
+     margin-left: 225px;
+     padding: 3px;
+}
+
+.customizeStyle {
+     color: royalblue;
+}
+
+.top-margin {
+     margin-top: 40px;
+}
+
+.hoverborder:hover {
+
+     border: 0.5px solid darkgrey;
+
+     box-shadow: 1px 1px;
+
+
+}
+
+.supportLine {
+
+     display: flex;
+     background: #efefef;
+     border: 1px solid transparent;
+     width: 437px;
+     padding: 5px;
+     font-size: 13px;
+
+}
+
+.supportCard {
+     display: flex;
+     background: white;
+     justify-content: space-around;
+     padding: 8px;
+}
+
+.namesQuick {
+     display: flex;
+     justify-content: space-between;
+     font-size: 14px;
+}
+
+.namesDetail {
+     display: flex;
+     justify-content: space-around;
+     border-right: 2px solid #f6f5f5;
+     padding-right: 78px;
+     font-size: 14px;
+}
+
+.p-inputswitch-slider {
+     position: absolute;
+     cursor: pointer;
+     top: 9px !important;
+     left: 0;
+     right: -5px;
+     /* bottom: -23px; */
+     border: 1px solid transparent;
+     height: 23px !important;
+}
+
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+     background: #37d93c !important;
+
+}
+
+.falseText {
+     display: table-cell;
+     justify-content: flex-start;
+     background: #efefef;
+     font-size: 14px;
+     padding: 12px;
+}
+
+.borderCard {
+     column-gap: 30px;
+     border: 1px;
+     border-style: groove;
+     border-color: lightgrey;
+     border-top-width: 3px;
+     border-left: none;
+     border-right: none;
+     border-bottom: none;
+     border-top: outset;
+     padding: 5px;
+     box-shadow: 2px;
+     box-shadow: 2px px 2px -3px;
+     padding: 10px 0;
+     text-align: center;
+}

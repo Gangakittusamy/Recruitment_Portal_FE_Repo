@@ -1,0 +1,37 @@
+.layout {
+  width: 100%;
+  
+  background-color: #fafafb;
+}
+.mainContent {
+  background-color: #fafafb;
+  width: 100%;
+  float: right;
+  
+}
+/* .sideContent {
+  background-color: #f4f4f4;
+  height: 100vh;
+  width: 20%;
+  float: left;
+  position: fixed;
+} */
+@media only screen and (max-width: 750px) {
+  .layout {
+    display: grid;
+    grid-template-columns: 0.5fr auto;
+    grid-template-areas: "sb1 m";
+    margin-top: 60px;
+    background-color: #fafafb;
+  }
+  .mainContent {
+    grid-area: m;
+  }
+  /* .sideContent {
+    background-color: #f4f4f4;
+    min-height: 90vh;
+    width: 25%;
+    float: left;
+    position: fixed;
+  } */
+}

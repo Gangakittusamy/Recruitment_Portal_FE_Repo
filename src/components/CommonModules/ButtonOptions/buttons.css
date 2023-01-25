@@ -1,0 +1,57 @@
+.rectanglebox {
+  display: grid;
+  grid-template-columns: 0.2fr 1fr;
+  width: 140px !important;
+  height: 25px;
+  background-color: #ffffff;
+  color: black;
+  border-color: #3b3f42;
+  margin: 1px;
+  padding: 5px;
+  font-size: 11px;
+  font-weight: normal;
+  text-align: left;
+}
+
+.rectangleboxQuick {
+  display: grid;
+  grid-template-columns: 0.2fr 1fr;
+  width: 278px !important;
+  height: 30px;
+  background-color: #ffffff;
+  color: black;
+  border-color: #3b3f42;
+  margin: 6px;
+  padding: 5px;
+  font-size: 11px;
+  font-weight: normal;
+  text-align: left;
+}
+
+.Subformbox {
+  width: 200px !important;
+  height: 20px;
+  background-color: #ffffff;
+  color: black;
+  border-color: #3b3f42;
+  margin: 2px;
+  padding: 2px;
+  font-size: 11px;
+  font-weight: normal;
+  text-align: center;
+}
+
+.imagedesign {
+  width: 70%;
+  padding: 1px;
+}
+
+.height {
+  height: 20px;
+}
+
+.rectangleMainBox {
+  display: inline-block;
+  height: 18px;
+  width: 100px !important;
+}

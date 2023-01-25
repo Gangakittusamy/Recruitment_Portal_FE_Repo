@@ -1,0 +1,41 @@
+.NavBar_Main {
+  height: 10vh;
+  width: 98%;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 1001;
+}
+.NavBar_Division {
+  width: 20%;
+}
+.NavBar_Search {
+  width: 60%;
+}
+.pog {
+  font-size: 25px !important;
+  color: gray !important;
+  cursor: pointer;
+}
+.nav_text {
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans';
+  padding: 2px 18px 2px 17px;
+}
+.nav_text_overlay {
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans';
+  padding: 20px 18px 2px 17px;
+}
+.nav_text_overlay:hover {
+  font-size: 17px;
+  color: rgb(209, 235, 13);
+}
+.overflow_overlay{
+  overflow: auto;
+  height: 400px;
+}

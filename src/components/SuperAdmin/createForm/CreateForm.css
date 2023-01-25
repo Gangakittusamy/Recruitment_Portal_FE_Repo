@@ -1,0 +1,99 @@
+.rectanglebox2 {
+  display: flex !important;
+  /* width: 135px !important; */
+  /* height: 8px; */
+  background-color: #f2f2f2;
+  color: #333333;
+  justify-content: start;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 400;
+  font-weight: normal;
+  padding-inline: 30px;
+  padding-block: 8px;
+}
+.FormDropAreaMain1 {
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+.FormDropAreaCard1 {
+  width: 300px;
+}
+.FormDiv1 {
+  height: 450px;
+  overflow: auto;
+}
+
+.topBanners_main {
+  background-color: #ffffff;
+  box-shadow: 0px 1px 0px rgb(18 32 59 / 9%);
+  height: 41px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  font-weight: 400;
+  column-gap: 30px;
+  font-size: 15px;
+  font-size: normal;
+  color: #8083a3;
+  margin-right: 75px;
+  border-radius: 5px;
+}
+
+.create_form_main {
+  /* background-color: #ffffff; */
+  height: 85vh;
+}
+.create_form_main_head {
+  font-size: 18px;
+  font-weight: 700;
+  font-style: normal;
+}
+.p-tabmenu-nav {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  justify-content: space-evenly !important;
+  list-style-type: none;
+  flex-wrap: nowrap;
+}
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 0.2rem #fdfeff !important;
+}
+/* input[type="date" i] {
+  align-items: center;
+  background-color: #333333 !important;
+  display: inline-flex;
+  font-family: monospace;
+  padding-inline-start: 1px;
+  cursor: default;
+  overflow: hidden;
+} */
+.sideBar_main {
+  height: 445px;
+  width: 30%;
+  margin-left: 13px;
+}
+
+.sideBar_bottom_line {
+  border: 1px solid #ffffff;
+}
+/* .Add_input_page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+} */
+
+.create_form_main_division {
+  width: 75% !important;
+}
+.Dropcard {
+  background-color: white;
+  width: 436px;
+  border: 2px solid #f6f5f5;
+  width: 100%;
+}

@@ -1,0 +1,112 @@
+.untitlee {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 80px;
+}
+
+.preview {
+  margin-top: -7px;
+  color: blue;
+  cursor: pointer;
+}
+
+.boder {
+  border: 2px solid darkgrey;
+  padding: 10px;
+  border-style: dotted;
+}
+
+.grey {
+  color: darkgrey;
+}
+
+.image {
+  margin-right: 74px;
+}
+
+.p-avatar.p-avatar-xl {
+  width: 4rem;
+  height: 4rem;
+  font-size: 2rem;
+  margin-left: -73px !important;
+}
+
+.card {
+  background-color: white;
+  width: 436px;
+  border: 2px solid #f6f5f5;
+ 
+}
+
+.dragCard {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-left: 12px;
+}
+
+.boder-Style:hover {
+  border: 2px solid darkgrey;
+  min-height: 250px;
+  border-style: dotted;
+}
+
+.names {
+  display: flex;
+  justify-content: space-between;
+}
+
+.informationName {
+  display: flex;
+  margin-left: 39px;
+}
+
+.ellips {
+  position: relative;
+  bottom: 59px;
+  right: 36px;
+}
+
+.dropdownBorderStyle {
+  background: #fffbe8;
+  width: 328px;
+  padding: 15px;
+  border: 1px solid #d9caab;
+  height: 60px;
+  top: 0px;
+  font-size: 13px;
+  color: #7b603d;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 1px 1px #d9caab;
+  position: fixed;
+}
+
+.contactName {
+  background: #f0f1f3;
+  display: flex;
+  padding: 15px;
+  font-size: 17px;
+  color: #111111;
+  font-weight: bold;
+}
+
+.contactuntitle {
+  font-size: 18px;
+  display: flex;
+  margin: 20px;
+  color: #111111;
+  font-weight: bold;
+}
+
+.previewCardAligment {
+ display: grid;
+ grid-template-columns: 1fr 1fr ;
+}
+
+.setpermissionRadio {
+  display: flex;
+  justify-content: space-around;
+  column-gap: 67px;
+  margin-right: 42px;
+
+}
