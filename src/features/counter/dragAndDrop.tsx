@@ -10,6 +10,7 @@ interface userReducerState {
   pickListDragableId: null;
   newSectionIndex: null;
   EditIdDragAndDrop: null;
+  ListIdDragAndDrop:any;
 }
 
 const initialDragAndDrop: userReducerState = {
@@ -22,6 +23,7 @@ const initialDragAndDrop: userReducerState = {
   pickListDragableId: null,
   newSectionIndex: null,
   EditIdDragAndDrop: null,
+  ListIdDragAndDrop:{}
 };
 
 export const userReducer = createSlice({
@@ -52,8 +54,12 @@ export const userReducer = createSlice({
     newSectionIndexData: (state, action) => {
       state.newSectionIndex = action.payload;
     },
+    
     formEditIdDragAndDrop: (state, action) => {
       state.EditIdDragAndDrop = action.payload;
+    },
+    PickListidDragAndDrop: (state, action) => {
+      state.ListIdDragAndDrop = action.payload;
     },
   },
 });
@@ -67,5 +73,6 @@ export const {
   pickListDropDownData,
   pickListDragableIdStore,
   newSectionIndexData,
+  PickListidDragAndDrop,
 } = userReducer.actions;
 export default userReducer.reducer;

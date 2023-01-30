@@ -145,12 +145,12 @@ const DropArea = (props: any) => {
     setSelectedCity1(e.value);
   };
 
-  const openDialog = () => {
+  const openDialog = (index:number) => {
     let value = ITEMS[count.dragAndDrop.DialogIndex];
 
     if (value) {
       if (value.names === "Pick List") {
-        return <Picklist pickListDialogVisible={true} />;
+        return <Picklist pickListDialogVisible={true} indexid={index}/>;
       } else if (value.names === "Single Line") {
         return <SingleLine SingleLineDialogVisible={true} />;
       }
@@ -279,12 +279,31 @@ const DropArea = (props: any) => {
 
   useEffect(() => {
     setList1(count.dragAndDrop.PickListData);
+    console.log(count.dragAndDrop.PickListData,"count.dragAndDrop.PickListData")
     store.push(count.dragAndDrop.PickListData);
     add();
-    const val = store.map((list: any) => {
-      return list;
-    });
-    setstore(val);
+    // (count.dragAndDrop.PickListData||[]).map((id:any)=>{
+    //   console.log(id.id,"ididid")
+    //   if(id?.id ==0){
+    //     const val = store[1].map((list: any) => {
+    //       return list;
+    //     });
+    //     setstore(val);
+    //   }
+    //   else if(id?.id ==1){
+    //     const val = store[2].map((list: any) => {
+    //       return list;
+    //     });
+    //     setstore(val);
+    //   }
+    //   else{
+    //     setList1(count.dragAndDrop.PickListData);
+    //   }
+    // })
+    
+    
+    
+    
   }, [count.dragAndDrop.PickListData]);
 
   let handleChangeForm = (i: number, e: any, list: any) => {
@@ -426,9 +445,9 @@ const DropArea = (props: any) => {
 
                               {count.dragAndDrop.DialogIndex == 5 &&
                               item.subName == "Pick List"
-                                ? openDialog()
+                                ? openDialog(index)
                                 : item.subName == "Single Line"
-                                ? openDialog()
+                                ? openDialog(index)
                                 : ""}
                             </div>
                           ))

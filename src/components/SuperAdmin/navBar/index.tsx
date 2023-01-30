@@ -83,6 +83,7 @@ const NavBar = (props: any) => {
     }
   };
   const NextPage = () => {
+    op.current?.hide();
     navigate("/super-admin/create-form");
   };
   function handleChange(event: any) {
@@ -113,7 +114,7 @@ const NavBar = (props: any) => {
   return (
     <div className="p-2 flex justify-content-between align-items-center NavBar_Main">
       <Toast ref={toast} position="top-center"></Toast>
-      <section className="flex NavBar_Division  align-items-center">
+      <section className="flex NavBar_Division  align-items-center cursor-pointer">
         <img src={imgShow} alt="Vector" width={30} height={30} />
         <div onClick={(e) => title.current?.toggle(e)}>
           <p className="font-bold text-2xl line-height-1 white-space-nowrap ml-1">

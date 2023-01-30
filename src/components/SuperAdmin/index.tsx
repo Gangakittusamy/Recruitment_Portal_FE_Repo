@@ -95,6 +95,7 @@ const SuperAdmin = () => {
   const [complete, setCompleted] = useState<any>({
     [uuidv4()]: [],
   });
+  
   const [indexId, setIndexId] = useState<any>();
   const count: any = useSelector((state) => state);
   const [sample, setSample] = useState<any>({});
@@ -113,6 +114,7 @@ const SuperAdmin = () => {
 
   useEffect(() => {
     if (window.location.pathname !== `/super-admin/edit/${editId}`) {
+      console.log(complete,"completecomplete")
       dispatch(dragAndDropValueSuperAdmin(complete));
     }
 
