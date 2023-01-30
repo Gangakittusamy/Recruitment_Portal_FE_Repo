@@ -138,6 +138,7 @@ const DropArea = (props: any) => {
     let keyValues = Object.entries(omiter);
     keyValues.splice(val2, 0, [list, inputName]);
     let newObj = Object.fromEntries(keyValues);
+
     setuidv4(newObj);
   };
 
@@ -162,10 +163,16 @@ const DropArea = (props: any) => {
 
     const value = Object.assign({}, uidv4);
 
-    formName.map((f: formModel, i: number) => {
-      value[f.name] = value[f.id];
-      delete value[f.id];
-    });
+    if (formName[0].id !== "") {
+      formName.map((f: formModel, i: number) => {
+        value[f.name] = value[f.id];
+        delete value[f.id];
+      });
+    }
+    // if (formName[0].id === "") {
+    //   Object.keys(value || {}).map((list: any, i: number) => {
+    //   });
+    // }
 
     // let resp: any = {};
 
@@ -275,8 +282,6 @@ const DropArea = (props: any) => {
     }
   }, [count.module.rolesGetForms]);
 
-  var pickListValue: any = [];
-
   useEffect(() => {
     setList1(count.dragAndDrop.PickListData);
     store.push(count.dragAndDrop.PickListData);
@@ -291,6 +296,7 @@ const DropArea = (props: any) => {
     let newFormValues = [...formName];
     newFormValues[i].name = e.target.value;
     newFormValues[i].id = list;
+
     setFormName(newFormValues);
   };
 
