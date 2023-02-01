@@ -31,6 +31,7 @@ import {
   dragAndDropValueSuperAdmin,
   formEditIdDragAndDrop,
   dragAndDropDialogIndexSuperAdmin,
+  selectStructuredData,
 } from "../../features/counter/dragAndDrop";
 import { useSelector, useDispatch } from "react-redux";
 import NavBar from "./navBar";
@@ -92,6 +93,8 @@ const SuperAdmin = () => {
   const [complete, setCompleted] = useState<any>({
     [uuidv4()]: [],
   });
+  const structureData = useSelector(selectStructuredData);
+
   const [indexId, setIndexId] = useState<any>();
   const count: any = useSelector((state) => state);
   const [sample, setSample] = useState<any>({});
@@ -132,13 +135,9 @@ const SuperAdmin = () => {
 
   useEffect(() => {
     if (window.location.pathname !== `/super-admin/edit/${editId}`) {
-      dispatch(dragAndDropValueSuperAdmin(complete));
-    }
-
-    if (
-      window.location.pathname === `/super-admin/edit/${editId}` &&
-      count.module.rolesGetForms === undefined
-    ) {
+      if (structureData) {
+        dispatch(dragAndDropValueSuperAdmin(structureData));
+      }
       dispatch(dragAndDropValueSuperAdmin(complete));
     }
 

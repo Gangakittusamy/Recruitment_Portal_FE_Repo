@@ -5,7 +5,10 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
-import { dragAndDropDialogIndexSuperAdmin } from "../../../features/counter/dragAndDrop";
+import {
+  dragAndDropDialogIndexSuperAdmin,
+  formcompleted,
+} from "../../../features/counter/dragAndDrop";
 import { ITEMS } from "../../Constant/const";
 import Picklist from "../../CommonModules/PickList/PickList";
 import {
@@ -114,7 +117,22 @@ const DropArea = (props: any) => {
     let res = await dispatch(LoginUserDetails());
   };
 
-  const handleChange = (e: any, i: number, list: any) => {
+  const handleChange = (
+    e: any,
+    i: number,
+    list: any,
+    type: string,
+    inputId: any
+  ) => {
+    const newList = {
+      id: list,
+
+      subName: type,
+      names: e.target.value,
+      inputIdValue: inputId,
+    };
+
+    dispatch(formcompleted({ action: newList }));
     // let index: any;
     let index: string = list;
     let inputName: any[] = [];
@@ -382,7 +400,13 @@ const DropArea = (props: any) => {
                                             value={pickList}
                                             options={store}
                                             onChange={(e) => {
-                                              handleChange(e, index, list);
+                                              handleChange(
+                                                e,
+                                                index,
+                                                list,
+                                                "",
+                                                item.id
+                                              );
                                               setPickList(e.value);
                                             }}
                                             optionLabel="value"
@@ -406,7 +430,13 @@ const DropArea = (props: any) => {
                                           }}
                                           value={item.names || item.type}
                                           onChange={(e) => {
-                                            handleChange(e, index, list);
+                                            handleChange(
+                                              e,
+                                              index,
+                                              list,
+                                              item.subName || item.fieldname,
+                                              item.id
+                                            );
                                           }}
                                           className=" text-500  border-0 "
                                         />
