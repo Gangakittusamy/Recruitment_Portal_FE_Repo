@@ -10,12 +10,12 @@ import React from "react";
 
 const SideBar = () => {
   return (
-    <div className="surface-500 overflow-y-auto  mt-2 border-round-xl  border-round-right-lg sideBar_main">
-      <Droppable droppableId="CHECKSUPERDRAGITEMS" isDropDisabled={true}>
+    <div className="surface-500 overflow-y-auto  mt-2 border-round-xl  border-round-right-lg sideBar_main" >
+      <Droppable droppableId="CHECKSUPERDRAGITEMS" isDropDisabled={true} >
         {(provided, snapshot) => (
           <div ref={provided?.innerRef} className="text-blue-500 ">
             {SIDEBARITEMS.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
+              <Draggable key={item.id} draggableId={item.id} index={index} >
                 {(provided, snapshot) => (
                   <>
                     <div

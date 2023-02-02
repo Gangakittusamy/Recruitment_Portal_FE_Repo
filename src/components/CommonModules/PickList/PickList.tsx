@@ -38,6 +38,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible,indexid }) =>
   const inputArr = [
     {
       type: 'text',
+      name:"pick list",
       id: indexid,
       value: '',
     },
@@ -61,6 +62,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible,indexid }) =>
     { name: 'Normal', code: 'NY' },
   ]);
 
+  const [value1, setValue1] = useState('PickList');
   const [Multiselect, setMultiselect] = useState<any>([]);
   const [color2, setColor2] = useState('');
   const dispatch = useAppDispatch();
@@ -289,11 +291,11 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible,indexid }) =>
     console.log(e.target.id, 'e.target.id');
 
     setArr((s) => {
-      console.log(s, 'sss');
+     
       //  let i =0;
       const newArr = s.slice();
       newArr[index].value = e.target.value;
-
+      newArr[index].name = value1;
       newArr[index].id = indexid;
 
       return newArr;
@@ -436,7 +438,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible,indexid }) =>
         >
           <p>
             Field Label <br />
-            <InputText type="text" className="w-7 mt-1" />
+            <InputText type="text" value={value1} onChange={(e) => setValue1(e.target.value)} className="w-7 mt-1" />
           </p>
           <div className="flex justify-content-between ">
             <span>Pick List Option</span>{' '}
