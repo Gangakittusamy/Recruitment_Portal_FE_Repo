@@ -135,8 +135,35 @@ const SuperAdmin = () => {
 
   useEffect(() => {
     if (window.location.pathname !== `/super-admin/edit/${editId}`) {
-      if (structureData) {
-        dispatch(dragAndDropValueSuperAdmin(structureData));
+      if (Object.keys(structureData).length > 0) {
+        let currentFormElements = complete
+        for(const key in currentFormElements){
+          const currentFormId = key
+          const alteredFields = structureData[currentFormId]
+          let currentFields = currentFormElements[currentFormId]
+
+          if(alteredFields){
+            const result : any = currentFields.map((o1:any,i:any) => {
+              if(alteredFields.some((o2:any) => o1.id === o2.inputIdValue)){
+                let alteredValue = alteredFields.find((f:any)=>{
+                  return f.inputIdValue == currentFields[i].id
+                })
+                return {
+                  names:alteredValue.names,
+                  id:currentFields[i].id,
+                  subName:currentFields[i].subName
+                }
+              } else {
+                return {
+                  names:currentFields[i].names,
+                  id:currentFields[i].id,
+                  subName:currentFields[i].subName
+                }
+              }
+            });
+            currentFormElements[key] = result
+          }
+        }
       }
       dispatch(dragAndDropValueSuperAdmin(complete));
     }
