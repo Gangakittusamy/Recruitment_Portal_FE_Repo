@@ -13,13 +13,16 @@ import { pickListDropDownData } from "../../../features/counter/dragAndDrop";
 
 interface PickListProps {
   pickListDialogVisible: boolean;
+  indexid:number;
 }
 
-const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible }) => {
+const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible,indexid}) => {
+  const [value1, setValue1] = useState('PickList');
   const inputArr = [
     {
+      name:value1,
       type: "text",
-      id: 1,
+      id: indexid,
       value: "",
     },
   ];
@@ -264,7 +267,9 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible }) => {
     setArr((s) => {
      
       const newArr = s.slice();
+      newArr[index].name=value1;
       newArr[index].value = e.target.value;
+      newArr[index].id = indexid;
 
       return newArr;
     });
@@ -406,7 +411,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible }) => {
         >
           <p>
             Field Label <br />
-            <InputText type="text" className="w-7 mt-1" />
+            <InputText type="text" className="w-7 mt-1" value={value1} onChange={(e) => setValue1(e.target.value)} />
           </p>
           <div className="flex justify-content-between ">
             <span>Pick List Option</span>{" "}
