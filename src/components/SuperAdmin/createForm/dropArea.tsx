@@ -308,6 +308,10 @@ const DropArea = (props: any) => {
 
   useEffect(() => {
     setList1(count.dragAndDrop.PickListData);
+    console.log(
+      count.dragAndDrop.PickListData,
+      'count.dragAndDrop.PickListData'
+    );
     // store.push(count.dragAndDrop.PickListData);
     add();
     (count.dragAndDrop.PickListData || []).map((id: any, index: any) => {

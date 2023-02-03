@@ -1,4 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
+import { idText } from "typescript";
+import { RootState } from "../../app/store";
 
 interface userReducerState {
   initialStateDrag: null;
@@ -10,6 +12,7 @@ interface userReducerState {
   pickListDragableId: null;
   newSectionIndex: null;
   EditIdDragAndDrop: null;
+  completed: any;
   ListIdDragAndDrop:any;
 }
 
@@ -23,6 +26,7 @@ const initialDragAndDrop: userReducerState = {
   pickListDragableId: null,
   newSectionIndex: null,
   EditIdDragAndDrop: null,
+  completed: [],
   ListIdDragAndDrop:{}
 };
 
@@ -58,11 +62,53 @@ export const userReducer = createSlice({
     formEditIdDragAndDrop: (state, action) => {
       state.EditIdDragAndDrop = action.payload;
     },
+
+    formcompleted: (state, action) => {
+      state.completed.push(action.payload.action);
+
+      const dup = current(state.completed)?.filter(
+        (x: any) =>
+          x.subName === action.payload.action.subName &&
+          x.id === action.payload.action.id &&
+          x.inputIdValue === action.payload.action.inputIdValue
+      );
+
+      if (dup.length > 0) {
+        const remDup = current(state.completed)?.filter(
+          (x: any) => x.inputIdValue !== action.payload.action.inputIdValue
+        );
+
+        const finalDup = dup[dup.length - 1];
+        const final = [...remDup, finalDup];
+
+        state.completed = final;
+      } else {
+        const tempData = [...state.completed, action.payload.action];
+        state.completed = tempData;
+      }
+    },
     PickListidDragAndDrop: (state, action) => {
       state.ListIdDragAndDrop = action.payload;
     },
   },
 });
+export const selectStructuredData = (state: RootState) => {
+  let structureData: any = {};
+
+  state.dragAndDrop.completed.map((x: any) => {
+    const id = Object.keys(structureData).find((y) => y === x.id);
+
+    if (id === undefined) {
+      structureData[x.id] = [];
+      structureData[x.id].push(x);
+    } else {
+      structureData[x.id].push(x);
+    }
+  });
+
+  return structureData;
+};
+
 export const {
   dragAndDropValue,
   quickDragAndDropValue,
@@ -73,6 +119,7 @@ export const {
   pickListDropDownData,
   pickListDragableIdStore,
   newSectionIndexData,
+  formcompleted,
   PickListidDragAndDrop,
 } = userReducer.actions;
 export default userReducer.reducer;

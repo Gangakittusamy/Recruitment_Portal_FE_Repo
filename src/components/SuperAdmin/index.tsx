@@ -1,5 +1,5 @@
 import "./index.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import SuperAdminSideBar from "./superAdminSideBar";
 import CreateRecruiterForm from "./createRecruiterForm";
 import CreateRecrutierTable from "./createRecruiterTable";
@@ -31,6 +31,7 @@ import {
   dragAndDropValueSuperAdmin,
   formEditIdDragAndDrop,
   dragAndDropDialogIndexSuperAdmin,
+  selectStructuredData,
 } from "../../features/counter/dragAndDrop";
 import { useSelector, useDispatch } from "react-redux";
 import NavBar from "./navBar";
@@ -42,17 +43,16 @@ import { newSectionIndexData } from "../../features/counter/dragAndDrop";
 import { Button } from "primereact/button";
 import { type } from "os";
 
-const reorder = (
-  list: Iterable<unknown> | ArrayLike<unknown>,
-  startIndex: number,
-  endIndex: number
-) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
+// const reorder = (
+//   list: Iterable<unknown> | ArrayLike<unknown>,
+//   startIndex: number,
+//   endIndex: number
+// ) => {
+//   const result = Array.from(list);
+//   const [removed] = result.splice(startIndex, 1);
+//   result.splice(endIndex, 0, removed);
+//   return result;
+// };
 
 const copy = (
   source: Iterable<unknown> | ArrayLike<unknown>,
@@ -78,9 +78,7 @@ const move = (
   const sourceClone = Array.from(source);
   const destClone = Array.from(destination);
   const [removed] = sourceClone.splice(droppableSource.index, 1);
-
   destClone.splice(droppableDestination.index, 0, removed);
-
   const result: any = {};
   result[droppableSource.droppableId] = sourceClone;
   result[droppableDestination.droppableId] = destClone;
@@ -95,14 +93,28 @@ const SuperAdmin = () => {
   const [complete, setCompleted] = useState<any>({
     [uuidv4()]: [],
   });
-  
+  const structureData = useSelector(selectStructuredData);
+
   const [indexId, setIndexId] = useState<any>();
   const count: any = useSelector((state) => state);
   const [sample, setSample] = useState<any>({});
 
+  const reorder = (
+    list: Iterable<unknown> | ArrayLike<unknown>,
+    startIndex: number,
+    endIndex: number,
+    res: any
+  ) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    let app = Object.assign({}, complete);
+    app[res] = result;
+    setCompleted(app);
+    return result;
+  };
+
   const addList = () => {
-    // let ab: any = [uuidv4()];
-    // complete[ab] = [];
     setCompleted({ ...complete, [uuidv4()]: [] });
 
     let lent = Object.keys(complete).length;
@@ -110,18 +122,49 @@ const SuperAdmin = () => {
     dispatch(newSectionIndexData(lent));
   };
 
-  React.useMemo(() => {}, [complete]);
+  // let prevCount = usePrevious(complete);
+  // function usePrevious(value: any) {
+  //   const ref = useRef();
+  //   useEffect(() => {
+  //     ref.current = value;
+  //   }, [value]);
+  //   return ref.current;
+  // }
+
+  let prevCountRef = useRef(complete);
 
   useEffect(() => {
     if (window.location.pathname !== `/super-admin/edit/${editId}`) {
-      console.log(complete,"completecomplete")
-      dispatch(dragAndDropValueSuperAdmin(complete));
-    }
+      if (Object.keys(structureData).length > 0) {
+        let currentFormElements = complete
+        for(const key in currentFormElements){
+          const currentFormId = key
+          const alteredFields = structureData[currentFormId]
+          let currentFields = currentFormElements[currentFormId]
 
-    if (
-      window.location.pathname === `/super-admin/edit/${editId}` &&
-      count.module.rolesGetForms === undefined
-    ) {
+          if(alteredFields){
+            const result : any = currentFields.map((o1:any,i:any) => {
+              if(alteredFields.some((o2:any) => o1.id === o2.inputIdValue)){
+                let alteredValue = alteredFields.find((f:any)=>{
+                  return f.inputIdValue == currentFields[i].id
+                })
+                return {
+                  names:alteredValue.names,
+                  id:currentFields[i].id,
+                  subName:currentFields[i].subName
+                }
+              } else {
+                return {
+                  names:currentFields[i].names,
+                  id:currentFields[i].id,
+                  subName:currentFields[i].subName
+                }
+              }
+            });
+            currentFormElements[key] = result
+          }
+        }
+      }
       dispatch(dragAndDropValueSuperAdmin(complete));
     }
 
@@ -216,15 +259,23 @@ const SuperAdmin = () => {
 
         // dispatch(dragAndDropValueSuperAdmin(complete));
       }
-    }
+      // dispatch(dragAndDropValueSuperAdmin(complete));
 
-    // Object.keys(complete || {}).map((list: any, i: number) => {
-    //   complete[list].map((x: any) => {
-    //     if (x.subName === "Pick List") {
-    //       dispatch(pickListDragableIdStore(x.id));
-    //     }
-    //   });
-    // });
+      let ab = JSON.stringify(complete);
+      let bc = JSON.stringify(prevCountRef.current);
+
+      if (Object.keys(complete).length) {
+        dispatch(dragAndDropValueSuperAdmin(complete));
+      }
+
+      // if (Object.keys(complete).length > 1) {
+      //   if (ab !== bc) {
+      //     dispatch(dragAndDropValueSuperAdmin(complete));
+      //   } else {
+      //     dispatch(dragAndDropValueSuperAdmin(prevCountRef.current));
+      //   }
+      // }
+    }
   }, [complete]);
 
   function toAddData() {}
@@ -246,14 +297,24 @@ const SuperAdmin = () => {
 
           switch (source.droppableId) {
             case destination.droppableId:
-              // if (counter == 0) {
-              setCompleted({
-                [destination.droppableId]: reorder(
-                  complete[source.droppableId],
-                  source.index,
-                  destination.index
-                ),
-              });
+              let app = complete;
+
+              let resp = destination.droppableId;
+
+              reorder(
+                complete[source.droppableId],
+                source.index,
+                destination.index,
+                destination.droppableId
+              );
+
+              // setCompleted({
+              //   [resp]: reorder(
+              //     complete[source.droppableId],
+              //     source.index,
+              //     destination.index
+              //   ),
+              // });
 
               break;
             case "CHECKSUPERDRAGITEMS":
@@ -301,28 +362,6 @@ const SuperAdmin = () => {
           </div>
           <div style={{ background: "#FAFAFB", height: "100vh" }}>
             <div className="mainContent">
-              {/* {id === 1 ? (
-                <CreateRecruiterForm />
-              ) : id === 2 ? (
-                <CreateRecrutierTable />
-              ) : id === 4 ? (
-                <CandidateTable />
-              ) : id === 5 ? (
-                <CreateForm />
-              ) : id === 7 ? (
-                <CandidateList />
-              ) : id === 8 ? (
-                <StatusTable />
-              ) : id === 9 ? (
-                <Settings />
-              ) : id === 10 ? (
-                <SettingsModules handleClick={handleClick} />
-              ) : id === 11 ? (
-                <ModuleScreen />
-              ) : (
-                ""
-              )} */}
-
               {window.location.pathname ==
               "/super-admin/Settings/Modules/layoutpage" ? (
                 <CreateForm />
@@ -363,12 +402,6 @@ const SuperAdmin = () => {
               ) : (
                 ""
               )}
-              {/* <StatusTable />
-              <Settings /> */}
-
-              {/* <Routes>
-                <Route path="/super-admin/settings" element={<Settings />} />
-              </Routes> */}
             </div>
           </div>
         </div>

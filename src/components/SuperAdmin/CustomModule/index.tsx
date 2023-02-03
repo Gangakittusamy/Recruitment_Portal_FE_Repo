@@ -116,7 +116,7 @@ const CustomModule = (props: any) => {
                             <span className="p-input-icon-right ">
                               <i className="pi pi-lock mt-0" />
                               <InputText
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.Owner}
                                 onChange={handleChange}
                                 className="mt-3"
@@ -127,7 +127,7 @@ const CustomModule = (props: any) => {
                               <i className="pi pi-dollar mt-0" />
                               <InputText
                                 className="mt-3 "
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.Currency}
                                 onChange={handleChange}
                               />
@@ -135,7 +135,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Percent" ? (
                             <p>
                               <InputText
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.Percent}
                                 onChange={handleChange}
                                 placeholder="Percent"
@@ -144,7 +144,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Single Line" ? (
                             <p>
                               <InputText
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.SingleLine}
                                 onChange={handleChange}
                               />
@@ -152,7 +152,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Untitled Name" ? (
                             <p>
                               <InputText
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.Name}
                                 onChange={handleChange}
                               />
@@ -167,7 +167,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Email" ? (
                             <p>
                               <InputText
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.Email}
                                 onChange={handleChange}
                               />
@@ -182,7 +182,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Date/Time" ? (
                             <p>
                               <Calendar
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.DateTime}
                                 showTime
                                 showSeconds
@@ -193,7 +193,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Decimal" ? (
                             <p>
                               <InputText
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.Decimal}
                                 onChange={handleChange}
                               />
@@ -201,7 +201,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Long integer" ? (
                             <p>
                               <InputText
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.LongInteger}
                                 onChange={handleChange}
                               />
@@ -209,7 +209,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "URL" ? (
                             <p>
                               <InputText
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.URL}
                                 onChange={handleChange}
                               />
@@ -217,7 +217,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Multi-Line" ? (
                             <p>
                               <InputTextarea
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.Multi}
                                 onChange={handleChange}
                               />
@@ -225,7 +225,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Date" ? (
                             <p>
                               <Calendar
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={item.Date}
                                 onChange={handleChange}
                                 placeholder="DD/MM/YY   "
@@ -253,7 +253,7 @@ const CustomModule = (props: any) => {
                               <InputMask
                                 id="phone"
                                 mask="99-99-99-99-99"
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={state.lastName}
                                 onChange={handleChange}
                                 placeholder="(999) 999-9999"
@@ -262,7 +262,7 @@ const CustomModule = (props: any) => {
                           ) : item.DataHeader === "Number" ? (
                             <p>
                               <InputText
-                                name={item.DataHeader}
+                                name={item.value}
                                 value={item.Number}
                                 onChange={handleChange}
                                 placeholder="Number"
