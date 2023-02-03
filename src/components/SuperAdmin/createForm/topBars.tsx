@@ -14,19 +14,189 @@ import { Checkbox } from "primereact/checkbox";
 import noImages from "../../../images//noimage.jpg";
 import { useSelector, useDispatch } from "react-redux";
 import { TabMenu } from "primereact/tabmenu";
+import { formcompleted } from "../../../features/counter/dragAndDrop";
+import _ from "lodash";
 
 const TopBars = (props: any) => {
+  const [store1, setstore1] = useState<any>([]);
+  const [store2, setstore2] = useState<any>([]);
+  const [store3, setstore3] = useState<any>([]);
+  const [store4, setstore4] = useState<any>([]);
+  const [store5, setstore5] = useState<any>([]);
+  const [store6, setstore6] = useState<any>([]);
+  const [store7, setstore7] = useState<any>([]);
+  const [store8, setstore8] = useState<any>([]);
+  const [store9, setstore9] = useState<any>([]);
+  const [store10, setstore10] = useState<any>([]);
+  const [value, setValue] = useState('');
+  const [value1, setValue1] = useState('');
+  const [value2, setValue2] = useState('');
+  const [value3, setValue3] = useState('');
+  const [value4, setValue4] = useState('');
+  const [value5, setValue5] = useState('');
+  const [value6, setValue6] = useState('');
+  const [value7, setValue7] = useState('');
+  const [value8, setValue8] = useState('');
+  const [value9, setValue9] = useState('');
+  const [value10, setValue10] = useState('');
+  const [pickList1, setPickList1] = useState<any>();
+  const [pickList2, setPickList2] = useState<any>();
+  const [pickList3, setPickList3] = useState<any>();
+  const [pickList4, setPickList4] = useState<any>();
+  const [pickList5, setPickList5] = useState<any>();
+  const [pickList6, setPickList6] = useState<any>();
+  const [pickList7, setPickList7] = useState<any>();
+  const [pickList8, setPickList8] = useState<any>();
+  const [pickList9, setPickList9] = useState<any>();
+  const [pickList10, setPickList10] = useState<any>();
+  const [pickList, setPickList] = useState<any>();
+  const [uidv4, setuidv4] = useState<any>();
+  const [list1, setList1] = useState<any>([]);
+   const [store, setstore] = useState<any>([]);
   const count: any = useSelector((state) => state);
   const [selectedCity1, setSelectedCity1] = useState(null);
   const [preview, setPreview] = useState(false);
   const [previewData, setPreviewData] = useState<any>();
   const [checked1, setChecked1] = useState(false);
+  const handleChange = (
+    e: any,
+    i: number,
+    list: any,
+    type: string,
+    inputId: any
+  ) => {
+    const newList = {
+      id: list,
 
+      subName: type,
+      names: e.target.value,
+      inputIdValue: inputId,
+    };
+
+    dispatch(formcompleted({ action: newList }));
+    // let index: any;
+    let index: string = list;
+    let inputName: any[] = [];
+    let val1 = Object.keys(uidv4);
+    let val2 = val1.indexOf(list);
+    if (index != null) {
+      [uidv4].map((x: any) => {
+        inputName = x[index];
+      });
+    }
+    inputName = inputName.map((x: any, idx: any) => {
+      if (idx === i) {
+        return { ...x, names: e.target.value };
+      }
+      return x;
+    });
+
+    let value = Object.assign({}, uidv4);
+    let omiter = _.omit(value, list);
+    const obj = { [index]: inputName };
+    let keyValues = Object.entries(omiter);
+    keyValues.splice(val2, 0, [list, inputName]);
+    let newObj = Object.fromEntries(keyValues);
+
+    setuidv4(newObj);
+  };
   const onCityChange = (e: any) => {
     setSelectedCity1(e.value);
   };
   const cities = [{ name: "Admistrator", code: "NY" }];
-
+ useEffect(() => {
+    setList1(count.dragAndDrop.PickListData);
+    console.log(
+      count.dragAndDrop.PickListData,
+      'count.dragAndDrop.PickListData'
+    );
+    // store.push(count.dragAndDrop.PickListData);
+    
+    (count.dragAndDrop.PickListData || []).map((id: any, index: any) => {
+      
+      if (id) {
+        if (index == 0) {
+          const val = count.dragAndDrop.PickListData[0].map((list: any) => {
+            setValue(list.name);
+            return list;
+          });
+          setstore(val);
+        }
+        else if (index == 1) {
+          const val = count.dragAndDrop.PickListData[1].map((list: any) => {
+            setValue1(list.name);
+            return list;
+          });
+          setstore1(val);
+        }
+        else if (index == 2) {
+          const val = count.dragAndDrop.PickListData[2].map((list: any) => {
+            setValue2(list.name);
+            return list;
+          });
+          setstore2(val);
+        }
+        else if (index == 3) {
+          const val = count.dragAndDrop.PickListData[3].map((list: any) => {
+            setValue3(list.name);
+            return list;
+          });
+          setstore3(val);
+        }
+        else if (index == 4) {
+          const val = count.dragAndDrop.PickListData[4].map((list: any) => {
+            setValue4(list.name);
+            return list;
+          });
+          setstore4(val);
+        }
+        else if (index == 5) {
+          const val = count.dragAndDrop.PickListData[5].map((list: any) => {
+            setValue5(list.name);
+            return list;
+          });
+          setstore5(val);
+        }
+        else if (index == 6) {
+          const val = count.dragAndDrop.PickListData[6].map((list: any) => {
+            setValue6(list.name);
+            return list;
+          });
+          setstore6(val);
+        }
+        else if (index == 7) {
+          const val = count.dragAndDrop.PickListData[7].map((list: any) => {
+            setValue7(list.name);
+            return list;
+          });
+          setstore7(val);
+        }
+        else if (index == 8) {
+          const val = count.dragAndDrop.PickListData[8].map((list: any) => {
+            setValue8(list.name);
+            return list;
+          });
+          setstore8(val);
+        }
+        else if (index == 9) {
+          const val = count.dragAndDrop.PickListData[9].map((list: any) => {
+            setValue9(list.name);
+            return list;
+          });
+          setstore9(val);
+        }
+        else if (index == 10) {
+          const val = count.dragAndDrop.PickListData[10].map((list: any) => {
+            setValue10(list.name);
+            return list;
+          });
+          setstore10(val);
+        }
+      } else {
+        setList1(count.dragAndDrop.PickListData);
+      }
+    });
+  }, [count.dragAndDrop.PickListData]);
   useEffect(() => {
     setPreviewData(count.dragAndDrop.initialStartDragSuperAdmin);
   }, [count.dragAndDrop.initialStartDragSuperAdmin]);
@@ -95,7 +265,408 @@ const TopBars = (props: any) => {
                                 <p className="grey">
                                   {item.subName || item.type}
                                 </p>
-                                {item.names ||
+                                {item.names === "Pick List"?
+                                 <>
+                                 {index == 0 ? (
+                                   <div>
+                                     <div className="flex">
+                                       <InputText
+                                         value={value}
+                                         style={{
+                                           width: '100px',
+                                         }}
+                                         className="border-0"
+                                         onChange={(e) =>
+                                           setValue1(e.target.value)
+                                         }
+                                       />
+                                       <Dropdown
+                                         value={pickList}
+                                         options={store}
+                                         onChange={(e) => {
+                                           handleChange(
+                                             e,
+                                             index,
+                                             list,"pick list","list"
+                                           );
+                                           setPickList(e.value);
+                                         }}
+                                         optionLabel="value"
+                                         placeholder="Pick List"
+                                         style={{
+                                           position: 'relative',
+                                           left: '28px',
+                                           height: '44px',
+                                           border:
+                                             '1px solid lightgrey',
+                                           color: '#8083A3',
+                                         }}
+                                         className="border-0"
+                                       />
+                                     </div>
+                                   </div>
+                                 ) : index == 1 ? (
+                                   <div className="flex">
+                                     <InputText
+                                       value={value1}
+                                       style={{
+                                         width: '100px',
+                                       }}
+                                       className="border-0"
+                                       onChange={(e) =>
+                                         setValue1(e.target.value)
+                                       }
+                                     />
+                                     <Dropdown
+                                       value={pickList1}
+                                       options={store1}
+                                       onChange={(e) => {
+                                         handleChange( e,
+                                           index,
+                                           list,"pick list","list");
+                                         setPickList1(e.value);
+                                       }}
+                                       optionLabel="value"
+                                       placeholder="Pick List"
+                                       style={{
+                                         height: '44px',
+                                         border: '1px solid lightgrey',
+                                         color: '#8083A3',
+                                       }}
+                                       className="  ml-4 border-0"
+                                     />
+                                   </div>
+                                 ) : index == 2 ? (
+                                   <div className="flex">
+                                     <InputText
+                                       value={value2}
+                                       style={{
+                                         width: '100px',
+                                       }}
+                                       className="border-0"
+                                       onChange={(e) =>
+                                         setValue1(e.target.value)
+                                       }
+                                     />
+                                     <Dropdown
+                                       value={pickList2}
+                                       options={store2}
+                                       onChange={(e) => {
+                                         handleChange( e,
+                                           index,
+                                           list,"pick list","list");
+                                         setPickList2(e.value);
+                                       }}
+                                       optionLabel="value"
+                                       placeholder="Pick List"
+                                       style={{
+                                         position: 'relative',
+                                         left: '28px',
+                                         height: '44px',
+                                         border: '1px solid lightgrey',
+                                         color: '#8083A3',
+                                       }}
+                                       className="border-0"
+                                     />
+                                   </div>
+                                 ) : index == 3 ? (
+                                   <div>
+                                     <div className="flex">
+                                       <InputText
+                                         value={value3}
+                                         style={{
+                                           width: '100px',
+                                         }}
+                                         className="border-0"
+                                         onChange={(e) =>
+                                           setValue1(e.target.value)
+                                         }
+                                       />
+                                       <Dropdown
+                                         value={pickList3}
+                                         options={store3}
+                                         onChange={(e) => {
+                                           handleChange(
+                                             e,
+                                             index,
+                                             list,"pick list","list"
+                                           );
+                                           setPickList3(e.value);
+                                         }}
+                                         optionLabel="value"
+                                         placeholder="Pick List"
+                                         style={{
+                                           position: 'relative',
+                                           left: '28px',
+                                           height: '44px',
+                                           border:
+                                             '1px solid lightgrey',
+                                           color: '#8083A3',
+                                         }}
+                                         className="border-0"
+                                       />
+                                     </div>
+                                   </div>
+                                 ) : index == 4 ? (
+                                   <div>
+                                     <div className="flex">
+                                       <InputText
+                                         value={value4}
+                                         style={{
+                                           width: '100px',
+                                         }}
+                                         className="border-0"
+                                         onChange={(e) =>
+                                           setValue1(e.target.value)
+                                         }
+                                       />
+                                       <Dropdown
+                                         value={pickList4}
+                                         options={store4}
+                                         onChange={(e) => {
+                                           handleChange(
+                                             e,
+                                             index,
+                                             list,"pick list","list"
+                                           );
+                                           setPickList4(e.value);
+                                         }}
+                                         optionLabel="value"
+                                         placeholder="Pick List"
+                                         style={{
+                                           position: 'relative',
+                                           left: '28px',
+                                           height: '44px',
+                                           border:
+                                             '1px solid lightgrey',
+                                           color: '#8083A3',
+                                         }}
+                                         className="border-0"
+                                       />
+                                     </div>
+                                   </div>
+                                 ) : index == 5 ? (
+                                   <div>
+                                     <div className="flex">
+                                       <InputText
+                                         value={value5}
+                                         style={{
+                                           width: '100px',
+                                         }}
+                                         className="border-0"
+                                         onChange={(e) =>
+                                           setValue1(e.target.value)
+                                         }
+                                       />
+                                       <Dropdown
+                                         value={pickList5}
+                                         options={store5}
+                                         onChange={(e) => {
+                                           handleChange(
+                                             e,
+                                             index,
+                                             list,"pick list","list"
+                                           );
+                                           setPickList5(e.value);
+                                         }}
+                                         optionLabel="value"
+                                         placeholder="Pick List"
+                                         style={{
+                                           position: 'relative',
+                                           left: '28px',
+                                           height: '44px',
+                                           border:
+                                             '1px solid lightgrey',
+                                           color: '#8083A3',
+                                         }}
+                                         className="border-0"
+                                       />
+                                     </div>
+                                   </div>
+                                 ) : index==6?
+                                 <div className="flex">
+                                       <InputText
+                                         value={value6}
+                                         style={{
+                                           width: '100px',
+                                         }}
+                                         className="border-0"
+                                         onChange={(e) =>
+                                           setValue1(e.target.value)
+                                         }
+                                       />
+                                       <Dropdown
+                                         value={pickList6}
+                                         options={store6}
+                                         onChange={(e) => {
+                                           handleChange(
+                                             e,
+                                             index,
+                                             list,"pick list","list"
+                                           );
+                                           setPickList6(e.value);
+                                         }}
+                                         optionLabel="value"
+                                         placeholder="Pick List"
+                                         style={{
+                                           position: 'relative',
+                                           left: '28px',
+                                           height: '44px',
+                                           border:
+                                             '1px solid lightgrey',
+                                           color: '#8083A3',
+                                         }}
+                                         className="border-0"
+                                       />
+                                     </div>
+                                   :index == 7?<div className="flex">
+                                   <InputText
+                                     value={value7}
+                                     style={{
+                                       width: '100px',
+                                     }}
+                                     className="border-0"
+                                     onChange={(e) =>
+                                       setValue1(e.target.value)
+                                     }
+                                   />
+                                   <Dropdown
+                                     value={pickList7}
+                                     options={store7}
+                                     onChange={(e) => {
+                                       handleChange(
+                                         e,
+                                         index,
+                                         list,"pick list","list"
+                                       );
+                                       setPickList7(e.value);
+                                     }}
+                                     optionLabel="value"
+                                     placeholder="Pick List"
+                                     style={{
+                                       position: 'relative',
+                                       left: '28px',
+                                       height: '44px',
+                                       border:
+                                         '1px solid lightgrey',
+                                       color: '#8083A3',
+                                     }}
+                                     className="border-0"
+                                   />
+                                 </div>:index==8?<div className="flex">
+                                       <InputText
+                                         value={value8}
+                                         style={{
+                                           width: '100px',
+                                         }}
+                                         className="border-0"
+                                         onChange={(e) =>
+                                           setValue1(e.target.value)
+                                         }
+                                       />
+                                       <Dropdown
+                                         value={pickList8}
+                                         options={store8}
+                                         onChange={(e) => {
+                                           handleChange(
+                                             e,
+                                             index,
+                                             list,"pick list","list"
+                                           );
+                                           setPickList8(e.value);
+                                         }}
+                                         optionLabel="value"
+                                         placeholder="Pick List"
+                                         style={{
+                                           position: 'relative',
+                                           left: '28px',
+                                           height: '44px',
+                                           border:
+                                             '1px solid lightgrey',
+                                           color: '#8083A3',
+                                         }}
+                                         className="border-0"
+                                       />
+                                     </div>:index==9?<div className="flex">
+                                       <InputText
+                                         value={value9}
+                                         style={{
+                                           width: '100px',
+                                         }}
+                                         className="border-0"
+                                         onChange={(e) =>
+                                           setValue1(e.target.value)
+                                         }
+                                       />
+                                       <Dropdown
+                                         value={pickList9}
+                                         options={store9}
+                                         onChange={(e) => {
+                                           handleChange(
+                                             e,
+                                             index,
+                                             list,"pick list","list"
+                                           );
+                                           setPickList9(e.value);
+                                         }}
+                                         optionLabel="value"
+                                         placeholder="Pick List"
+                                         style={{
+                                           position: 'relative',
+                                           left: '28px',
+                                           height: '44px',
+                                           border:
+                                             '1px solid lightgrey',
+                                           color: '#8083A3',
+                                         }}
+                                         className="border-0"
+                                       />
+                                     </div>:index==10?<div className="flex">
+                                       <InputText
+                                         value={value10}
+                                         style={{
+                                           width: '100px',
+                                         }}
+                                         className="border-0"
+                                         onChange={(e) =>
+                                           setValue1(e.target.value)
+                                         }
+                                       />
+                                       <Dropdown
+                                         value={pickList10}
+                                         options={store10}
+                                         onChange={(e) => {
+                                           handleChange(
+                                             e,
+                                             index,
+                                             list,"pick list","list"
+                                           );
+                                           setPickList10(e.value);
+                                         }}
+                                         optionLabel="value"
+                                         placeholder="Pick List"
+                                         style={{
+                                           position: 'relative',
+                                           left: '28px',
+                                           height: '44px',
+                                           border:
+                                             '1px solid lightgrey',
+                                           color: '#8083A3',
+                                         }}
+                                         className="border-0"
+                                       />
+                                     </div>:""
+                                 }
+                               </>
+                                :<InputText
+                                type="text"
+                                name="names"
+                                value={item.names || item.type}
+                                onChange={(e) => {}}
+                                disabled
+                                className="h-2rem my-auto"
+                              />}
+                                {/* {item.names ||
                                 item.type === "Untitled Owner" ? (
                                   <span className="p-input-icon-right ">
                                     <i className="pi pi-lock mt-0" />
@@ -171,15 +742,7 @@ const TopBars = (props: any) => {
                                 ) : item.names ||
                                   item.type === "File Upload" ? (
                                   <p>
-                                    {/* <Dropdown
-                                      className="mr-6"
-                                      value={selectedCity1}
-                                      options={fileUpload}
-                                      onChange={onCityChange}
-                                      optionLabel="name"
-                                      style={{ width: "99%" }}
-                                      placeholder="Select a file"
-                                    /> */}
+                                   
                                   </p>
                                 ) : item.names ||
                                   item.type === "Email Opt Out" ? (
@@ -275,15 +838,7 @@ const TopBars = (props: any) => {
                                   </p>
                                 ) : item.names || item.type === "User" ? (
                                   <span className="p-input-icon-right ">
-                                    {/* <Dropdown
-                                      className="mr-6"
-                                      value={selectedCity1}
-                                      options={cities}
-                                      onChange={onCityChange}
-                                      optionLabel="name"
-                                      style={{ width: "99%" }}
-                                      placeholder="Select a City"
-                                    /> */}
+                                  
                                   </span>
                                 ) : (
                                   <InputText
@@ -294,7 +849,7 @@ const TopBars = (props: any) => {
                                     disabled
                                     className="h-2rem my-auto"
                                   />
-                                )}
+                                )} */}
                               </div>
                             </div>
                           </div>
@@ -313,3 +868,7 @@ const TopBars = (props: any) => {
 };
 
 export default React.memo(TopBars);
+function dispatch(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+
