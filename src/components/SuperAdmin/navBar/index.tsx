@@ -51,10 +51,16 @@ const NavBar = (props: any) => {
 
   useEffect(() => {
     GetModuleName();
-  }, []);
-  useEffect(() => {
     GetHeadingName();
   }, []);
+
+  useEffect(() => {
+    setState(user.module.modules)
+  }, [user.module.modules]);
+
+  useEffect(() => {
+    checkRecentTab();
+  }, [state]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -62,8 +68,7 @@ const NavBar = (props: any) => {
   }, []);
 
   const GetModuleName = async () => {
-    let res = await dispatch(ModuleNameGet());
-    setState(res.payload.data.user);
+    await dispatch(ModuleNameGet());
   };
 
   const GetHeadingName = async () => {
@@ -102,13 +107,21 @@ const NavBar = (props: any) => {
     setgetData(value.payload.data.data[0]);
     title.current?.hide();
   };
+
   const NavbarEdit = async (x: any) => {
      localStorage.setItem("moduleName", x.modulename);
-    let res = await dispatch(ModuleNameGetFormsaa(x._id));
-    if (res.payload.status === 200) {
-      navigate(`/super-admin/Table-List/${x._id}`);
-    }
+     navigate(`/super-admin/Table-List/${x._id}`);
   };
+
+  const checkRecentTab = () => {
+    const recentModule = localStorage.getItem("moduleName")
+    if(state){
+      const isExist = state.find((t:any)=>{
+      return t.modulename === recentModule
+      })
+      return isExist
+    }
+  }
 
   return (
     <div className="p-2 flex justify-content-between align-items-center NavBar_Main">
@@ -178,14 +191,14 @@ const NavBar = (props: any) => {
                 );
               })
             : ""}
-          <div className="flex " style={{ right: "86px" }}>
+          {checkRecentTab() && <div className="flex " style={{ right: "86px" }}>
             <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
               <span className="text-yellow-600">{displayNav || localStorage.getItem("moduleName")}</span>
             </span>
             <div onClick={(e) => op.current?.toggle(e)}>
               <i className="pi pi-angle-double-right mr-6 mt-4"></i>
             </div>
-          </div>
+          </div>}
           <OverlayPanel
             ref={op}
             showCloseIcon

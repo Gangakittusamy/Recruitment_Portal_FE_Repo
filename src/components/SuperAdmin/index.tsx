@@ -278,8 +278,6 @@ const SuperAdmin = () => {
     }
   }, [complete]);
 
-  function toAddData() {}
-
   const handleClick = (e: any) => {
     setId(e);
   };

@@ -48,7 +48,10 @@ export const userReducer = createSlice({
       state.DialogIndex = action.payload;
     },
     pickListDropDownData: (state: any, action) => {
-      state.PickListData = action.payload;
+      state.PickListData = state.PickListData.concat(action.payload)
+    },
+    setPickListDropDownData: (state: any, action) => {
+      state.PickListData = action.payload
     },
     pickListDragableIdStore: (state, action) => {
       state.pickListDragableId = action.payload;
@@ -114,5 +117,6 @@ export const {
   pickListDragableIdStore,
   newSectionIndexData,
   formcompleted,
+  setPickListDropDownData
 } = userReducer.actions;
 export default userReducer.reducer;

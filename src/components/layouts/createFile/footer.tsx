@@ -75,7 +75,7 @@ const Footer = ({ cards }: any, items: any) => {
           <MultipleSelectLookUp MultipleSelectLookUpDialogVisible={true} />
         );
       } else if (value.names === 'Pick List') {
-        return <Picklist pickListDialogVisible={true} />;
+        // return <Picklist pickListDialogVisible={true} />;
       } else if (value.names === 'Multi-Select') {
         return <MultipleSelect dialogVisible={true} />;
       } else if (value.names === 'Formula') {

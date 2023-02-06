@@ -73,6 +73,8 @@ const FieldListTablePage = (props: any) => {
           formData: list,
           DataHeader: value[list][heading].fieldname,
           value: value[list][heading].defaultvalue,
+          options:value[list][heading].options,
+          type:value[list][heading].type,
         });
         TableData.push(heading);
         forms.push(value[list][heading]);
@@ -83,6 +85,7 @@ const FieldListTablePage = (props: any) => {
     setForms(forms);
     setTableData(TableData);
     setformData(formData);
+    setSelectedColumns(null)
   }
 
   useEffect(() => {
@@ -99,10 +102,9 @@ const FieldListTablePage = (props: any) => {
     );
   }
 
+
   if (getdata.length > 0) {
     if (selectedColumns === null) {
-      // setSelectedColumns(columns);
-
       let result = getdata.flatMap(Object.keys);
       let res = removeDuplicates(result);
       setDuplicate(res);
@@ -123,7 +125,7 @@ const FieldListTablePage = (props: any) => {
       });
       setUserSelectedColumns(userColumns)
       setColumns(columns)
-    }
+    } 
   }
 
   function onColumnToggle(event: any) {
@@ -183,7 +185,7 @@ const FieldListTablePage = (props: any) => {
       <Link
         to="/super-admin/CustomModule/being"
         state={{
-          from: Get,
+          form: Get,
           id: id,
           recId: editTableId,
         }}
