@@ -17,7 +17,7 @@ import {
   ModuleNameUpdate
 } from "../../../features/Modules/module"
 import { object } from "yup"
-import { useAppDispatch } from "../../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import SingleLine from "../Dialogs/singleLine"
 import { Toast } from "primereact/toast"
 import { useNavigate } from "react-router"
@@ -50,6 +50,7 @@ const DropArea = (props: any) => {
   const [store, setstore] = useState<any>([])
   const [editArray, setEditArray] = useState<any>()
   const [finaValue, setFinalValue] = useState<any>({})
+  const user: any = useAppSelector((state) => state);
 
   useEffect(() => {
     setModuleName(props.moduleValue)
@@ -82,7 +83,6 @@ const DropArea = (props: any) => {
       //   arrayValue.push(keyValue[val]);
       //   arrayVal.push(val);
       // }
-
       setuidv4(count.dragAndDrop.initialStartDragSuperAdmin)
     }
   }, [count.dragAndDrop.initialStartDragSuperAdmin])
@@ -227,8 +227,8 @@ const DropArea = (props: any) => {
       recuriter: count?.userValue?.roles?.id,
       moduleelements: response
     }
-    
-    if (payload.modulename) {
+
+    if (isValidModuleName(payload.modulename) && isAllFormsValid(payload.moduleelements)) {
       let res
       if (window.location.pathname === `/super-admin/edit/${editId}`) {
         let val = {
@@ -249,9 +249,43 @@ const DropArea = (props: any) => {
       if (res.payload.status == 200) {
         navigate("/super-admin")
       }
+    } else if (isValidModuleName(payload.modulename) && !isAllFormsValid(payload.moduleelements)) {
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Form is empty",
+        life: 3000
+      })
     } else {
-      toast.current.show({severity:'warn', summary: 'Warning', detail:'Please add a module name', life: 3000});
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please enter the module name. Duplicate name not allowed",
+        life: 3000
+      })
     }
+  }
+
+  const isValidModuleName = (module: any) => {
+    let moduleValid = true
+    const existingModules = user.module.modules
+    const isExistingModuleName = existingModules.find((m:any)=>{
+      return m.modulename === module
+    })
+    if(!module || isExistingModuleName){
+      moduleValid = false
+    }
+    return moduleValid
+  }
+
+  const isAllFormsValid = (forms: any) => {
+    let allFormsValid = true
+    for (const key in forms) {
+      if (forms[key].length === 0) {
+        allFormsValid = false
+      }
+    }
+    return allFormsValid
   }
 
   useEffect(() => {
@@ -355,7 +389,7 @@ const DropArea = (props: any) => {
       <div className="FormDiv1">
         {Object.keys(uidv4 || {}).map((list: any, i: number) => {
           return (
-            <div>
+            <div key={list}>
               <Droppable key={list} droppableId={list}>
                 {(provided, snapshot) => (
                   <div className="border-dotted border-400 mt-4 ml-3 mr-3">
@@ -393,22 +427,9 @@ const DropArea = (props: any) => {
                         uidv4[list].length ? (
                           uidv4[list].map((item: any, index: number) => (
                             <div
-                              //  className=" border-dashed border-2 w-30rem ml-8 mt-1"
+                             key={item.id}
                               className="p-2"
                             >
-                              {/* <section className="ml-8 pl-2 mt-2">
-                              <input
-                                placeholder="Untiled form"
-                                className=" w-30rem my-auto  text-sm  text-900"
-                                style={{
-                                  height: "52px",
-                                  color: "#333333",
-                                }}
-                                value={formName.name}
-                                onChange={(e) => handleChangeForm(i, e)}
-                              />
-                            </section> */}
-
                               <Draggable
                                 key={item.id}
                                 draggableId={item.id}

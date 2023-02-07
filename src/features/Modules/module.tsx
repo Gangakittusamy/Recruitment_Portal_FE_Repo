@@ -108,6 +108,9 @@ export const userReducer = createSlice({
     logInVerificationValue: (state: any, action) => {
       state.logInVerificationPage = action.payload;
     },
+    resetModuleForms: (state: any) => {
+      state.rolesGetForms = null
+    },
     resetStatus: (state, action) => {
       state.error = "";
       //   state.status = "";
@@ -142,5 +145,5 @@ export const userReducer = createSlice({
       })
     }
   });
-export const { logInVerificationValue, resetStatus } = userReducer.actions;
+export const { logInVerificationValue,resetModuleForms, resetStatus } = userReducer.actions;
 export default userReducer.reducer;

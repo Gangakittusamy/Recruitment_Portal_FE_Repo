@@ -3,6 +3,10 @@ import { reducers } from "../../src/features/freatures";
 
 export const store = configureStore({
   reducer: reducers,
+  middleware: getDefaultMiddleware =>
+  getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
