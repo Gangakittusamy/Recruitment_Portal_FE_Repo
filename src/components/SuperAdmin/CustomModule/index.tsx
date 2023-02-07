@@ -36,7 +36,12 @@ const CustomModule = (props: any) => {
   const [ids, setIds] = useState<any>()
 
   function handleChange(evt: any) {
-    const value = evt.target.value
+    let value = ""
+    if (evt.target.type === "checkbox") {
+      value = evt.target.checked
+    } else {
+      value = evt.target.value
+    }
     setState({
       ...state,
       [evt.target.name]: value
@@ -96,14 +101,15 @@ const CustomModule = (props: any) => {
                               <Dropdown
                                 options={item.options}
                                 optionLabel="value"
-                                placeholder={`Select ${item.DataHeader}`}
+                                placeholder="Select"
                                 name={item.DataHeader}
                                 value={state[item.DataHeader]}
                                 onChange={handleChange}
                                 style={{
                                   position: "relative",
                                   left: "28px",
-                                  height: "44px",
+                                  height: "34px",
+                                  top: "10px",
                                   border: "1px solid lightgrey",
                                   color: "#8083A3"
                                 }}
@@ -233,21 +239,19 @@ const CustomModule = (props: any) => {
                                   placeholder="DD/MM/YY   "
                                 />
                               </p>
-                            ) : item.DataHeader === "Pick List" ? (
-                              <p>Pick List</p>
                             ) : item.DataHeader === "Checkbox" ? (
-                              <div className="grid p-fluid">
-                                <div className="col-12">
-                                  <div className="p-inputgroup">
-                                    <span className="p-inputgroup-addon">
-                                      <Checkbox
-                                        checked={checked1}
-                                        onChange={(e) => setChecked1(!checked1)}
-                                      />
-                                    </span>
-                                    <InputText placeholder="Username" />
-                                  </div>
-                                </div>
+                              <div>
+                                <Checkbox
+                                  name={item.value}
+                                  style={{
+                                    position: "relative",
+                                    right: "120px",
+                                    height: "44px",
+                                    top: "15px"
+                                  }}
+                                  onChange={handleChange}
+                                  checked={state[item.value]}
+                                />
                               </div>
                             ) : item.DataHeader === "Phone" ? (
                               <p>

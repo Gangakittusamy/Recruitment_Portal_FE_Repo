@@ -23,6 +23,7 @@ import { Toast } from "primereact/toast"
 import { useNavigate } from "react-router"
 import { LoginUserDetails } from "../../../features/Auth/userDetails"
 import { Dropdown } from "primereact/dropdown"
+import { Checkbox } from "primereact/checkbox"
 import { useParams } from "react-router-dom"
 import _ from "lodash"
 import { ModuleNameGet } from "../../../features/Modules/module"
@@ -187,8 +188,6 @@ const DropArea = (props: any) => {
   }
 
   const saveForm = async () => {
-    let val: object = {}
-
     const value = Object.assign({}, uidv4)
 
     if (formName[0].id !== "") {
@@ -197,43 +196,21 @@ const DropArea = (props: any) => {
         delete value[f.id]
       })
     }
-    // if (formName[0].id === "") {
-    //   Object.keys(value || {}).map((list: any, i: number) => {
-    //   });
-    // }
-
-    // let resp: any = {};
-
-    // {
-    //   Object.keys(value || {}).map((list: any, i: number) => {
-    //     value[list].map((x: any) => {
-    //       resp[list] = {
-    //         [x.subName]: {
-    //           type: x.names,
-    //           fieldname: x.subName,
-    //           defaultvalue: x.names,
-    //         },
-    //       };
-    //     });
-    //   });
-    // }
-
-    // let response = Object.assign({}, value);
 
     let response: any = { ...value }
-
-    // Object.defineProperties(response, { ...value, writable: true });
 
     Object.keys(response || {}).map((list: any, i: number) => {
       response[list] = response[list].map((x: any) => {
         if (x.names === "Pick List") {
-          const pickListDropdownData = count.dragAndDrop.PickListData.filter((p:any)=>{
-            return p.itemId === x.id
-          })
+          const pickListDropdownData = count.dragAndDrop.PickListData.filter(
+            (p: any) => {
+              return p.itemId === x.id
+            }
+          )
           return {
             type: x.subName,
             fieldname: pickListDropdownData[0].fieldLabel,
-            options:pickListDropdownData
+            options: pickListDropdownData
           }
         } else {
           return {
@@ -245,50 +222,38 @@ const DropArea = (props: any) => {
       })
     })
 
-    // response[list].map((x: any, idx: number) => {
-    //   response[list][idx] = {
-    //     type: x.names,
-    //     fieldname: x.subName,
-    //     defaultvalue: x.names,
-    //   };
-    // });
-
-    // resp[list] = {
-    //   [x.subName]: {
-    //     type: x.names,
-    //     fieldname: x.names,
-    //     defaultvalue: x.names,
-    //   },
-    // };
-
-    let payload: object = {
+    let payload: any = {
       modulename: moduleName,
       recuriter: count?.userValue?.roles?.id,
       moduleelements: response
     }
+    
+    if (payload.modulename) {
+      let res
+      if (window.location.pathname === `/super-admin/edit/${editId}`) {
+        let val = {
+          payload: payload,
+          editId: editId
+        }
 
-    let res
-    if (window.location.pathname === `/super-admin/edit/${editId}`) {
-      let val = {
-        payload: payload,
-        editId: editId
+        res = await dispatch(ModuleNameUpdate(val))
+        if (res.payload.status == 200) {
+          dispatch(ModuleNameGet())
+        }
+      } else {
+        res = await dispatch(NewModuleCreation(payload))
+        if (res.payload.status == 200) {
+          dispatch(ModuleNameGet())
+        }
       }
-
-      res = await dispatch(ModuleNameUpdate(val))
       if (res.payload.status == 200) {
-        dispatch(ModuleNameGet())
+        navigate("/super-admin")
       }
     } else {
-      res = await dispatch(NewModuleCreation(payload))
-      if (res.payload.status == 200) {
-        dispatch(ModuleNameGet())
-      }
-    }
-
-    if (res.payload.status == 200) {
-      navigate("/super-admin")
+      toast.current.show({severity:'warn', summary: 'Warning', detail:'Please add a module name', life: 3000});
     }
   }
+
   useEffect(() => {
     if (count.module.rolesGetForms) {
       let val: any = Object.keys(
@@ -372,6 +337,14 @@ const DropArea = (props: any) => {
       }
     })
     dispatch(setPickListDropDownData(modifiedPickListArray))
+  }
+
+  const showSection = (item: any) => {
+    if (item.subName !== "Pick List" && item.subName !== "Checkbox") {
+      return true
+    } else {
+      return false
+    }
   }
 
   return (
@@ -466,18 +439,49 @@ const DropArea = (props: any) => {
                                             <Dropdown
                                               options={getDropDownValue(item)}
                                               optionLabel="value"
-                                              placeholder="Pick List"
+                                              placeholder="Select"
                                               style={{
                                                 position: "relative",
-                                                left: "28px",
-                                                height: "44px",
-                                                border: "1px solid lightgrey",
-                                                color: "#8083A3"
+                                                left: "80px",
+                                                height: "34px",
+                                                top: "3px"
                                               }}
-                                              className="border-0"
                                             />
                                           </div>
                                         </>
+                                      ) : item.subName === "Checkbox" ? (
+                                        <div className="flex">
+                                          <input
+                                            type="text"
+                                            name="names "
+                                            style={{
+                                              height: "44px",
+                                              border: "1px solid lightgrey"
+                                            }}
+                                            value={item.names || item.type}
+                                            onChange={(e) => {
+                                              handleChange(
+                                                e,
+                                                index,
+                                                list,
+                                                item.subName || item.fieldname,
+                                                item.id
+                                              )
+                                            }}
+                                            className=" text-500  border-0 "
+                                          />
+                                          <Checkbox
+                                            style={{
+                                              position: "relative",
+                                              left: "28px",
+                                              height: "44px",
+                                              top: "10px",
+                                              border: "1px solid lightgrey",
+                                              color: "#8083A3"
+                                            }}
+                                            className="border-0"
+                                          ></Checkbox>
+                                        </div>
                                       ) : (
                                         <input
                                           type="text"
@@ -500,16 +504,18 @@ const DropArea = (props: any) => {
                                           className=" text-500  border-0 "
                                         />
                                       )}
-                                      <section
-                                        className="grey font-semibold  "
-                                        style={{
-                                          // border: "1px solid gray",
-                                          width: "150px",
-                                          padding: "4px"
-                                        }}
-                                      >
-                                        {item.subName || item.fieldname}
-                                      </section>
+
+                                      {showSection(item) && (
+                                        <section
+                                          className="grey font-semibold  "
+                                          style={{
+                                            width: "150px",
+                                            padding: "4px"
+                                          }}
+                                        >
+                                          {item.subName || item.fieldname}
+                                        </section>
+                                      )}
 
                                       <p className="delete">
                                         <i className="pi pi-ellipsis-v"></i>

@@ -35,11 +35,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
   const [OptionTwo, setOptionTwo] = useState(false);
   const [OptionThree, setOptionThree] = useState(false);
   const [picklist, setpicklist] = useState<any>();
-  const [Months, setMonths] = useState(false);
   const [order, setOrder] = useState("");
-  const [checkAlpha, setCheckAlpha] = useState(false);
-  const [checkRequire, setCheckRequire] = useState("");
-  const [checkToolTip, setCheckToolTip] = useState("");
   const [arr, setArr] = useState(inputArr);
   const [fieldLabel, setFieldLabel] = useState('PickList');
   const [selectedCity1, setSelectedCity1] = useState<any>([
@@ -47,6 +43,8 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
   ]);
   const [Multiselect, setMultiselect] = useState<any>([]);
   const [color2, setColor2] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
+
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.logIn);
   const op: any = useRef(null);
@@ -265,6 +263,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
     setMultiselect(selectedCities);
   };
   const handleChange = (e: any) => {
+    setShowWarning(false)
     e.preventDefault();
 
     const index = e.target.id;
@@ -279,6 +278,15 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
       return newArr;
     });
   };
+
+  const submitPickList = () => {
+    if(arr[0].value){
+      setState(!state);
+      dispatch(pickListDropDownData(arr))
+    } else {
+      setShowWarning(true)
+    }
+  }
 
   return (
     <div className="flex">
@@ -665,11 +673,11 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
           </section> */}
           <div className="currencyProperties_cancel">
             <p className="">Don't save this field.</p>
+            {showWarning && (<p style={{ color: "red" }}>Please add the options</p>)}
             <Button
               label="Done"
               onClick={() => {
-                setState(!state);
-                dispatch(pickListDropDownData(arr));
+                submitPickList();
               }}
             />
           </div>
