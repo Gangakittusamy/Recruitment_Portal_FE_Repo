@@ -34,7 +34,6 @@ const UntitleImage = () => {
     {
       names: 'Secondary email',
       subname: ' Single Line',
-
       id: 1,
     },
     {

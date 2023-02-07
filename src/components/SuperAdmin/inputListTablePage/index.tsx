@@ -27,30 +27,23 @@ import { LoginUserDetails } from "../../../features/Auth/userDetails";
 
 //rolesGetForms
 const FieldListTablePage = (props: any) => {
-  const [value, setValue] = useState("");
   const [getdata, setgetdata] = useState<any>([]);
-  const [modulename, setmodulename] = useState("");
   const [id, setid] = useState<any>();
   const [Get, setGet] = useState<any>([]);
-  const [DataGet, setDataGet] = useState<any>([]);
-  const [Getdata, setGetdata] = useState<any>([]);
   const [forms, setForms] = useState<any>([]);
   const [formData, setformData] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [TableData, setTableData] = useState<any>([]);
-  const [moduleElements, setModuleElements] = useState<any>();
   const navigate: any = useNavigate();
   const dispatch: any = useAppDispatch();
   const count: any = useSelector((state) => state);
   let { editTableId } = useParams();
   const user: any = useAppSelector((state) => state);
   const [buttonName, setButtonName] = useState<any>();
-  const [coloumnData, setColoumnData] = useState<any>();
   const [duplicate, setDuplicate] = useState<any>();
   const [selectedColumns, setSelectedColumns] = useState<any>(null);
 
   async function firstGetApi() {
-    let app = {};
     let res = await dispatch(ModuleNameGetFormsaa(editTableId));
     if (res) {
       setButtonName(res?.payload?.data?.data[0]?.modulename);
@@ -80,6 +73,8 @@ const FieldListTablePage = (props: any) => {
           formData: list,
           DataHeader: value[list][heading].fieldname,
           value: value[list][heading].defaultvalue,
+          options:value[list][heading].options,
+          type:value[list][heading].type,
         });
         TableData.push(heading);
         forms.push(value[list][heading]);
@@ -90,50 +85,16 @@ const FieldListTablePage = (props: any) => {
     setForms(forms);
     setTableData(TableData);
     setformData(formData);
+    setSelectedColumns(null)
   }
 
   useEffect(() => {
     firstGetApi();
   }, [editTableId]);
 
-  const columns = [
-    { field: "Single Line", header: "Single Line" },
-    { field: "Multi-Line", header: "Multi-Line" },
-    { field: "Email", header: "Email" },
-    { field: "Phone", header: "Phone" },
-    { field: "Pick List", header: "Pick List" },
-    { field: "Date", header: "Date" },
-    { field: "Date/Time", header: "Date/Time" },
-    { field: "Number", header: "Number" },
-    { field: "Currency", header: "Currency" },
-    { field: "Decimal", header: "Decimal" },
-    { field: "Percent", header: "Percent" },
-    { field: "Long integer", header: "Long integer" },
-    { field: "Checkbox", header: "Checkbox" },
-    { field: "URL", header: "URL" },
-    { field: "File Upload", header: "File Upload" },
-    { field: "Image Upload", header: "Image Upload" },
-  ];
+  const [columns, setColumns] = useState<any>([]);
+  const [userSelectedColumns, setUserSelectedColumns] = useState<any>([]);
 
-  // useEffect(() => {
-  //   GetModuleName();
-  // }, []);
-  const [singleLine, setSingleLine] = useState<any>("");
-  const [multiLine, setMultipleLine] = useState<any>("");
-  const [email, setEmail] = useState<any>("");
-  const [phone, setPhone] = useState<any>("");
-  const [pickList, setPickList] = useState<any>("");
-  const [date, setDate] = useState<any>("");
-  const [dateTime, setDateTime] = useState<any>("");
-  const [number, setNumber] = useState<any>("");
-  const [currency, setCurrency] = useState<any>("");
-  const [decimal, setDecimal] = useState<any>("");
-  const [percent, setPercent] = useState<any>("");
-  const [longInteger, setInteger] = useState<any>("");
-  const [checkbox, setCheckbox] = useState<any>("");
-  const [url, setURL] = useState<any>("");
-  const [fileUpload, setFileUpload] = useState<any>("");
-  const [imageUpload, setImageUpload] = useState<any>("");
 
   function removeDuplicates(result: any) {
     return result.filter(
@@ -141,10 +102,9 @@ const FieldListTablePage = (props: any) => {
     );
   }
 
+
   if (getdata.length > 0) {
     if (selectedColumns === null) {
-      // setSelectedColumns(columns);
-
       let result = getdata.flatMap(Object.keys);
       let res = removeDuplicates(result);
       setDuplicate(res);
@@ -153,54 +113,28 @@ const FieldListTablePage = (props: any) => {
       res.map((x: any, i: number) => {
         dup.push({ field: x, header: x });
       });
+
       setSelectedColumns(dup);
+      let columns:any = []
+      let userColumns:any = []
 
       res.map((x: any, i: number) => {
-        if (x === "Single Line") {
-          setSingleLine("Single Line");
-        } else if (x === "Multi-Line") {
-          setMultipleLine("Multi-Line");
-        } else if (x === "Email") {
-          setEmail("Email");
-        } else if (x === "Phone") {
-          setPhone("Phone");
-        } else if (x === "Pick List") {
-          setPickList("Pick List");
-        } else if (x === "Date") {
-          setDate("Date");
-        } else if (x === "Date/Time") {
-          setDateTime("Date/Time");
-        } else if (x === "Number") {
-          setNumber("Number");
-        } else if (x === "Currency") {
-          setCurrency("Currency");
-        } else if (x === "Decimal") {
-          setDecimal("Decimal");
-        } else if (x === "Percent") {
-          setPercent("Percent");
-        } else if (x === "Long integer") {
-          setInteger("Long integer");
-        } else if (x === "Checkbox") {
-          setCheckbox("Checkbox");
-        } else if (x === "URL") {
-          setURL("URL");
-        } else if (x === "File Upload") {
-          setFileUpload("File Upload");
-        } else if (x === "Image Upload") {
-          setImageUpload("Image Upload");
-        }
+        userColumns.push(x)
+        const column = { field: x, header: x }
+        columns.push(column)
       });
-    }
+      setUserSelectedColumns(userColumns)
+      setColumns(columns)
+    } 
   }
 
   function onColumnToggle(event: any) {
     let selectedColumns = event.value;
-    let orderedSelectedColumns = columns.filter((col) =>
+    let orderedSelectedColumns = columns.filter((col:any) =>
       selectedColumns.some(
         (sCol: { field: string }) => sCol.field === col.field
       )
     );
-
     setSelectedColumns(selectedColumns);
     let dup: any = [];
     duplicate.map((x: any, i: number) => {
@@ -208,41 +142,11 @@ const FieldListTablePage = (props: any) => {
     });
     setSelectedColumns(orderedSelectedColumns);
 
+    let userColumns:any = []
     orderedSelectedColumns.map((x: any, i: number) => {
-      if (x.field === "Single Line") {
-        setSingleLine("Single Line");
-      } else if (x.field === "Multi-Line") {
-        setMultipleLine("Multi-Line");
-      } else if (x.field === "Email") {
-        setEmail("Email");
-      } else if (x.field === "Phone") {
-        setPhone("Phone");
-      } else if (x.field === "Pick List") {
-        setPickList("Pick List");
-      } else if (x.field === "Date") {
-        setDate("Date");
-      } else if (x.field === "Date/Time") {
-        setDateTime("Date/Time");
-      } else if (x.field === "Number") {
-        setNumber("Number");
-      } else if (x.field === "Currency") {
-        setCurrency("Currency");
-      } else if (x.field === "Decimal") {
-        setDecimal("Decimal");
-      } else if (x.field === "Percent") {
-        setPercent("Percent");
-      } else if (x.field === "Long integer") {
-        setInteger("Long integer");
-      } else if (x.field === "Checkbox") {
-        setCheckbox("Checkbox");
-      } else if (x.field === "URL") {
-        setURL("URL");
-      } else if (x.field === "File Upload") {
-        setFileUpload("File Upload");
-      } else if (x.field === "Image Upload") {
-        setImageUpload("Image Upload");
-      }
+      userColumns.push(x.field)
     });
+    setUserSelectedColumns(userColumns)
 
     const isSameUser = (columns: any, orderedSelectedColumns: any) =>
       columns.field === orderedSelectedColumns.field &&
@@ -262,39 +166,10 @@ const FieldListTablePage = (props: any) => {
     const result = [...onlyInA, ...onlyInB];
 
     result.map((x: any, i: number) => {
-      if (x.field === "Single Line") {
-        setSingleLine("");
-      } else if (x.field === "Multi-Line") {
-        setMultipleLine("");
-      } else if (x.field === "Email") {
-        setEmail("");
-      } else if (x.field === "Phone") {
-        setPhone("");
-      } else if (x.field === "Pick List") {
-        setPickList("");
-      } else if (x.field === "Date") {
-        setDate("");
-      } else if (x.field === "Date/Time") {
-        setDateTime("");
-      } else if (x.field === "Number") {
-        setNumber("");
-      } else if (x.field === "Currency") {
-        setCurrency("");
-      } else if (x.field === "Decimal") {
-        setDecimal("");
-      } else if (x.field === "Percent") {
-        setPercent("");
-      } else if (x.field === "Long integer") {
-        setInteger("");
-      } else if (x.field === "Checkbox") {
-        setCheckbox("");
-      } else if (x.field === "URL") {
-        setURL("");
-      } else if (x.field === "File Upload") {
-        setFileUpload("");
-      } else if (x.field === "Image Upload") {
-        setImageUpload("");
-      }
+      const filteredArray = userSelectedColumns.filter((c:any)=>{
+        return c !== x.field
+      })
+      setUserSelectedColumns(filteredArray)
     });
   }
 
@@ -310,7 +185,7 @@ const FieldListTablePage = (props: any) => {
       <Link
         to="/super-admin/CustomModule/being"
         state={{
-          from: Get,
+          form: Get,
           id: id,
           recId: editTableId,
         }}
@@ -352,71 +227,10 @@ const FieldListTablePage = (props: any) => {
                     exportable={false}
                   ></Column>
 
-                  {singleLine == "Single Line" ? (
-                    <Column field="Single Line" header="Single Line"></Column>
-                  ) : null}
-                  {multiLine == "Multi-Line" ? (
-                    <Column field="Multi-Line" header="Multi-Line"></Column>
-                  ) : null}
-                  {email == "Email" ? (
-                    <Column field="Email" header="Email"></Column>
-                  ) : null}
-                  {phone == "Phone" ? (
-                    <Column field="Phone" header="Phone"></Column>
-                  ) : null}
-                  {pickList == "Pick List" ? (
-                    <Column field="Pick List" header="Pick List"></Column>
-                  ) : null}
-                  {date == "Date" ? (
-                    <Column field="Date" header="Date"></Column>
-                  ) : null}
-                  {dateTime == "Date/Time" ? (
-                    <Column field="Date/Time" header="Date/Time"></Column>
-                  ) : null}
-                  {number == "Number" ? (
-                    <Column field="Number" header="Number"></Column>
-                  ) : null}
-                  {currency == "Currency" ? (
-                    <Column field="Currency" header="Currency"></Column>
-                  ) : null}
-                  {decimal == "Decimal" ? (
-                    <Column field="Decimal" header="Decimal"></Column>
-                  ) : null}
-                  {percent == "Percent" ? (
-                    <Column field="Percent" header="Percent"></Column>
-                  ) : null}
-                  {longInteger == "Long integer" ? (
-                    <Column field="Long integer" header="Long integer"></Column>
-                  ) : null}
-                  {checkbox == "Checkbox" ? (
-                    <Column field="Checkbox" header="Checkbox"></Column>
-                  ) : null}
-                  {url == "URL" ? (
-                    <Column field="URL" header="URL"></Column>
-                  ) : null}
-                  {fileUpload == "File Upload" ? (
-                    <Column field="File Upload" header="File Upload"></Column>
-                  ) : null}
-                  {imageUpload == "Image Upload" ? (
-                    <Column field="Image Upload" header="Image Upload"></Column>
-                  ) : null}
+                  {userSelectedColumns.length > 0 && userSelectedColumns.map((column:any,index:any) => {
+                    return <Column key={index} field={column} header={column}></Column>
+                  })}
 
-                  {/* <Column field="Single Line" header="Single Line"></Column>
-                  <Column field="Multi-Line" header="Multi-Line"></Column>
-                  <Column field="Email" header="Email"></Column>
-                  <Column field="Phone" header="Phone"></Column>
-                  <Column field="Pick List" header="Pick List"></Column>
-                  <Column field="Date" header="Date"></Column>
-                  <Column field="Date/Time" header="Date/Time"></Column>
-                  <Column field="Number" header="Number"></Column>
-                  <Column field="Currency" header="Currency"></Column>
-                  <Column field="Decimal" header="Decimal"></Column>
-                  <Column field="Percent" header="Percent"></Column>
-                  <Column field="Long integer" header="Long integer"></Column>
-                  <Column field="Checkbox" header="Checkbox"></Column>
-                  <Column field="URL" header="URL"></Column>
-                  <Column field="File Upload" header="File Upload"></Column>
-                  <Column field="Image Upload" header="Image Upload"></Column> */}
                 </DataTable>
               </div>
             </div>

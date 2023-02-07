@@ -129,7 +129,7 @@ const ReplicateButton: React.FC<ReplicateButtonOptions> = ({
         </div>
       ) : buttonName === 'Pick List' ? (
         <div>
-          <PickList pickListDialogVisible={true} />
+          {/* <PickList pickListDialogVisible={true} /> */}
           <div className="designBoxSub">
             <input
               type="text"

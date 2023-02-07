@@ -88,6 +88,14 @@ function App() {
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<SignUp />} />
+              <Route
+                path="*"
+                element={
+                  <h1 className="flex align-items-center justify-content-center">
+                    404 Page Not Found
+                  </h1>
+                }
+              />
             </Routes>
           </section>
         </>

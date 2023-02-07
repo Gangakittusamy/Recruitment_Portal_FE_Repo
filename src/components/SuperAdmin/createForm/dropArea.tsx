@@ -1,68 +1,71 @@
-import "./CreateForm.css";
-import React, { useState, useRef, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
-import { Calendar } from "primereact/calendar";
-import { dragAndDropDialogIndexSuperAdmin } from "../../../features/counter/dragAndDrop";
-import { ITEMS } from "../../Constant/const";
-import Picklist from "../../CommonModules/PickList/PickList";
+import "./CreateForm.css"
+import React, { useState, useRef, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { Button } from "primereact/button"
+import { InputText } from "primereact/inputtext"
+import { Calendar } from "primereact/calendar"
+import {
+  dragAndDropDialogIndexSuperAdmin,
+  formcompleted,
+  setPickListDropDownData
+} from "../../../features/counter/dragAndDrop"
+import { ITEMS } from "../../Constant/const"
+import Picklist from "../../CommonModules/PickList/PickList"
 import {
   NewModuleCreation,
-  ModuleNameUpdate,
-} from "../../../features/Modules/module";
-import { object } from "yup";
-import { useAppDispatch } from "../../../app/hooks";
-import SingleLine from "../Dialogs/singleLine";
-import { Toast } from "primereact/toast";
-import { useNavigate } from "react-router";
-import { LoginUserDetails } from "../../../features/Auth/userDetails";
-import { Dropdown } from "primereact/dropdown";
-import { useParams } from "react-router-dom";
-import _ from "lodash";
-import { ModuleNameGet } from "../../../features/Modules/module";
+  ModuleNameUpdate
+} from "../../../features/Modules/module"
+import { object } from "yup"
+import { useAppDispatch } from "../../../app/hooks"
+import SingleLine from "../Dialogs/singleLine"
+import { Toast } from "primereact/toast"
+import { useNavigate } from "react-router"
+import { LoginUserDetails } from "../../../features/Auth/userDetails"
+import { Dropdown } from "primereact/dropdown"
+import { useParams } from "react-router-dom"
+import _ from "lodash"
+import { ModuleNameGet } from "../../../features/Modules/module"
 
 interface formModel {
-  name: string;
-  id: string;
+  name: string
+  id: string
 }
 
 const DropArea = (props: any) => {
-  let { editId } = useParams();
-  const [uidv4, setuidv4] = useState<any>();
-  const count: any = useSelector((state) => state);
-  const [formName, setFormName] = useState<any>([{ name: "", id: "" }]);
-  const [moduleName, setModuleName] = useState<any>();
-  const [array, setArray] = useState<any>([]);
-  const [sidebar, setSidebar] = useState(false);
-  const [date, setDate] = useState<Date | Date[] | undefined>(new Date());
-  const [selectedCity1, setSelectedCity1] = useState(null);
-  const [pickList, setPickList] = useState<any>();
-  const dispatch = useAppDispatch();
-  const toast: any = useRef(null);
-  const navigate = useNavigate();
-  const [list1, setList1] = useState<any>([]);
-  const [store, setstore] = useState<any>([]);
-  const [editArray, setEditArray] = useState<any>();
-  const [finaValue, setFinalValue] = useState<any>({});
+  let { editId } = useParams()
+  const [uidv4, setuidv4] = useState<any>()
+  const count: any = useSelector((state) => state)
+  const [formName, setFormName] = useState<any>([{ name: "", id: "" }])
+  const [moduleName, setModuleName] = useState<any>()
+  const [array, setArray] = useState<any>([])
+  const [sidebar, setSidebar] = useState(false)
+  const [date, setDate] = useState<Date | Date[] | undefined>(new Date())
+  const [selectedCity1, setSelectedCity1] = useState(null)
+  const dispatch = useAppDispatch()
+  const toast: any = useRef(null)
+  const navigate = useNavigate()
+  const [list1, setList1] = useState<any>([])
+  const [store, setstore] = useState<any>([])
+  const [editArray, setEditArray] = useState<any>()
+  const [finaValue, setFinalValue] = useState<any>({})
 
   useEffect(() => {
-    setModuleName(props.moduleValue);
-  }, [props.moduleValue]);
+    setModuleName(props.moduleValue)
+  }, [props.moduleValue])
 
   useEffect(() => {
     if (count.dragAndDrop.newSectionIndex >= formName.length) {
-      setFormName([...formName, { name: "", id: "" }]);
+      setFormName([...formName, { name: "", id: "" }])
     }
-  }, [count.dragAndDrop.newSectionIndex]);
+  }, [count.dragAndDrop.newSectionIndex])
 
   useEffect(() => {
     if (
       !count.module.rolesGetForms &&
       window.location.pathname !== `/super-admin/edit/${editId}`
     ) {
-      setuidv4(count.dragAndDrop.initialStartDragSuperAdmin);
+      setuidv4(count.dragAndDrop.initialStartDragSuperAdmin)
     }
 
     if (window.location.pathname == `/super-admin/edit/${editId}`) {
@@ -79,93 +82,125 @@ const DropArea = (props: any) => {
       //   arrayVal.push(val);
       // }
 
-      setuidv4(count.dragAndDrop.initialStartDragSuperAdmin);
+      setuidv4(count.dragAndDrop.initialStartDragSuperAdmin)
     }
-  }, [count.dragAndDrop.initialStartDragSuperAdmin]);
+  }, [count.dragAndDrop.initialStartDragSuperAdmin])
 
   const add = async () => {
-    let index: any;
-    let inputName: any[] = [];
+    let index: any
+    let inputName: any[] = []
     Object.keys(count.dragAndDrop.initialStartDragSuperAdmin || {}).map(
       (x: any) => {
-        index = x;
+        index = x
       }
-    );
+    )
 
     if (index != null) {
-      [count.dragAndDrop.initialStartDragSuperAdmin].map((x: any) => {
-        inputName = x[index];
-      });
+      ;[count.dragAndDrop.initialStartDragSuperAdmin].map((x: any) => {
+        inputName = x[index]
+      })
     }
 
     inputName = inputName.map((x: any, idx: any) => {
       if (x.id === count.dragAndDrop.pickListDragableId) {
-        return { ...x, picklist: count.dragAndDrop.PickListData };
+        return { ...x, picklist: count.dragAndDrop.PickListData }
       }
-      return x;
-    });
-  };
+      return x
+    })
+  }
 
   useEffect(() => {
-    GetModuleName();
-  }, []);
+    GetModuleName()
+  }, [])
 
   const GetModuleName = async () => {
-    let res = await dispatch(LoginUserDetails());
-  };
+    let res = await dispatch(LoginUserDetails())
+  }
 
-  const handleChange = (e: any, i: number, list: any) => {
+  const handleChange = (
+    e: any,
+    i: number,
+    list: any,
+    type: string,
+    inputId: any
+  ) => {
+    const newList = {
+      id: list,
+      subName: type,
+      names: e.target.value,
+      inputIdValue: inputId
+    }
+
+    dispatch(formcompleted({ action: newList }))
     // let index: any;
-    let index: string = list;
-    let inputName: any[] = [];
-    let val1 = Object.keys(uidv4);
-    let val2 = val1.indexOf(list);
+    let index: string = list
+    let inputName: any[] = []
+    let val1 = Object.keys(uidv4)
+    let val2 = val1.indexOf(list)
     if (index != null) {
-      [uidv4].map((x: any) => {
-        inputName = x[index];
-      });
+      ;[uidv4].map((x: any) => {
+        inputName = x[index]
+      })
     }
     inputName = inputName.map((x: any, idx: any) => {
       if (idx === i) {
-        return { ...x, names: e.target.value };
+        return { ...x, names: e.target.value }
       }
-      return x;
-    });
+      return x
+    })
 
-    let value = Object.assign({}, uidv4);
-    let omiter = _.omit(value, list);
-    const obj = { [index]: inputName };
-    let keyValues = Object.entries(omiter);
-    keyValues.splice(val2, 0, [list, inputName]);
-    let newObj = Object.fromEntries(keyValues);
-    setuidv4(newObj);
-  };
+    let value = Object.assign({}, uidv4)
+    let omiter = _.omit(value, list)
+    const obj = { [index]: inputName }
+    let keyValues = Object.entries(omiter)
+    keyValues.splice(val2, 0, [list, inputName])
+    let newObj = Object.fromEntries(keyValues)
+
+    setuidv4(newObj)
+  }
 
   const onCityChange = (e: any) => {
-    setSelectedCity1(e.value);
-  };
+    setSelectedCity1(e.value)
+  }
 
-  const openDialog = () => {
-    let value = ITEMS[count.dragAndDrop.DialogIndex];
-
+  const openDialog = (item: any, list: any) => {
+    let value = ITEMS[count.dragAndDrop.DialogIndex]
     if (value) {
       if (value.names === "Pick List") {
-        return <Picklist pickListDialogVisible={true} />;
+        const pickListDropdownData = count.dragAndDrop.PickListData
+        const existingItem = pickListDropdownData.find((p: any) => {
+          return p.itemId == item.id
+        })
+        if (!existingItem) {
+          return (
+            <Picklist
+              pickListDialogVisible={true}
+              formID={list}
+              itemId={item.id}
+            />
+          )
+        }
       } else if (value.names === "Single Line") {
-        return <SingleLine SingleLineDialogVisible={true} />;
+        return <SingleLine SingleLineDialogVisible={true} />
       }
     }
-  };
+  }
 
   const saveForm = async () => {
-    let val: object = {};
+    let val: object = {}
 
-    const value = Object.assign({}, uidv4);
+    const value = Object.assign({}, uidv4)
 
-    formName.map((f: formModel, i: number) => {
-      value[f.name] = value[f.id];
-      delete value[f.id];
-    });
+    if (formName[0].id !== "") {
+      formName.map((f: formModel, i: number) => {
+        value[f.name] = value[f.id]
+        delete value[f.id]
+      })
+    }
+    // if (formName[0].id === "") {
+    //   Object.keys(value || {}).map((list: any, i: number) => {
+    //   });
+    // }
 
     // let resp: any = {};
 
@@ -185,19 +220,30 @@ const DropArea = (props: any) => {
 
     // let response = Object.assign({}, value);
 
-    let response: any = { ...value };
+    let response: any = { ...value }
 
     // Object.defineProperties(response, { ...value, writable: true });
 
     Object.keys(response || {}).map((list: any, i: number) => {
       response[list] = response[list].map((x: any) => {
-        return {
-          type: x.names,
-          fieldname: x.subName,
-          defaultvalue: x.names,
-        };
-      });
-    });
+        if (x.names === "Pick List") {
+          const pickListDropdownData = count.dragAndDrop.PickListData.filter((p:any)=>{
+            return p.itemId === x.id
+          })
+          return {
+            type: x.subName,
+            fieldname: pickListDropdownData[0].fieldLabel,
+            options:pickListDropdownData
+          }
+        } else {
+          return {
+            type: x.names,
+            fieldname: x.subName,
+            defaultvalue: x.names
+          }
+        }
+      })
+    })
 
     // response[list].map((x: any, idx: number) => {
     //   response[list][idx] = {
@@ -218,43 +264,43 @@ const DropArea = (props: any) => {
     let payload: object = {
       modulename: moduleName,
       recuriter: count?.userValue?.roles?.id,
-      moduleelements: response,
-    };
+      moduleelements: response
+    }
 
-    let res;
+    let res
     if (window.location.pathname === `/super-admin/edit/${editId}`) {
       let val = {
         payload: payload,
-        editId: editId,
-      };
+        editId: editId
+      }
 
-      res = await dispatch(ModuleNameUpdate(val));
+      res = await dispatch(ModuleNameUpdate(val))
       if (res.payload.status == 200) {
-        dispatch(ModuleNameGet());
+        dispatch(ModuleNameGet())
       }
     } else {
-      res = await dispatch(NewModuleCreation(payload));
+      res = await dispatch(NewModuleCreation(payload))
       if (res.payload.status == 200) {
-        dispatch(ModuleNameGet());
+        dispatch(ModuleNameGet())
       }
     }
 
     if (res.payload.status == 200) {
-      navigate("/super-admin");
+      navigate("/super-admin")
     }
-  };
+  }
   useEffect(() => {
     if (count.module.rolesGetForms) {
       let val: any = Object.keys(
         count.module.rolesGetForms[0]?.moduleelements || []
-      );
-      let val1: any = [];
+      )
+      let val1: any = []
       val.map((x: any, i: any) => {
-        val1.push({ name: x, id: "" });
-      });
+        val1.push({ name: x, id: "" })
+      })
 
-      setFormName(val1);
-      setModuleName(count.module.rolesGetForms[0]?.modulename);
+      setFormName(val1)
+      setModuleName(count.module.rolesGetForms[0]?.modulename)
     }
 
     if (
@@ -262,37 +308,71 @@ const DropArea = (props: any) => {
       count.module.rolesGetForms !== null &&
       formName.length > 1
     ) {
-      let value: any = count.dragAndDrop.EditIdDragAndDrop;
+      let value: any = count.dragAndDrop.EditIdDragAndDrop
 
       const upd_obj = formName.map((obj: any, i: number) => {
         if (obj.id == "") {
-          return { name: obj.name, id: value[i] };
+          return { name: obj.name, id: value[i] }
         }
-        return obj;
-      });
+        return obj
+      })
 
-      setFormName(upd_obj);
+      setFormName(upd_obj)
     }
-  }, [count.module.rolesGetForms]);
-
-  var pickListValue: any = [];
+  }, [count.module.rolesGetForms])
 
   useEffect(() => {
-    setList1(count.dragAndDrop.PickListData);
-    store.push(count.dragAndDrop.PickListData);
-    add();
+    setList1(count.dragAndDrop.PickListData)
+    store.push(count.dragAndDrop.PickListData)
+    add()
     const val = store.map((list: any) => {
-      return list;
-    });
-    setstore(val);
-  }, [count.dragAndDrop.PickListData]);
+      return list
+    })
+    setstore(val)
+  }, [count.dragAndDrop.PickListData])
 
   let handleChangeForm = (i: number, e: any, list: any) => {
-    let newFormValues = [...formName];
-    newFormValues[i].name = e.target.value;
-    newFormValues[i].id = list;
-    setFormName(newFormValues);
-  };
+    let newFormValues = [...formName]
+    newFormValues[i].name = e.target.value
+    newFormValues[i].id = list
+
+    setFormName(newFormValues)
+  }
+
+  const getFieldName = (item: any) => {
+    const pickListDropdownData = count.dragAndDrop.PickListData
+    const options = pickListDropdownData.find((d: any) => {
+      return d.itemId == item.id
+    })
+    return options ? options.fieldLabel : ""
+  }
+
+  const getDropDownValue = (item: any) => {
+    const pickListDropdownData = count.dragAndDrop.PickListData
+    const options = pickListDropdownData.filter((d: any) => {
+      return d.itemId == item.id
+    })
+    return options
+  }
+
+  const picklistNameHandler = (e: any, item: any) => {
+    const pickListDropdownData = count.dragAndDrop.PickListData
+    const modifiedPickListArray = pickListDropdownData.map((d: any) => {
+      if (d.itemId == item.id) {
+        return {
+          fieldLabel: e.target.value,
+          formID: d.formID,
+          id: d.id,
+          itemId: d.itemId,
+          type: d.type,
+          value: d.value
+        }
+      } else {
+        return d
+      }
+    })
+    dispatch(setPickListDropDownData(modifiedPickListArray))
+  }
 
   return (
     <div className="">
@@ -318,7 +398,7 @@ const DropArea = (props: any) => {
                                     className="  mx-auto  text-sm w-25rem  text-900 "
                                     style={{
                                       height: "48px",
-                                      color: "#333333",
+                                      color: "#333333"
                                     }}
                                     value={x.name}
                                     onChange={(e) =>
@@ -329,7 +409,7 @@ const DropArea = (props: any) => {
                                   ""
                                 )}
                               </div>
-                            );
+                            )
                           })
                         : ""}
 
@@ -372,22 +452,31 @@ const DropArea = (props: any) => {
                                     <div className="names flex justify-content-between align-items-center">
                                       {item.subName === "Pick List" ? (
                                         <>
-                                          <Dropdown
-                                            value={pickList}
-                                            options={store}
-                                            onChange={(e) => {
-                                              handleChange(e, index, list);
-                                              setPickList(e.value);
-                                            }}
-                                            optionLabel="value"
-                                            placeholder="Pick List"
-                                            style={{
-                                              height: "44px",
-                                              border: "1px solid lightgrey",
-                                              color: "#8083A3",
-                                            }}
-                                            className="   border-0"
-                                          />
+                                          <div className="flex">
+                                            <InputText
+                                              value={getFieldName(item)}
+                                              style={{
+                                                width: "100px"
+                                              }}
+                                              className="border-0"
+                                              onChange={(e) =>
+                                                picklistNameHandler(e, item)
+                                              }
+                                            />
+                                            <Dropdown
+                                              options={getDropDownValue(item)}
+                                              optionLabel="value"
+                                              placeholder="Pick List"
+                                              style={{
+                                                position: "relative",
+                                                left: "28px",
+                                                height: "44px",
+                                                border: "1px solid lightgrey",
+                                                color: "#8083A3"
+                                              }}
+                                              className="border-0"
+                                            />
+                                          </div>
                                         </>
                                       ) : (
                                         <input
@@ -395,12 +484,18 @@ const DropArea = (props: any) => {
                                           name="names "
                                           style={{
                                             height: "44px",
-                                            border: "1px solid lightgrey",
+                                            border: "1px solid lightgrey"
                                             // color: "#8083A3",
                                           }}
                                           value={item.names || item.type}
                                           onChange={(e) => {
-                                            handleChange(e, index, list);
+                                            handleChange(
+                                              e,
+                                              index,
+                                              list,
+                                              item.subName || item.fieldname,
+                                              item.id
+                                            )
                                           }}
                                           className=" text-500  border-0 "
                                         />
@@ -410,7 +505,7 @@ const DropArea = (props: any) => {
                                         style={{
                                           // border: "1px solid gray",
                                           width: "150px",
-                                          padding: "4px",
+                                          padding: "4px"
                                         }}
                                       >
                                         {item.subName || item.fieldname}
@@ -426,9 +521,7 @@ const DropArea = (props: any) => {
 
                               {count.dragAndDrop.DialogIndex == 5 &&
                               item.subName == "Pick List"
-                                ? openDialog()
-                                : item.subName == "Single Line"
-                                ? openDialog()
+                                ? openDialog(item, list)
                                 : ""}
                             </div>
                           ))
@@ -450,7 +543,7 @@ const DropArea = (props: any) => {
                 )}
               </Droppable>
             </div>
-          );
+          )
         })}
       </div>
 
@@ -463,12 +556,12 @@ const DropArea = (props: any) => {
           label="Save"
           className="bg-primary"
           onClick={() => {
-            saveForm();
+            saveForm()
           }}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default React.memo(DropArea);
+export default React.memo(DropArea)

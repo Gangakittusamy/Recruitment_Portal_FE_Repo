@@ -13,14 +13,19 @@ import { pickListDropDownData } from "../../../features/counter/dragAndDrop";
 
 interface PickListProps {
   pickListDialogVisible: boolean;
+  formID:any;
+  itemId:any
 }
 
-const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible }) => {
+const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, itemId}) => {
   const inputArr = [
     {
       type: "text",
       id: 1,
       value: "",
+      formID:"",
+      itemId:"",
+      fieldLabel:""
     },
   ];
   const [checked, setChecked] = useState(false);
@@ -36,6 +41,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible }) => {
   const [checkRequire, setCheckRequire] = useState("");
   const [checkToolTip, setCheckToolTip] = useState("");
   const [arr, setArr] = useState(inputArr);
+  const [fieldLabel, setFieldLabel] = useState('PickList');
   const [selectedCity1, setSelectedCity1] = useState<any>([
     { name: "Normal", code: "NY" },
   ]);
@@ -44,6 +50,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.logIn);
   const op: any = useRef(null);
+
   const Days = [
     {
       names: "Monday",
@@ -265,7 +272,10 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible }) => {
      
       const newArr = s.slice();
       newArr[index].value = e.target.value;
-
+      newArr[index].formID = formID;
+      newArr[index].itemId = itemId;
+      newArr[index].fieldLabel = fieldLabel
+      
       return newArr;
     });
   };
@@ -406,7 +416,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible }) => {
         >
           <p>
             Field Label <br />
-            <InputText type="text" className="w-7 mt-1" />
+            <InputText type="text" className="w-7 mt-1" value={fieldLabel} onChange={(e) => setFieldLabel(e.target.value)}/>
           </p>
           <div className="flex justify-content-between ">
             <span>Pick List Option</span>{" "}

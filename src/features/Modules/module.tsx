@@ -12,6 +12,7 @@ interface userReducerState {
   rolesGet: null;
   rolesUpdate: null;
   rolesGetForms: null;
+  modules:null
 }
 
 const initiallogInVerificationPage: userReducerState = {
@@ -24,6 +25,7 @@ const initiallogInVerificationPage: userReducerState = {
   rolesDelete: null,
   rolesUpdate: null,
   rolesGetForms: null,
+  modules:null
 };
 
 export const NewModuleCreation: any = createAsyncThunk(
@@ -111,37 +113,34 @@ export const userReducer = createSlice({
       //   state.status = "";
     },
   },
-
-  extraReducers: {
-    [NewModuleCreation.pending]: (state: any) => {
-      state.isLoading = true;
-    },
-    [NewModuleCreation.fulfilled]: (state: any, action: any) => {
-      state.roles = action.payload;
-    },
-    [NewModuleCreation.rejected]: (state: any, action: any) => {
-      state.status = "error";
-    },
-    [ModuleNameGetFormsaa.fulfilled]: (state: any, action: any) => {
-      state.rolesGetForms = action.payload.data.data;
-    },
-
-    [ModuleNameGet.pending]: (state: any) => {
-      state.isLoading = true;
-    },
-    [ModuleNameGet.fulfilled]: (state: any, action: any) => {
-      state.rolesGet = action.payload.data.user;
-    },
-    [ModuleNameGet.rejected]: (state: any, action: any) => {
-      state.status = "error";
-    },
-    [ModuleNameDelete]: (state: any, action: any) => {
-      state.rolesDelete = action.payload.data.user;
-    },
-    [ModuleNameUpdate.fulfilled]: (state: any, action: any) => {
-      // state.rolesUpdate = action.payload;
-    },
-  },
-});
+  extraReducers: builder => {
+    builder
+      // .addCase(NewModuleCreation.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(NewModuleCreation.fulfilled, (state,action) => {
+      //   state.roles = action.payload;
+      // })
+      // .addCase(NewModuleCreation.rejected, (state) => {
+      //   state.status = "error";
+      // })
+      .addCase(ModuleNameGetFormsaa.fulfilled, (state,action) => {
+        state.rolesGetForms = action.payload.data.data;
+      })
+      .addCase(ModuleNameGet.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(ModuleNameGet.fulfilled, (state, action) => {
+        state.rolesGet = action.payload.data.user;
+        state.modules = action.payload.data.user;
+      })
+      .addCase(ModuleNameGet.rejected, (state) => {
+        state.status = "error";
+      })
+      .addCase(ModuleNameDelete, (state, action) => {
+        state.rolesDelete = action.payload.data.user;
+      })
+    }
+  });
 export const { logInVerificationValue, resetStatus } = userReducer.actions;
 export default userReducer.reducer;
