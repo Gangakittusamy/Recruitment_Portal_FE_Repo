@@ -111,13 +111,7 @@ const TopBars = (props: any) => {
                               {item.subName === "Pick List" ? (
                                 <div className="names">
                                   <div className="flex">
-                                    <InputText
-                                      value={getFieldName(item)}
-                                      style={{
-                                        width: "100px"
-                                      }}
-                                      className="border-0"
-                                    />
+                                    <p className="grey">{getFieldName(item)}</p>
                                     <Dropdown
                                       options={getDropDownValue(item)}
                                       optionLabel="value"
@@ -125,11 +119,25 @@ const TopBars = (props: any) => {
                                       style={{
                                         position: "relative",
                                         left: "28px",
-                                        height: "44px",
-                                        border: "1px solid lightgrey",
-                                        color: "#8083A3"
+                                        height: "34px",
+                                        top: "10px",
                                       }}
-                                      className="border-0"
+                                    />
+                                  </div>
+                                </div>
+                              ) : item.subName === "Checkbox" ? (
+                                <div className="names">
+                                  <div className="flex">
+                                    <p className="grey">
+                                      {item.names || item.type}
+                                    </p>
+                                    <Checkbox
+                                      style={{
+                                        position: "relative",
+                                        left: "50px",
+                                        height: "44px",
+                                        top: "15px",
+                                      }}
                                     />
                                   </div>
                                 </div>

@@ -165,6 +165,7 @@ const SuperAdmin = () => {
           }
         }
       }
+      console.log(complete)
       dispatch(dragAndDropValueSuperAdmin(complete));
     }
 
