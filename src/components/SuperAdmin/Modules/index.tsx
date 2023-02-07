@@ -15,6 +15,7 @@ import {
   ModuleNameDelete,
   ModuleNameUpdate,
   ModuleNameGetFormsaa,
+  resetModuleForms
 } from "../../../features/Modules/module";
 import { SpeedDial } from "primereact/speeddial";
 import NavBar from "../navBar";
@@ -32,6 +33,7 @@ const SettingsModules = (props: any) => {
   const count: any = useSelector((state) => state);
 
   const NextPage = () => {
+    dispatch(resetModuleForms())
     navigate("/super-admin/create-form");
   };
 
@@ -112,7 +114,7 @@ const SettingsModules = (props: any) => {
             >
               <TabPanel header="Modules">
                 <div>
-                  <div className="flex justify-content-between">
+                  <div className="flex justify-content-between mb-3">
                     <span className="p-input-icon-left">
                       <i className="pi pi-search" />
                       <InputText

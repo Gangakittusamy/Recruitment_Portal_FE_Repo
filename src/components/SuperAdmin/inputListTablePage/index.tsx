@@ -44,12 +44,14 @@ const FieldListTablePage = (props: any) => {
   const [selectedColumns, setSelectedColumns] = useState<any>(null);
 
   async function firstGetApi() {
-    let res = await dispatch(ModuleNameGetFormsaa(editTableId));
+
+    let [res,response] = await Promise.all([dispatch(ModuleNameGetFormsaa(editTableId)),dispatch(leadGenerationTableGet(editTableId))])
+
     if (res) {
       setButtonName(res?.payload?.data?.data[0]?.modulename);
     }
 
-    let response = await dispatch(leadGenerationTableGet(editTableId));
+    // let response = await dispatch(leadGenerationTableGet(editTableId));
 
     let resp = response.payload.data;
     resp = resp.map((x: any, i: number) => {
@@ -66,10 +68,12 @@ const FieldListTablePage = (props: any) => {
       ? res.payload.data.data[0].moduleelements
       : [];
 
+    let formArray:any = [];
+
     Object.keys(value).map((list, index) => {
       Object.keys(value[list] || []).map((heading: any, index: any) => {
         formData.push(list);
-        Get.push({
+        formArray.push({
           formData: list,
           DataHeader: value[list][heading].fieldname,
           value: value[list][heading].defaultvalue,
@@ -81,7 +85,7 @@ const FieldListTablePage = (props: any) => {
       });
     });
 
-    setGet(Get);
+    setGet(formArray);
     setForms(forms);
     setTableData(TableData);
     setformData(formData);

@@ -44,6 +44,7 @@ const CreateForm = () => {
       }
     }
   }, [user.module.rolesGetForms]);
+  
   useEffect(() => {
     if (window.location.pathname === `/super-admin/edit/${editId}`) {
       dispatch(ModuleNameGetFormsaa(editId));
@@ -69,7 +70,7 @@ const CreateForm = () => {
         <SideBar />
 
         <div className="create_form_main_division">
-          {index === 0 ? (
+          {index == "" ? (
             <DropArea moduleValue={value2} />
           ) : index === 1 ? (
             <AddInputs />

@@ -44,8 +44,8 @@ const Settings = () => {
       <div className="settingscard">
         <div className="Settings_Background">
           <h3>CUSTOMIZATION </h3>
-          {cards.map((button) => (
-            <div className="">
+          {cards.map((button,index) => (
+            <div className="" key={index}>
               <div
                 className=" text-lg text-900 cursor-pointer text_hover"
                 onClick={() => NextPage(button.names)}
