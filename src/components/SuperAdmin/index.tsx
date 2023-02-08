@@ -99,6 +99,10 @@ const SuperAdmin = () => {
   const count: any = useSelector((state) => state);
   const [sample, setSample] = useState<any>({});
 
+  useEffect(()=>{
+    setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
+  },[count.dragAndDrop.initialStartDragSuperAdmin])
+
   const reorder = (
     list: Iterable<unknown> | ArrayLike<unknown>,
     startIndex: number,
@@ -116,27 +120,17 @@ const SuperAdmin = () => {
 
   const addList = () => {
     setCompleted({ ...complete, [uuidv4()]: [] });
-
     let lent = Object.keys(complete).length;
-
     dispatch(newSectionIndexData(lent));
   };
-
-  // let prevCount = usePrevious(complete);
-  // function usePrevious(value: any) {
-  //   const ref = useRef();
-  //   useEffect(() => {
-  //     ref.current = value;
-  //   }, [value]);
-  //   return ref.current;
-  // }
 
   let prevCountRef = useRef(complete);
 
   useEffect(() => {
     if (window.location.pathname !== `/super-admin/edit/${editId}`) {
+      let currentForm : any = {...complete}
       if (Object.keys(structureData).length > 0) {
-        let currentFormElements = complete
+        let currentFormElements: any = {...complete}
         for(const key in currentFormElements){
           const currentFormId = key
           const alteredFields = structureData[currentFormId]
@@ -164,8 +158,10 @@ const SuperAdmin = () => {
             currentFormElements[key] = result
           }
         }
+        currentForm = currentFormElements
+        setCompleted(currentForm)
       }
-      dispatch(dragAndDropValueSuperAdmin(complete));
+      dispatch(dragAndDropValueSuperAdmin(currentForm));
     }
 
     if (window.location.pathname === `/super-admin/edit/${editId}`) {

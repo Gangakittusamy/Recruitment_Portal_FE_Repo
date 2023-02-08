@@ -1,7 +1,5 @@
 .rectanglebox2 {
   display: flex !important;
-  /* width: 135px !important; */
-  /* height: 8px; */
   background-color: #f2f2f2;
   color: #333333;
   justify-content: start;
@@ -57,20 +55,15 @@
   list-style-type: none;
   flex-wrap: nowrap;
 }
-.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus {
+.p-tabmenu
+  .p-tabmenu-nav
+  .p-tabmenuitem
+  .p-menuitem-link:not(.p-disabled):focus {
   outline: 0 none;
   outline-offset: 0;
   box-shadow: inset 0 0 0 0.2rem #fdfeff !important;
 }
-/* input[type="date" i] {
-  align-items: center;
-  background-color: #333333 !important;
-  display: inline-flex;
-  font-family: monospace;
-  padding-inline-start: 1px;
-  cursor: default;
-  overflow: hidden;
-} */
+
 .sideBar_main {
   height: 445px;
   width: 30%;
@@ -80,20 +73,65 @@
 .sideBar_bottom_line {
   border: 1px solid #ffffff;
 }
-/* .Add_input_page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-} */
 
 .create_form_main_division {
   width: 75% !important;
 }
+
 .Dropcard {
   background-color: white;
   width: 436px;
   border: 2px solid #f6f5f5;
   width: 100%;
+}
+
+.field-options {
+  position: relative;
+}
+.field-options button {
+  cursor: pointer;
+  border: none;
+  background: none !important;
+}
+.options-modal {
+  position: absolute;
+  will-change: transform;
+  top: 10px;
+  left: 70px;
+  transform: translate3d(-124px, 24px, 0px);
+  width: 100px;
+  border-radius: 10px;
+  border: 1px solid #fff;
+  box-shadow: 0 -1px 10px rgb(0 0 0 / 10%);
+  background-color: #fff;
+}
+.options-modal .show {
+  display: block;
+}
+.options-modal .hidden {
+  display: none;
+}
+.options-modal ul {
+  list-style: none;
+  padding: 5px 0px;
+  float: left;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  width: 100% !important;
+}
+
+.options-modal ul li {
+  cursor: pointer;
+  padding: 2px 0px 2px 15px;
+  background-color: transparent !important;
+  text-transform: capitalize;
+}
+
+.options-modal ul li:hover {
+  background-color: rgba(237, 1, 86, 0.1) !important;
 }

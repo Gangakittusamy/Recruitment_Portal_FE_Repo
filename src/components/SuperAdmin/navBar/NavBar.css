@@ -39,3 +39,23 @@
   overflow: auto;
   height: 400px;
 }
+
+.p-overlaypanel .p-overlaypanel-content {
+  padding: 0.5rem !important;
+}
+
+.profile ul {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.profile ul li{
+  margin: 5px 0;
+}
+
+.profile ul li:hover{
+  background-color: rgba(237, 1, 86, 0.1) !important;
+  cursor: pointer;
+}

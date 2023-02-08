@@ -8,7 +8,8 @@ import { Calendar } from "primereact/calendar"
 import {
   dragAndDropDialogIndexSuperAdmin,
   formcompleted,
-  setPickListDropDownData
+  setPickListDropDownData,
+  dragAndDropValueSuperAdmin,
 } from "../../../features/counter/dragAndDrop"
 import { ITEMS } from "../../Constant/const"
 import Picklist from "../../CommonModules/PickList/PickList"
@@ -50,7 +51,9 @@ const DropArea = (props: any) => {
   const [store, setstore] = useState<any>([])
   const [editArray, setEditArray] = useState<any>()
   const [finaValue, setFinalValue] = useState<any>({})
-  const user: any = useAppSelector((state) => state);
+  const [fieldDeleteDialog, setFieldDeleteDialog] = useState(false)
+  const [currentField, setCurrentField] = useState("")
+  const user: any = useAppSelector((state) => state)
 
   useEffect(() => {
     setModuleName(props.moduleValue)
@@ -228,7 +231,10 @@ const DropArea = (props: any) => {
       moduleelements: response
     }
 
-    if (isValidModuleName(payload.modulename) && isAllFormsValid(payload.moduleelements)) {
+    if (
+      isValidModuleName(payload.modulename) &&
+      isAllFormsValid(payload.moduleelements)
+    ) {
       let res
       if (window.location.pathname === `/super-admin/edit/${editId}`) {
         let val = {
@@ -249,7 +255,10 @@ const DropArea = (props: any) => {
       if (res.payload.status == 200) {
         navigate("/super-admin")
       }
-    } else if (isValidModuleName(payload.modulename) && !isAllFormsValid(payload.moduleelements)) {
+    } else if (
+      isValidModuleName(payload.modulename) &&
+      !isAllFormsValid(payload.moduleelements)
+    ) {
       toast.current.show({
         severity: "warn",
         summary: "Warning",
@@ -269,10 +278,10 @@ const DropArea = (props: any) => {
   const isValidModuleName = (module: any) => {
     let moduleValid = true
     const existingModules = user.module.modules
-    const isExistingModuleName = existingModules.find((m:any)=>{
+    const isExistingModuleName = existingModules.find((m: any) => {
       return m.modulename === module
     })
-    if(!module || isExistingModuleName){
+    if (!module || isExistingModuleName) {
       moduleValid = false
     }
     return moduleValid
@@ -381,6 +390,21 @@ const DropArea = (props: any) => {
     }
   }
 
+  const removeField = (itemId: any) => {
+    const currentFormElements = count.dragAndDrop.initialStartDragSuperAdmin
+    let modifiedModule: any = {}
+    for (const key in currentFormElements) {
+      const currentFormId = key
+      let currentFields = currentFormElements[currentFormId]
+      const modifiedForm = currentFields.filter((f:any)=>{
+        return f.id !== itemId
+      })
+      modifiedModule[key] = modifiedForm
+    }
+    dispatch(dragAndDropValueSuperAdmin(modifiedModule));
+    setCurrentField("")
+  }
+
   return (
     <div className="">
       <Toast ref={toast} />
@@ -394,7 +418,6 @@ const DropArea = (props: any) => {
                 {(provided, snapshot) => (
                   <div className="border-dotted border-400 mt-4 ml-3 mr-3">
                     <section className="mt-2 p-2  mx-auto">
-                      {/* <section className="mt-2 p-2 ml-8   "> */}
                       {formName.length
                         ? formName.map((x: any, idx: number) => {
                             return (
@@ -419,17 +442,12 @@ const DropArea = (props: any) => {
                             )
                           })
                         : ""}
-
-                      {/* </section> */}
                     </section>
                     <div className="dragCard" ref={provided.innerRef}>
                       {
                         uidv4[list].length ? (
                           uidv4[list].map((item: any, index: number) => (
-                            <div
-                             key={item.id}
-                              className="p-2"
-                            >
+                            <div key={item.id} className="p-2">
                               <Draggable
                                 key={item.id}
                                 draggableId={item.id}
@@ -538,9 +556,43 @@ const DropArea = (props: any) => {
                                         </section>
                                       )}
 
-                                      <p className="delete">
-                                        <i className="pi pi-ellipsis-v"></i>
-                                      </p>
+                                      <div className="field-options">
+                                        <button
+                                          onClick={() => {
+                                            setFieldDeleteDialog(
+                                              (prevState) => !prevState
+                                            )
+                                            setCurrentField(item.id)
+                                          }}
+                                          onBlur={() => {
+                                            setFieldDeleteDialog(false)
+                                          }}
+                                        >
+                                          <i className="pi pi-ellipsis-v"></i>
+                                        </button>
+                                        {currentField === item.id ? (
+                                          <div
+                                            id="field-dialog"
+                                            className={`options-modal ${
+                                              fieldDeleteDialog
+                                                ? "show"
+                                                : "hidden"
+                                            }`}
+                                          >
+                                            <ul>
+                                              <li
+                                                onClick={() =>
+                                                  removeField(item.id)
+                                                }
+                                              >
+                                                Remove
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </div>
                                     </div>
                                   </div>
                                 )}

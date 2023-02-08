@@ -1,123 +1,125 @@
-import { InputText } from "primereact/inputtext";
-import Vector from "../../../assets/Vector.png";
-import Bell from "../../../assets/Bell.svg";
-import Email from "../../../assets/email.png";
-import Profile from "../../../assets/profile.png";
-import { FileUpload } from "primereact/fileupload";
-import "./NavBar.css";
-import { Toast } from "primereact/toast";
-import CreateForm from "../createForm/index";
-import Cookies from "js-cookie";
-import { Button } from "primereact/button";
-import { logOut } from "../../../features/Auth/logOut";
-import SuperAdminSideBar from "../superAdminSideBar/index";
-import React, { useEffect, useState, useRef } from "react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import Dashboard from "../../../assets/dashboard.svg";
-import CreateRecruiter from "../../../assets/createRecruiter.png";
-import Recruiter from "../../../assets/recruiter.png";
-import Logout from "../../../assets/logout.png";
-import Settings from "../../../assets/settings.png";
-import Contact from "../../../assets/contact.png";
-import Create from "../../../assets/create.png";
-import { OverlayPanel } from "primereact/overlaypanel";
-import { useNavigate } from "react-router-dom";
+import { InputText } from "primereact/inputtext"
+import Vector from "../../../assets/Vector.png"
+import Bell from "../../../assets/Bell.svg"
+import Email from "../../../assets/email.png"
+import Profile from "../../../assets/profile.png"
+import { FileUpload } from "primereact/fileupload"
+import "./NavBar.css"
+import { Toast } from "primereact/toast"
+import CreateForm from "../createForm/index"
+import Cookies from "js-cookie"
+import { Button } from "primereact/button"
+import { logOut } from "../../../features/Auth/logOut"
+import SuperAdminSideBar from "../superAdminSideBar/index"
+import React, { useEffect, useState, useRef } from "react"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import Dashboard from "../../../assets/dashboard.svg"
+import CreateRecruiter from "../../../assets/createRecruiter.png"
+import Recruiter from "../../../assets/recruiter.png"
+import Logout from "../../../assets/logout.png"
+import Settings from "../../../assets/settings.png"
+import Contact from "../../../assets/contact.png"
+import Create from "../../../assets/create.png"
+import { OverlayPanel } from "primereact/overlaypanel"
+import { useNavigate } from "react-router-dom"
 import {
   ModuleNameGet,
-  ModuleNameGetFormsaa,
-} from "../../../features/Modules/module";
+  ModuleNameGetFormsaa
+} from "../../../features/Modules/module"
 import {
   ProjectLogoName,
-  LogoNameGet,
-} from "../../../features/Modules/projectLogoName";
+  LogoNameGet
+} from "../../../features/Modules/projectLogoName"
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
 
 const NavBar = (props: any) => {
-  const [text, setText] = useState("Req-Portal");
-  const [value3, setValue3] = useState("");
-  const [valuein, setvaluein] = useState("");
-  const [file, setFile] = useState<any>();
-  const [getData, setgetData] = useState<any>();
-  const [state, setState] = useState<any>([]);
-  const [displayNav, setdisplayNav] = useState();
-  const dispatch = useAppDispatch();
-  const [imgShow, setimgShow] = useState<any>(Vector);
+  const [text, setText] = useState("Req-Portal")
+  const [value3, setValue3] = useState("")
+  const [valuein, setvaluein] = useState("")
+  const [file, setFile] = useState<any>()
+  const [getData, setgetData] = useState<any>()
+  const [state, setState] = useState<any>([])
+  const [displayNav, setdisplayNav] = useState()
+  const dispatch = useAppDispatch()
+  const [imgShow, setimgShow] = useState<any>(Vector)
 
-  const navigate = useNavigate();
-  const user: any = useAppSelector((state) => state);
+  const navigate = useNavigate()
+  const user: any = useAppSelector((state) => state)
 
-  const toast: any = useRef(null);
-  const op = useRef<OverlayPanel>(null);
-  const title = useRef<OverlayPanel>(null);
+  const toast: any = useRef(null)
+  const op = useRef<OverlayPanel>(null)
+  const title = useRef<OverlayPanel>(null)
+  const profile = useRef<OverlayPanel>(null)
 
   useEffect(() => {
-    GetModuleName();
-    GetHeadingName();
-  }, []);
+    GetModuleName()
+    GetHeadingName()
+  }, [])
 
   useEffect(() => {
     setState(user.module.modules)
-  }, [user.module.modules]);
+  }, [user.module.modules])
 
   useEffect(() => {
-    checkRecentTab();
-  }, [state]);
+    checkRecentTab()
+  }, [state])
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    NavbarEdit;
-  }, []);
+    NavbarEdit
+  }, [])
 
   const GetModuleName = async () => {
-    await dispatch(ModuleNameGet());
-  };
+    await dispatch(ModuleNameGet())
+  }
 
   const GetHeadingName = async () => {
-    let res = await dispatch(LogoNameGet());
+    let res = await dispatch(LogoNameGet())
 
-    setText(res.payload.data.data[0].title || "Req-Portal");
-    setimgShow(res.payload.data.data[0].profile || { imgShow });
+    setText(res.payload.data.data[0].title || "Req-Portal")
+    setimgShow(res.payload.data.data[0].profile || { imgShow })
     //setState(res.payload.data.user);
-  };
+  }
 
   const ShowNav = async (items: any, id: string) => {
-    setdisplayNav(items);
-    let res = await dispatch(ModuleNameGetFormsaa(id));
+    setdisplayNav(items)
+    let res = await dispatch(ModuleNameGetFormsaa(id))
 
     if (res.payload.status === 200) {
       // navigate(`/super-admin/edit/${id}`);
     }
-  };
+  }
   const NextPage = () => {
-    navigate("/super-admin/create-form");
-  };
+    navigate("/super-admin/create-form")
+  }
   function handleChange(event: any) {
-    const upload = event.target.files[0];
+    const upload = event.target.files[0]
 
-    setFile(upload);
+    setFile(upload)
   }
 
   const ChangeSubmit = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const formData = new FormData();
-    formData.append("title", valuein);
-    formData.append("profile", file);
-    let value = await dispatch(ProjectLogoName(formData));
-    GetHeadingName();
-    setgetData(value.payload.data.data[0]);
-    title.current?.hide();
-  };
+    const formData = new FormData()
+    formData.append("title", valuein)
+    formData.append("profile", file)
+    let value = await dispatch(ProjectLogoName(formData))
+    GetHeadingName()
+    setgetData(value.payload.data.data[0])
+    title.current?.hide()
+  }
 
   const NavbarEdit = async (x: any) => {
-     localStorage.setItem("moduleName", x.modulename);
-     navigate(`/super-admin/Table-List/${x._id}`);
-  };
+    localStorage.setItem("moduleName", x.modulename)
+    navigate(`/super-admin/Table-List/${x._id}`)
+  }
 
   const checkRecentTab = () => {
     const recentModule = localStorage.getItem("moduleName")
-    if(state){
-      const isExist = state.find((t:any)=>{
-      return t.modulename === recentModule
+    if (state) {
+      const isExist = state.find((t: any) => {
+        return t.modulename === recentModule
       })
       return isExist
     }
@@ -188,17 +190,21 @@ const NavBar = (props: any) => {
                       )}
                     </div>
                   </div>
-                );
+                )
               })
             : ""}
-          {checkRecentTab() && <div className="flex " style={{ right: "86px" }}>
-            <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
-              <span className="text-yellow-600">{displayNav || localStorage.getItem("moduleName")}</span>
-            </span>
-            <div onClick={(e) => op.current?.toggle(e)}>
-              <i className="pi pi-angle-double-right mr-6 mt-4"></i>
+          {checkRecentTab() && (
+            <div className="flex " style={{ right: "86px" }}>
+              <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
+                <span className="text-yellow-600">
+                  {displayNav || localStorage.getItem("moduleName")}
+                </span>
+              </span>
+              <div onClick={(e) => op.current?.toggle(e)}>
+                <i className="pi pi-angle-double-right mr-6 mt-4"></i>
+              </div>
             </div>
-          </div>}
+          )}
           <OverlayPanel
             ref={op}
             showCloseIcon
@@ -237,7 +243,7 @@ const NavBar = (props: any) => {
                             )}
                           </div>
                         </div>
-                      );
+                      )
                     })
                   : ""}
               </div>
@@ -253,12 +259,13 @@ const NavBar = (props: any) => {
         </section>
       </section>
 
-      <section className="">
+      <section className="nav-right">
+        <ConfirmDialog />
         <i
           className="pi pi-cog ml-3 mr-2 pog"
           onClick={(e: any) => {
             // props.handleClick(9);
-            navigate("/super-admin/settings");
+            navigate("/super-admin/settings")
           }}
         ></i>
         <img src={Bell} width={26} height={26} alt="Bell" />
@@ -269,9 +276,35 @@ const NavBar = (props: any) => {
           height={26}
           alt="Profile"
           className="ml-4"
+          onClick={(e) => profile.current?.toggle(e)}
         />
+        <OverlayPanel ref={profile} style={{ width: "150px" }}>
+          <div className="profile">
+            <ul>
+              <li
+                onClick={(e: any) => {
+                  confirmDialog({
+                    message: "Are you sure you want to logout?",
+                    header: "Confirmation",
+                    icon: "pi pi-exclamation-triangle",
+                    accept: async () => {
+                      let res: any = await dispatch(logOut())
+                      if (res.payload.status === "success") {
+                        Cookies.remove("token")
+                        Cookies.remove("access_token")
+                        navigate("/")
+                      }
+                    }
+                  })
+                }}
+              >
+                Logout
+              </li>
+            </ul>
+          </div>
+        </OverlayPanel>
       </section>
     </div>
-  );
-};
-export default React.memo(NavBar);
+  )
+}
+export default React.memo(NavBar)
