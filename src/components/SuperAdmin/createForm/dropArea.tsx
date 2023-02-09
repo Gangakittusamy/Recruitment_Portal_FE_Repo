@@ -9,13 +9,15 @@ import {
   dragAndDropDialogIndexSuperAdmin,
   formcompleted,
   setPickListDropDownData,
-  dragAndDropValueSuperAdmin,
+  dragAndDropValueSuperAdmin
 } from "../../../features/counter/dragAndDrop"
 import { ITEMS } from "../../Constant/const"
 import Picklist from "../../CommonModules/PickList/PickList"
 import {
   NewModuleCreation,
-  ModuleNameUpdate
+  ModuleNameUpdate,
+  ModuleNameGet,
+  formNameForPreview
 } from "../../../features/Modules/module"
 import { object } from "yup"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
@@ -27,7 +29,6 @@ import { Dropdown } from "primereact/dropdown"
 import { Checkbox } from "primereact/checkbox"
 import { useParams } from "react-router-dom"
 import _ from "lodash"
-import { ModuleNameGet } from "../../../features/Modules/module"
 
 interface formModel {
   name: string
@@ -54,6 +55,14 @@ const DropArea = (props: any) => {
   const [fieldDeleteDialog, setFieldDeleteDialog] = useState(false)
   const [currentField, setCurrentField] = useState("")
   const user: any = useAppSelector((state) => state)
+
+  useEffect(() => {
+    GetModuleName()
+  }, [])
+
+  const GetModuleName = async () => {
+    let res = await dispatch(LoginUserDetails())
+  }
 
   useEffect(() => {
     setModuleName(props.moduleValue)
@@ -111,14 +120,6 @@ const DropArea = (props: any) => {
       }
       return x
     })
-  }
-
-  useEffect(() => {
-    GetModuleName()
-  }, [])
-
-  const GetModuleName = async () => {
-    let res = await dispatch(LoginUserDetails())
   }
 
   const handleChange = (
@@ -277,12 +278,16 @@ const DropArea = (props: any) => {
 
   const isValidModuleName = (module: any) => {
     let moduleValid = true
-    const existingModules = user.module.modules
-    const isExistingModuleName = existingModules.find((m: any) => {
-      return m.modulename === module
-    })
-    if (!module || isExistingModuleName) {
-      moduleValid = false
+    if (window.location.pathname !== `/super-admin/edit/${editId}`) {
+      const existingModules = user.module.modules
+      if (existingModules) {
+        const isExistingModuleName = existingModules.find((m: any) => {
+          return m.modulename === module
+        })
+        if (!module || isExistingModuleName) {
+          moduleValid = false
+        }
+      }
     }
     return moduleValid
   }
@@ -343,7 +348,6 @@ const DropArea = (props: any) => {
     let newFormValues = [...formName]
     newFormValues[i].name = e.target.value
     newFormValues[i].id = list
-
     setFormName(newFormValues)
   }
 
@@ -396,12 +400,12 @@ const DropArea = (props: any) => {
     for (const key in currentFormElements) {
       const currentFormId = key
       let currentFields = currentFormElements[currentFormId]
-      const modifiedForm = currentFields.filter((f:any)=>{
+      const modifiedForm = currentFields.filter((f: any) => {
         return f.id !== itemId
       })
       modifiedModule[key] = modifiedForm
     }
-    dispatch(dragAndDropValueSuperAdmin(modifiedModule));
+    dispatch(dragAndDropValueSuperAdmin(modifiedModule))
     setCurrentField("")
   }
 
@@ -434,6 +438,9 @@ const DropArea = (props: any) => {
                                     onChange={(e) =>
                                       handleChangeForm(i, e, list)
                                     }
+                                    onBlur={() => {
+                                      dispatch(formNameForPreview(formName))
+                                    }}
                                   />
                                 ) : (
                                   ""

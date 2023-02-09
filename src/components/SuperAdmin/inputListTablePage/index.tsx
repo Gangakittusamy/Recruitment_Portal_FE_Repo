@@ -24,6 +24,7 @@ import { useParams } from "react-router-dom";
 import { ModuleNameGetFormsaa } from "../../../features/Modules/module";
 import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration";
 import { LoginUserDetails } from "../../../features/Auth/userDetails";
+import _ from "lodash";
 
 //rolesGetForms
 const FieldListTablePage = (props: any) => {
@@ -42,6 +43,8 @@ const FieldListTablePage = (props: any) => {
   const [buttonName, setButtonName] = useState<any>();
   const [duplicate, setDuplicate] = useState<any>();
   const [selectedColumns, setSelectedColumns] = useState<any>(null);
+  const [columns, setColumns] = useState<any>([]);
+  const [userSelectedColumns, setUserSelectedColumns] = useState<any>([]);
 
   async function firstGetApi() {
 
@@ -94,11 +97,8 @@ const FieldListTablePage = (props: any) => {
 
   useEffect(() => {
     firstGetApi();
+    setUserSelectedColumns([])
   }, [editTableId]);
-
-  const [columns, setColumns] = useState<any>([]);
-  const [userSelectedColumns, setUserSelectedColumns] = useState<any>([]);
-
 
   function removeDuplicates(result: any) {
     return result.filter(
@@ -177,6 +177,11 @@ const FieldListTablePage = (props: any) => {
     });
   }
 
+  const groupByForms = (forms:any) => {
+    const groupByForms = _.groupBy(forms,'formData')
+    return groupByForms
+  }
+
   const header = (
     <div className="flex justify-content-between">
       <MultiSelect
@@ -189,9 +194,10 @@ const FieldListTablePage = (props: any) => {
       <Link
         to="/super-admin/CustomModule/being"
         state={{
-          form: Get,
+          forms: groupByForms(Get),
           id: id,
           recId: editTableId,
+          module:buttonName
         }}
       >
         <Button label={`Create a ${buttonName}`} />

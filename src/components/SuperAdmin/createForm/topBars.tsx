@@ -20,6 +20,8 @@ const TopBars = (props: any) => {
   const [selectedCity1, setSelectedCity1] = useState(null)
   const [preview, setPreview] = useState(false)
   const [previewData, setPreviewData] = useState<any>()
+  const [formNames, setFormNames] = useState<any>()
+
   const [checked1, setChecked1] = useState(false)
   const dlist = [{}]
 
@@ -27,6 +29,10 @@ const TopBars = (props: any) => {
     setSelectedCity1(e.value)
   }
   const cities = [{ name: "Admistrator", code: "NY" }]
+
+  useEffect(() => {
+    setFormNames(count.module.formNameArray)
+  }, [count.module.formNameArray])
 
   useEffect(() => {
     setPreviewData(count.dragAndDrop.initialStartDragSuperAdmin)
@@ -48,6 +54,17 @@ const TopBars = (props: any) => {
       return d.itemId == item.id
     })
     return options ? options.fieldLabel : ""
+  }
+
+  const getFormName = (id: any) => {
+    if (formNames) {
+      const formName = formNames.find((f: any) => {
+        return f.id === id
+      })
+      return formName ? formName.name : id
+    } else {
+      return id
+    }
   }
 
   const getDropDownValue = (item: any) => {
@@ -90,24 +107,29 @@ const TopBars = (props: any) => {
           </div>
           <div className="border-black-alpha-30 border-1 pb-7">
             <span className="contactName ">Create Untitled</span>
-            <span className="contactuntitle">Untitled Image</span>
-
-            <span className="ml-5">
-              <img
-                src={noImages}
-                style={{ width: " 56px", height: "50px" }}
-              ></img>
-            </span>
-            <span className="contactuntitle">Untitled Information</span>
+            <div className="module-profile">
+              <span className="contactuntitle">Untitled Image</span>
+              <span className="ml-5">
+                <img
+                  src={noImages}
+                  style={{ width: " 56px", height: "50px" }}
+                ></img>
+              </span>
+            </div>
+            {/* <span className="contactuntitle">Untitled Information</span> */}
             <div>
-              <div>
+              <div className="createForm">
                 {Object.keys(previewData || []).map((list: any, i: number) => {
                   return (
-                    <div key={i} className="previewCardAligment">
-                      {previewData[list]?.map((item: any, index: number) => {
-                        return (
-                          <div key={index}>
-                            <div className="card border-0 mt-3 ml-7">
+                    <div key={i} className="indv-form">
+                      <h4 className="formName">{getFormName(list)}</h4>
+                      <div className="indv-form-elem">
+                        {previewData[list]?.map((item: any, index: number) => {
+                          return (
+                            <div
+                              key={index}
+                              className="card border-0 form-item"
+                            >
                               {item.subName === "Pick List" ? (
                                 <div className="names">
                                   <div className="flex">
@@ -120,7 +142,7 @@ const TopBars = (props: any) => {
                                         position: "relative",
                                         left: "28px",
                                         height: "34px",
-                                        top: "10px",
+                                        top: "10px"
                                       }}
                                     />
                                   </div>
@@ -136,7 +158,7 @@ const TopBars = (props: any) => {
                                         position: "relative",
                                         left: "50px",
                                         height: "44px",
-                                        top: "15px",
+                                        top: "15px"
                                       }}
                                     />
                                   </div>
@@ -353,9 +375,9 @@ const TopBars = (props: any) => {
                                 </div>
                               )}
                             </div>
-                          </div>
-                        )
-                      })}
+                          )
+                        })}
+                      </div>
                     </div>
                   )
                 })}

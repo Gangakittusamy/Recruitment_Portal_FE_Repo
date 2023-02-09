@@ -57,9 +57,9 @@ const NavBar = (props: any) => {
   }, [])
 
   useEffect(() => {
-    setState(user.module.modules)
-  }, [user.module.modules])
-
+    setState(user.module.rolesGet)
+  }, [user.module.rolesGet])
+  
   useEffect(() => {
     checkRecentTab()
   }, [state])
@@ -70,7 +70,8 @@ const NavBar = (props: any) => {
   }, [])
 
   const GetModuleName = async () => {
-    await dispatch(ModuleNameGet())
+    let res = await dispatch(ModuleNameGet());
+    setState(res.payload.data.user);
   }
 
   const GetHeadingName = async () => {
@@ -276,6 +277,7 @@ const NavBar = (props: any) => {
           height={26}
           alt="Profile"
           className="ml-4"
+          style={{cursor:'pointer'}}
           onClick={(e) => profile.current?.toggle(e)}
         />
         <OverlayPanel ref={profile} style={{ width: "150px" }}>

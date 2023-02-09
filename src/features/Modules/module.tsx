@@ -12,7 +12,8 @@ interface userReducerState {
   rolesGet: null;
   rolesUpdate: null;
   rolesGetForms: null;
-  modules:null
+  modules:null;
+  formNameArray:null
 }
 
 const initiallogInVerificationPage: userReducerState = {
@@ -25,7 +26,8 @@ const initiallogInVerificationPage: userReducerState = {
   rolesDelete: null,
   rolesUpdate: null,
   rolesGetForms: null,
-  modules:null
+  modules:null,
+  formNameArray:null
 };
 
 export const NewModuleCreation: any = createAsyncThunk(
@@ -115,6 +117,9 @@ export const userReducer = createSlice({
       state.error = "";
       //   state.status = "";
     },
+    formNameForPreview :(state, action) => {
+      state.formNameArray = action.payload
+    }
   },
   extraReducers: builder => {
     builder
@@ -145,5 +150,5 @@ export const userReducer = createSlice({
       })
     }
   });
-export const { logInVerificationValue,resetModuleForms, resetStatus } = userReducer.actions;
+export const { logInVerificationValue,resetModuleForms, resetStatus, formNameForPreview } = userReducer.actions;
 export default userReducer.reducer;

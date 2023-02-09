@@ -42,6 +42,7 @@ import { ModuleNameGetFormsaa } from "../../features/Modules/module";
 import { newSectionIndexData } from "../../features/counter/dragAndDrop";
 import { Button } from "primereact/button";
 import { type } from "os";
+import _ from "lodash";
 
 // const reorder = (
 //   list: Iterable<unknown> | ArrayLike<unknown>,
@@ -100,7 +101,9 @@ const SuperAdmin = () => {
   const [sample, setSample] = useState<any>({});
 
   useEffect(()=>{
-    setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
+    if (window.location.pathname !== `/super-admin/edit/${editId}`) {
+      setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
+    }
   },[count.dragAndDrop.initialStartDragSuperAdmin])
 
   const reorder = (
@@ -159,7 +162,10 @@ const SuperAdmin = () => {
           }
         }
         currentForm = currentFormElements
-        setCompleted(currentForm)
+        const sameArray = _.isEqual(complete, currentForm)
+        if(!sameArray){
+          setCompleted(currentForm)
+        }
       }
       dispatch(dragAndDropValueSuperAdmin(currentForm));
     }
@@ -179,7 +185,7 @@ const SuperAdmin = () => {
           complete[ab] = [];
         }
       });
-
+    
       dispatch(formEditIdDragAndDrop(res2));
 
       for (let key in value) {
