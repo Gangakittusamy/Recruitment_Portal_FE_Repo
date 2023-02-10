@@ -637,6 +637,7 @@ const DropArea = (props: any) => {
         <Button
           label="Cancel"
           className="surface-300 border-300 text-color mr-5"
+          onClick={() => navigate(-1)}
         />
         <Button
           label="Save"
