@@ -345,7 +345,7 @@ const DropArea = (props: any) => {
   }, [count.dragAndDrop.PickListData])
 
   let handleChangeForm = (i: number, e: any, list: any) => {
-    let newFormValues = [...formName]
+    let newFormValues = _.cloneDeep(formName)
     newFormValues[i].name = e.target.value
     newFormValues[i].id = list
     setFormName(newFormValues)
