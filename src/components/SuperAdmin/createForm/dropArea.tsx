@@ -429,7 +429,7 @@ const DropArea = (props: any) => {
                                 {i == idx ? (
                                   <input
                                     placeholder="Untitled form"
-                                    className="  mx-auto  text-sm w-25rem  text-900 "
+                                    className="mx-auto  text-sm text-900 form-name-input"
                                     style={{
                                       height: "48px",
                                       color: "#333333"
@@ -633,7 +633,7 @@ const DropArea = (props: any) => {
         })}
       </div>
 
-      <div className="flex  justify-content-end mt-2 mb-3 mr-5">
+      <div className="drop-form-submit">
         <Button
           label="Cancel"
           className="surface-300 border-300 text-color mr-5"

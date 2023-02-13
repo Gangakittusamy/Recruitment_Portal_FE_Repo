@@ -39,8 +39,9 @@
 }
 
 .create_form_main {
-  /* background-color: #ffffff; */
   height: 85vh;
+  margin-top: 1rem;
+  display: flex;
 }
 .create_form_main_head {
   font-size: 18px;
@@ -66,7 +67,7 @@
 
 .sideBar_main {
   height: 445px;
-  width: 30%;
+  width: 100%;
   margin-left: 13px;
 }
 
@@ -134,4 +135,78 @@
 
 .options-modal ul li:hover {
   background-color: rgba(237, 1, 86, 0.1) !important;
+}
+
+.drop-side-bar {
+  width: 30%;
+}
+
+.form-name-input {
+  width: 25rem;
+}
+
+.section-add-btn {
+  display: flex;
+  justify-content: center;
+  width: 33.33%;
+}
+
+.drop-form-submit {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 992px) {
+  .create_form_main {
+    height: auto;
+    margin-top: 1rem;
+    display: block;
+  }
+  .sideBar_main {
+    height: 200px;
+    width: 100%;
+  }
+  .FormDiv1 {
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* max-width: 350px; */
+  }
+  .form-name-input {
+    width: 15rem;
+  }
+  .section-add-btn {
+    margin-top: -500px;
+    margin-left: 65%;
+    width: 25% !important;
+  }
+  .section-add-btn .p-button {
+    height: 70px !important;
+  }
+  .drop-form-submit {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    margin-right: 0;
+    margin-left: 1.2rem;
+  }
+  .creat-form-sec {
+    display: block !important;
+  }
+  .drop-side-bar {
+    width: 55%;
+  }
+  .create_form_main_division {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  .section-add-btn {
+    margin-top: -250px;
+    width: 33.33%;
+  }
 }

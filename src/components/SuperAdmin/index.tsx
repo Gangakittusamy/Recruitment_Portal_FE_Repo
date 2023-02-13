@@ -267,7 +267,7 @@ const SuperAdmin = () => {
         ) : (
           <NavBar handleClick={handleClick} />
         )}
-        <div className="layout h-full">
+        <div className="layout h-full creat-form-sec">
           <div style={{ background: "#FAFAFB", height: "100vh" }}>
             <div className="mainContent">
               {window.location.pathname ==
@@ -278,7 +278,7 @@ const SuperAdmin = () => {
               )}
 
               {window.location.pathname == "/super-admin" ? (
-                <h2 className=" flex align-items-center justify-content-center">
+                <h2>
                   Dashboard
                 </h2>
               ) : (
@@ -287,7 +287,7 @@ const SuperAdmin = () => {
               {window.location.pathname == "/super-admin/create-form" ? (
                 <>
                   <CreateForm />
-                  <div className="w-4 -mt-8  flex justify-content-center">
+                  <div className="section-add-btn">
                     <Button
                       label="+ Add New Section"
                       onClick={() => addList()}
@@ -300,7 +300,7 @@ const SuperAdmin = () => {
               {window.location.pathname == `/super-admin/edit/${editId}` ? (
                 <>
                   <CreateForm />
-                  <div className="w-4 -mt-8  flex justify-content-center">
+                  <div className="section-add-btn">
                     <Button
                       label="+ Add New Section"
                       onClick={() => addList()}

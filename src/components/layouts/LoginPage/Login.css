@@ -21,11 +21,13 @@
 .left {
   left: 0;
   background: rgb(0, 0, 0);
-  background: linear-gradient(360deg,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(9, 13, 121, 1) 0%,
-      rgba(9, 16, 126, 1) 8%,
-      rgba(0, 91, 255, 1) 86%);
+  background: linear-gradient(
+    360deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(9, 13, 121, 1) 0%,
+    rgba(9, 16, 126, 1) 8%,
+    rgba(0, 91, 255, 1) 86%
+  );
 }
 
 .right {
@@ -57,7 +59,7 @@
 .gap {
   column-gap: 18px;
 }
-.flexD{
+.flexD {
   display: flex;
 }
 .containerLogin {
@@ -72,11 +74,18 @@
 .lefts {
   width: 57vw;
   background: rgb(0, 0, 0);
-  background: linear-gradient(360deg,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(9, 13, 121, 1) 0%,
-      rgba(9, 16, 126, 1) 8%,
-      rgba(0, 91, 255, 1) 86%);
+  background: linear-gradient(
+    360deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(9, 13, 121, 1) 0%,
+    rgba(9, 16, 126, 1) 8%,
+    rgba(0, 91, 255, 1) 86%
+  );
+}
+
+.left-container {
+  padding: 100px;
+  margin-top: 5rem;
 }
 
 .rights {
@@ -106,7 +115,7 @@
   cursor: pointer;
 }
 
-.p-input-icon-left>.p-inputtext {
+.p-input-icon-left > .p-inputtext {
   padding-left: 35px !important;
 }
 
@@ -115,8 +124,28 @@
   color: red;
   font-weight: bold;
 }
-@media only screen and (max-width: 1000px){
-  .flexD{
+@media only screen and (max-width: 1000px) {
+  .flexD {
     display: contents;
   }
 }
+
+@media (max-width: 992px) {
+  .containerLogin {
+    display: block;
+  }
+  .lefts {
+    width: 100%;
+    z-index: auto;
+    position: relative;
+    padding-top: 0;
+  }
+  .rights {
+    width: 100%;
+    z-index: auto;
+    position: relative;
+    padding-top: 0;
+  }
+}
+
+

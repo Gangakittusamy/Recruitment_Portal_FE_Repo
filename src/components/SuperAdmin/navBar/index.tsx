@@ -59,7 +59,7 @@ const NavBar = (props: any) => {
   useEffect(() => {
     setState(user.module.rolesGet)
   }, [user.module.rolesGet])
-  
+
   useEffect(() => {
     checkRecentTab()
   }, [state])
@@ -70,8 +70,8 @@ const NavBar = (props: any) => {
   }, [])
 
   const GetModuleName = async () => {
-    let res = await dispatch(ModuleNameGet());
-    setState(res.payload.data.user);
+    let res = await dispatch(ModuleNameGet())
+    setState(res.payload.data.user)
   }
 
   const GetHeadingName = async () => {
@@ -127,14 +127,16 @@ const NavBar = (props: any) => {
   }
 
   return (
-    <div className="p-2 flex justify-content-between align-items-center NavBar_Main">
+    <div className="NavBar_Main">
       <Toast ref={toast} position="top-center"></Toast>
-      <section className="flex NavBar_Division  align-items-center">
-        <img src={imgShow} alt="Vector" width={30} height={30} />
-        <div onClick={(e) => title.current?.toggle(e)}>
-          <p className="font-bold text-2xl line-height-1 white-space-nowrap ml-1">
-            {text}
-          </p>
+      <section className="NavBar_Division">
+        <div className="logo">
+          <img src={imgShow} alt="Vector" width={30} height={30} />
+          <div onClick={(e) => title.current?.toggle(e)}>
+            <p className="font-bold text-2xl line-height-1 white-space-nowrap ml-1">
+              {text}
+            </p>
+          </div>
         </div>
 
         <OverlayPanel
@@ -163,9 +165,9 @@ const NavBar = (props: any) => {
             </form>
           </div>
         </OverlayPanel>
-        <section className="flex  ">
+        <section className="flex modulesList">
           <div className="flex align-items-center mt-2 super_Admin_Sidebar_Dashboard sideBarOnClick">
-            <img src={Dashboard} width={16} height={16} className="mr-2 ml-4" />
+            <img src={Dashboard} width={16} height={16}/>
             <p className=" font-bold">Dashboard</p>
           </div>
           {state
@@ -277,7 +279,7 @@ const NavBar = (props: any) => {
           height={26}
           alt="Profile"
           className="ml-4"
-          style={{cursor:'pointer'}}
+          style={{ cursor: "pointer" }}
           onClick={(e) => profile.current?.toggle(e)}
         />
         <OverlayPanel ref={profile} style={{ width: "150px" }}>

@@ -1,17 +1,17 @@
-import "./SignUp.css";
-import { RadioButton } from "primereact/radiobutton";
-import { InputText } from "primereact/inputtext";
-import { useState, useEffect } from "react";
-import { Button } from "primereact/button";
-import { useNavigate } from "react-router-dom";
-import React, { useRef } from "react";
-import { Toast } from "primereact/toast";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import Cookies from "js-cookie";
-import { useAppDispatch } from "../../../app/hooks";
-import { signUp } from "../../../features/Auth/signIn";
-import { mailVerification } from "../../../features/Auth/mailVerify";
+import "./SignUp.css"
+import { RadioButton } from "primereact/radiobutton"
+import { InputText } from "primereact/inputtext"
+import { useState, useEffect } from "react"
+import { Button } from "primereact/button"
+import { useNavigate } from "react-router-dom"
+import React, { useRef } from "react"
+import { Toast } from "primereact/toast"
+import { useFormik } from "formik"
+import * as Yup from "yup"
+import Cookies from "js-cookie"
+import { useAppDispatch } from "../../../app/hooks"
+import { signUp } from "../../../features/Auth/signIn"
+import { mailVerification } from "../../../features/Auth/mailVerify"
 
 const signUpSchema = Yup.object({
   name: Yup.string().min(2).max(25).required("Please enter your name"),
@@ -20,21 +20,21 @@ const signUpSchema = Yup.object({
   confirmPassword: Yup.string().oneOf(
     [Yup.ref("password"), null],
     "Passwords must match"
-  ),
-});
+  )
+})
 
 const initialValues = {
   name: "",
   email: "",
   password: "",
-  confirmPassword: "",
-};
+  confirmPassword: ""
+}
 
 const SignUp = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const toast = useRef<any>(null);
-  const [city, setCity] = useState(null);
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const toast = useRef<any>(null)
+  const [city, setCity] = useState(null)
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -46,34 +46,34 @@ const SignUp = () => {
           email: values.email,
           password: values.password,
           photo: "",
-          passwordConfirm: values.confirmPassword,
-        };
+          passwordConfirm: values.confirmPassword
+        }
 
-        let res = await dispatch(signUp(val));
+        let res = await dispatch(signUp(val))
 
         if (res.payload.token) {
-          Cookies.set("token", res.payload.token);
-          await dispatch(mailVerification(res.payload.token));
-          Cookies.remove("token");
+          Cookies.set("token", res.payload.token)
+          await dispatch(mailVerification(res.payload.token))
+          Cookies.remove("token")
         }
-        navigate("/login");
+        navigate("/login")
         if (!res.payload.token) {
           await toast.current.show({
             severity: "info",
             summary: "Sticky Message",
             detail: "err",
-            sticky: false,
-          });
+            sticky: false
+          })
         }
-      },
-    });
+      }
+    })
 
   return (
-    <div>
+    <div className="signup-container">
       <Toast ref={toast} position="top-center" />
       <div className="split left">
         <div className="centered">
-          <div style={{ padding: "100px" }} className="mt-8">
+          <div className="left-container">
             <div className="HeadingStyle">
               Recruiteas
               <br />
@@ -83,43 +83,44 @@ const SignUp = () => {
             </span>
 
             <p className="text-2xl text-50">Who is Using?</p>
-            <div className="flexD gap ">
-              <div className="field-radiobutton radioButtonorder">
-                <RadioButton
-                  inputId="Human Resources"
-                  name="city"
-                  value="Human Resources"
-                  onChange={(e) => setCity(e.value)}
-                  checked={city === "Human Resources"}
-                />
-                <label htmlFor="Human Resources" className="text-50">
-                  Human Resources
-                </label>
-              </div>
-              <div className="field-radiobutton  radioButtonorder">
-                <RadioButton
-                  inputId="Assistance"
-                  name="city"
-                  value="Assistance"
-                  onChange={(e) => setCity(e.value)}
-                  checked={city === "Assistance"}
-                />
-                <label htmlFor="Assistance" className="text-50">
-                  Assistance
-                </label>
-              </div>
-
-              <div className="field-radiobutton  radioButtonorder">
-                <RadioButton
-                  inputId="Management"
-                  name="city"
-                  value="Management"
-                  onChange={(e) => setCity(e.value)}
-                  checked={city === "Management"}
-                />
-                <label htmlFor="Management" className="text-50">
-                  Management
-                </label>
+            <div className="lc-options">
+              <div className="flexD gap ">
+                <div className="field-radiobutton radioButtonorder">
+                  <RadioButton
+                    inputId="Human Resources"
+                    name="city"
+                    value="Human Resources"
+                    onChange={(e) => setCity(e.value)}
+                    checked={city === "Human Resources"}
+                  />
+                  <label htmlFor="Human Resources" className="text-50">
+                    Human Resources
+                  </label>
+                </div>
+                <div className="field-radiobutton  radioButtonorder">
+                  <RadioButton
+                    inputId="Assistance"
+                    name="city"
+                    value="Assistance"
+                    onChange={(e) => setCity(e.value)}
+                    checked={city === "Assistance"}
+                  />
+                  <label htmlFor="Assistance" className="text-50">
+                    Assistance
+                  </label>
+                </div>
+                <div className="field-radiobutton  radioButtonorder">
+                  <RadioButton
+                    inputId="Management"
+                    name="city"
+                    value="Management"
+                    onChange={(e) => setCity(e.value)}
+                    checked={city === "Management"}
+                  />
+                  <label htmlFor="Management" className="text-50">
+                    Management
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -232,7 +233,7 @@ const SignUp = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp
