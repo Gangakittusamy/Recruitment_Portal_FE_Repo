@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom"
 import { leadGenerationTable } from "../../../features/Modules/leadGeneration"
 import { LoginUserDetails } from "../../../features/Auth/userDetails"
 import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration"
+import "./customModule.css"
 
 const CustomModule = (props: any) => {
   const [state, setState] = React.useState<any>([])
@@ -31,7 +32,7 @@ const CustomModule = (props: any) => {
 
   const [checked1, setChecked1] = useState(false)
   const location = useLocation()
-  const { form, id, recId } = location.state
+  const { forms, id, recId, module } = location.state
   const navigate = useNavigate()
   const [ids, setIds] = useState<any>()
 
@@ -78,207 +79,219 @@ const CustomModule = (props: any) => {
     <div>
       <div>
         <div className="border-black-alpha-30 border-1 pb-7">
-          <span className="contactName ">Create Untitled</span>
-          <span className="contactuntitle">Untitled Image</span>
-          <span className="ml-5">
-            <img
-              src={noImages}
-              style={{ width: " 56px", height: "50px" }}
-            ></img>
-          </span>
-          <span className="contactuntitle">Untitled Information </span>
+          <span className="contactName ">{`Create ${module}`}</span>
+          <div className="module-profile">
+            <span className="contactuntitle">{`${module} image`}</span>
+            <span className="ml-5">
+              <img
+                src={noImages}
+                style={{ width: " 56px", height: "50px" }}
+              ></img>
+            </span>
+          </div>
+          {/* <span className="contactuntitle">Untitled Information </span> */}
           <div>
             <div>
-              <div className="previewCardAligment">
-                {form?.map((item: any, index: number) => {
+              <div className="createForm">
+                {Object.keys(forms).map((formName: any, index: any) => {
                   return (
-                    <div key={index}>
-                      <div className="card border-0 mt-3 ml-7">
-                        {item.type === "Pick List" ? (
-                          <div className="names">
-                            <div className="flex">
-                              <p className="grey">{item.DataHeader}</p>
-                              <Dropdown
-                                options={item.options}
-                                optionLabel="value"
-                                placeholder="Select"
-                                name={item.DataHeader}
-                                value={state[item.DataHeader]}
-                                onChange={handleChange}
-                                style={{
-                                  position: "relative",
-                                  left: "28px",
-                                  height: "34px",
-                                  top: "10px",
-                                  border: "1px solid lightgrey",
-                                  color: "#8083A3"
-                                }}
-                                className="border-0"
-                              />
+                    <div key={index} className="indv-form">
+                      <h4 className="formName">{formName}</h4>
+                      <div className="indv-form-elem">
+                        {forms[formName].map((item: any, index: number) => {
+                          return (
+                            <div
+                              key={index}
+                              className="card border-0 form-item"
+                            >
+                              {item.type === "Pick List" ? (
+                                <div className="names">
+                                  <div className="flex">
+                                    <p className="grey">{item.DataHeader}</p>
+                                    <Dropdown
+                                      options={item.options}
+                                      optionLabel="value"
+                                      placeholder="Select"
+                                      name={item.DataHeader}
+                                      value={state[item.DataHeader]}
+                                      onChange={handleChange}
+                                      style={{
+                                        position: "relative",
+                                        left: "28px",
+                                        height: "34px",
+                                        top: "10px",
+                                        border: "1px solid lightgrey",
+                                        color: "#8083A3"
+                                      }}
+                                      className="border-0"
+                                    />
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="names">
+                                  <p className="grey">{item.value}</p>
+                                  {item.DataHeader === "Untitled Owner" ? (
+                                    <span className="p-input-icon-right ">
+                                      <i className="pi pi-lock mt-0" />
+                                      <InputText
+                                        name={item.value}
+                                        value={state.Owner}
+                                        onChange={handleChange}
+                                        className="mt-3"
+                                      />
+                                    </span>
+                                  ) : item.DataHeader === "Currency" ? (
+                                    <span className="p-input-icon-left">
+                                      <i className="pi pi-dollar mt-0" />
+                                      <InputText
+                                        className="mt-3 "
+                                        name={item.value}
+                                        value={state.Currency}
+                                        onChange={handleChange}
+                                      />
+                                    </span>
+                                  ) : item.DataHeader === "Percent" ? (
+                                    <p>
+                                      <InputText
+                                        name={item.value}
+                                        value={state.Percent}
+                                        onChange={handleChange}
+                                        placeholder="Percent"
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Single Line" ? (
+                                    <p>
+                                      <InputText
+                                        name={item.value}
+                                        value={state.SingleLine}
+                                        onChange={handleChange}
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Untitled Name" ? (
+                                    <p>
+                                      <InputText
+                                        name={item.value}
+                                        value={state.Name}
+                                        onChange={handleChange}
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Image Upload" ? (
+                                    <p>
+                                      <Button
+                                        label="+ Image Upload"
+                                        className="bg-blue-100 text-primary"
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Email" ? (
+                                    <p>
+                                      <InputText
+                                        name={item.value}
+                                        value={state.Email}
+                                        onChange={handleChange}
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "File Upload" ? (
+                                    <p>
+                                      <Button
+                                        label="+ File Upload"
+                                        className="bg-blue-100 text-primary"
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Date/Time" ? (
+                                    <p>
+                                      <Calendar
+                                        name={item.value}
+                                        value={state.DateTime}
+                                        showTime
+                                        showSeconds
+                                        placeholder="Enter the date"
+                                        onChange={handleChange}
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Decimal" ? (
+                                    <p>
+                                      <InputText
+                                        name={item.value}
+                                        value={state.Decimal}
+                                        onChange={handleChange}
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Long integer" ? (
+                                    <p>
+                                      <InputText
+                                        name={item.value}
+                                        value={state.LongInteger}
+                                        onChange={handleChange}
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "URL" ? (
+                                    <p>
+                                      <InputText
+                                        name={item.value}
+                                        value={state.URL}
+                                        onChange={handleChange}
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Multi-Line" ? (
+                                    <p>
+                                      <InputTextarea
+                                        name={item.value}
+                                        value={state.Multi}
+                                        onChange={handleChange}
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Date" ? (
+                                    <p>
+                                      <Calendar
+                                        name={item.value}
+                                        value={item.Date}
+                                        onChange={handleChange}
+                                        placeholder="DD/MM/YY   "
+                                      />
+                                    </p>
+                                  ) : item.DataHeader === "Checkbox" ? (
+                                    <div>
+                                      <Checkbox
+                                        name={item.value}
+                                        style={{
+                                          position: "relative",
+                                          right: "120px",
+                                          height: "44px",
+                                          top: "15px"
+                                        }}
+                                        onChange={handleChange}
+                                        checked={state[item.value]}
+                                      />
+                                    </div>
+                                  ) : item.DataHeader === "Phone" ? (
+                                    <p>
+                                      {" "}
+                                      <InputMask
+                                        id="phone"
+                                        mask="99-99-99-99-99"
+                                        name={item.value}
+                                        value={state.lastName}
+                                        onChange={handleChange}
+                                        placeholder="(999) 999-9999"
+                                      ></InputMask>
+                                    </p>
+                                  ) : item.DataHeader === "Number" ? (
+                                    <p>
+                                      <InputText
+                                        name={item.value}
+                                        value={item.Number}
+                                        onChange={handleChange}
+                                        placeholder="Number"
+                                      />
+                                    </p>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                              )}
                             </div>
-                          </div>
-                        ) : (
-                          <div className="names">
-                            <p className="grey">{item.value}</p>
-                            {item.DataHeader === "Untitled Owner" ? (
-                              <span className="p-input-icon-right ">
-                                <i className="pi pi-lock mt-0" />
-                                <InputText
-                                  name={item.value}
-                                  value={state.Owner}
-                                  onChange={handleChange}
-                                  className="mt-3"
-                                />
-                              </span>
-                            ) : item.DataHeader === "Currency" ? (
-                              <span className="p-input-icon-left">
-                                <i className="pi pi-dollar mt-0" />
-                                <InputText
-                                  className="mt-3 "
-                                  name={item.value}
-                                  value={state.Currency}
-                                  onChange={handleChange}
-                                />
-                              </span>
-                            ) : item.DataHeader === "Percent" ? (
-                              <p>
-                                <InputText
-                                  name={item.value}
-                                  value={state.Percent}
-                                  onChange={handleChange}
-                                  placeholder="Percent"
-                                />
-                              </p>
-                            ) : item.DataHeader === "Single Line" ? (
-                              <p>
-                                <InputText
-                                  name={item.value}
-                                  value={state.SingleLine}
-                                  onChange={handleChange}
-                                />
-                              </p>
-                            ) : item.DataHeader === "Untitled Name" ? (
-                              <p>
-                                <InputText
-                                  name={item.value}
-                                  value={state.Name}
-                                  onChange={handleChange}
-                                />
-                              </p>
-                            ) : item.DataHeader === "Image Upload" ? (
-                              <p>
-                                <Button
-                                  label="+ Image Upload"
-                                  className="bg-blue-100 text-primary"
-                                />
-                              </p>
-                            ) : item.DataHeader === "Email" ? (
-                              <p>
-                                <InputText
-                                  name={item.value}
-                                  value={state.Email}
-                                  onChange={handleChange}
-                                />
-                              </p>
-                            ) : item.DataHeader === "File Upload" ? (
-                              <p>
-                                <Button
-                                  label="+ File Upload"
-                                  className="bg-blue-100 text-primary"
-                                />
-                              </p>
-                            ) : item.DataHeader === "Date/Time" ? (
-                              <p>
-                                <Calendar
-                                  name={item.value}
-                                  value={state.DateTime}
-                                  showTime
-                                  showSeconds
-                                  placeholder="Enter the date"
-                                  onChange={handleChange}
-                                />
-                              </p>
-                            ) : item.DataHeader === "Decimal" ? (
-                              <p>
-                                <InputText
-                                  name={item.value}
-                                  value={state.Decimal}
-                                  onChange={handleChange}
-                                />
-                              </p>
-                            ) : item.DataHeader === "Long integer" ? (
-                              <p>
-                                <InputText
-                                  name={item.value}
-                                  value={state.LongInteger}
-                                  onChange={handleChange}
-                                />
-                              </p>
-                            ) : item.DataHeader === "URL" ? (
-                              <p>
-                                <InputText
-                                  name={item.value}
-                                  value={state.URL}
-                                  onChange={handleChange}
-                                />
-                              </p>
-                            ) : item.DataHeader === "Multi-Line" ? (
-                              <p>
-                                <InputTextarea
-                                  name={item.value}
-                                  value={state.Multi}
-                                  onChange={handleChange}
-                                />
-                              </p>
-                            ) : item.DataHeader === "Date" ? (
-                              <p>
-                                <Calendar
-                                  name={item.value}
-                                  value={item.Date}
-                                  onChange={handleChange}
-                                  placeholder="DD/MM/YY   "
-                                />
-                              </p>
-                            ) : item.DataHeader === "Checkbox" ? (
-                              <div>
-                                <Checkbox
-                                  name={item.value}
-                                  style={{
-                                    position: "relative",
-                                    right: "120px",
-                                    height: "44px",
-                                    top: "15px"
-                                  }}
-                                  onChange={handleChange}
-                                  checked={state[item.value]}
-                                />
-                              </div>
-                            ) : item.DataHeader === "Phone" ? (
-                              <p>
-                                {" "}
-                                <InputMask
-                                  id="phone"
-                                  mask="99-99-99-99-99"
-                                  name={item.value}
-                                  value={state.lastName}
-                                  onChange={handleChange}
-                                  placeholder="(999) 999-9999"
-                                ></InputMask>
-                              </p>
-                            ) : item.DataHeader === "Number" ? (
-                              <p>
-                                <InputText
-                                  name={item.value}
-                                  value={item.Number}
-                                  onChange={handleChange}
-                                  placeholder="Number"
-                                />
-                              </p>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        )}
+                          )
+                        })}
                       </div>
                     </div>
                   )
@@ -298,8 +311,6 @@ const CustomModule = (props: any) => {
                   }}
                 />
               </div>
-              {/* );
-                 })} */}
             </div>
           </div>
         </div>

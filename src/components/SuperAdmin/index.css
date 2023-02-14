@@ -9,6 +9,11 @@
   float: right;
   
 }
+.layout h2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* .sideContent {
   background-color: #f4f4f4;
   height: 100vh;
@@ -35,3 +40,11 @@
     position: fixed;
   } */
 }
+
+@media only screen and (max-width: 992px) {
+  .layout h2{
+    justify-content: flex-start;
+    margin-left: 20px;
+  }
+}
+

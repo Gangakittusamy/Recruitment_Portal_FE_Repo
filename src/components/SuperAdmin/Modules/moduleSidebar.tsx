@@ -8,7 +8,7 @@ import React, { useEffect, useState,useRef } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { useNavigate } from "react-router-dom";
 
-const ModuleSideBar = (props: any) => {
+const ModuleSideBar = (props:any) => {
      const [value3, setValue3] = useState('');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -124,7 +124,7 @@ const ModuleSideBar = (props: any) => {
      let label = <b>{node.label}</b>;
 
      if (node.url) {
-         label = <a href={node.url}>{node.label}</a>;
+         label = <a href={node.url} onClick={()=>props.navbarClicked()}>{node.label}</a>;
      }
 
      return (
@@ -163,7 +163,7 @@ const ModuleSideBar = (props: any) => {
                 </span>
                 <div>
             <div className="card text-white-alpha-70">
-                <Tree value={nodes} nodeTemplate={nodeTemplate} />
+                <Tree value={nodes} nodeTemplate={nodeTemplate}/>
             </div>
         </div>
           </div>

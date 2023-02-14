@@ -8,13 +8,16 @@ import { Calendar } from "primereact/calendar"
 import {
   dragAndDropDialogIndexSuperAdmin,
   formcompleted,
-  setPickListDropDownData
+  setPickListDropDownData,
+  dragAndDropValueSuperAdmin
 } from "../../../features/counter/dragAndDrop"
 import { ITEMS } from "../../Constant/const"
 import Picklist from "../../CommonModules/PickList/PickList"
 import {
   NewModuleCreation,
-  ModuleNameUpdate
+  ModuleNameUpdate,
+  ModuleNameGet,
+  formNameForPreview
 } from "../../../features/Modules/module"
 import { object } from "yup"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
@@ -26,7 +29,6 @@ import { Dropdown } from "primereact/dropdown"
 import { Checkbox } from "primereact/checkbox"
 import { useParams } from "react-router-dom"
 import _ from "lodash"
-import { ModuleNameGet } from "../../../features/Modules/module"
 
 interface formModel {
   name: string
@@ -50,7 +52,17 @@ const DropArea = (props: any) => {
   const [store, setstore] = useState<any>([])
   const [editArray, setEditArray] = useState<any>()
   const [finaValue, setFinalValue] = useState<any>({})
-  const user: any = useAppSelector((state) => state);
+  const [fieldDeleteDialog, setFieldDeleteDialog] = useState(false)
+  const [currentField, setCurrentField] = useState("")
+  const user: any = useAppSelector((state) => state)
+
+  useEffect(() => {
+    GetModuleName()
+  }, [])
+
+  const GetModuleName = async () => {
+    let res = await dispatch(LoginUserDetails())
+  }
 
   useEffect(() => {
     setModuleName(props.moduleValue)
@@ -108,14 +120,6 @@ const DropArea = (props: any) => {
       }
       return x
     })
-  }
-
-  useEffect(() => {
-    GetModuleName()
-  }, [])
-
-  const GetModuleName = async () => {
-    let res = await dispatch(LoginUserDetails())
   }
 
   const handleChange = (
@@ -228,7 +232,10 @@ const DropArea = (props: any) => {
       moduleelements: response
     }
 
-    if (isValidModuleName(payload.modulename) && isAllFormsValid(payload.moduleelements)) {
+    if (
+      isValidModuleName(payload.modulename) &&
+      isAllFormsValid(payload.moduleelements)
+    ) {
       let res
       if (window.location.pathname === `/super-admin/edit/${editId}`) {
         let val = {
@@ -249,7 +256,10 @@ const DropArea = (props: any) => {
       if (res.payload.status == 200) {
         navigate("/super-admin")
       }
-    } else if (isValidModuleName(payload.modulename) && !isAllFormsValid(payload.moduleelements)) {
+    } else if (
+      isValidModuleName(payload.modulename) &&
+      !isAllFormsValid(payload.moduleelements)
+    ) {
       toast.current.show({
         severity: "warn",
         summary: "Warning",
@@ -268,12 +278,16 @@ const DropArea = (props: any) => {
 
   const isValidModuleName = (module: any) => {
     let moduleValid = true
-    const existingModules = user.module.modules
-    const isExistingModuleName = existingModules.find((m:any)=>{
-      return m.modulename === module
-    })
-    if(!module || isExistingModuleName){
-      moduleValid = false
+    if (window.location.pathname !== `/super-admin/edit/${editId}`) {
+      const existingModules = user.module.modules
+      if (existingModules) {
+        const isExistingModuleName = existingModules.find((m: any) => {
+          return m.modulename === module
+        })
+        if (!module || isExistingModuleName) {
+          moduleValid = false
+        }
+      }
     }
     return moduleValid
   }
@@ -331,10 +345,9 @@ const DropArea = (props: any) => {
   }, [count.dragAndDrop.PickListData])
 
   let handleChangeForm = (i: number, e: any, list: any) => {
-    let newFormValues = [...formName]
+    let newFormValues = _.cloneDeep(formName)
     newFormValues[i].name = e.target.value
     newFormValues[i].id = list
-
     setFormName(newFormValues)
   }
 
@@ -381,6 +394,21 @@ const DropArea = (props: any) => {
     }
   }
 
+  const removeField = (itemId: any) => {
+    const currentFormElements = count.dragAndDrop.initialStartDragSuperAdmin
+    let modifiedModule: any = {}
+    for (const key in currentFormElements) {
+      const currentFormId = key
+      let currentFields = currentFormElements[currentFormId]
+      const modifiedForm = currentFields.filter((f: any) => {
+        return f.id !== itemId
+      })
+      modifiedModule[key] = modifiedForm
+    }
+    dispatch(dragAndDropValueSuperAdmin(modifiedModule))
+    setCurrentField("")
+  }
+
   return (
     <div className="">
       <Toast ref={toast} />
@@ -394,7 +422,6 @@ const DropArea = (props: any) => {
                 {(provided, snapshot) => (
                   <div className="border-dotted border-400 mt-4 ml-3 mr-3">
                     <section className="mt-2 p-2  mx-auto">
-                      {/* <section className="mt-2 p-2 ml-8   "> */}
                       {formName.length
                         ? formName.map((x: any, idx: number) => {
                             return (
@@ -402,7 +429,7 @@ const DropArea = (props: any) => {
                                 {i == idx ? (
                                   <input
                                     placeholder="Untitled form"
-                                    className="  mx-auto  text-sm w-25rem  text-900 "
+                                    className="mx-auto  text-sm text-900 form-name-input"
                                     style={{
                                       height: "48px",
                                       color: "#333333"
@@ -411,6 +438,9 @@ const DropArea = (props: any) => {
                                     onChange={(e) =>
                                       handleChangeForm(i, e, list)
                                     }
+                                    onBlur={() => {
+                                      dispatch(formNameForPreview(formName))
+                                    }}
                                   />
                                 ) : (
                                   ""
@@ -419,17 +449,12 @@ const DropArea = (props: any) => {
                             )
                           })
                         : ""}
-
-                      {/* </section> */}
                     </section>
                     <div className="dragCard" ref={provided.innerRef}>
                       {
                         uidv4[list].length ? (
                           uidv4[list].map((item: any, index: number) => (
-                            <div
-                             key={item.id}
-                              className="p-2"
-                            >
+                            <div key={item.id} className="p-2">
                               <Draggable
                                 key={item.id}
                                 draggableId={item.id}
@@ -538,9 +563,43 @@ const DropArea = (props: any) => {
                                         </section>
                                       )}
 
-                                      <p className="delete">
-                                        <i className="pi pi-ellipsis-v"></i>
-                                      </p>
+                                      <div className="field-options">
+                                        <button
+                                          onClick={() => {
+                                            setFieldDeleteDialog(
+                                              (prevState) => !prevState
+                                            )
+                                            setCurrentField(item.id)
+                                          }}
+                                          onBlur={() => {
+                                            setFieldDeleteDialog(false)
+                                          }}
+                                        >
+                                          <i className="pi pi-ellipsis-v"></i>
+                                        </button>
+                                        {currentField === item.id ? (
+                                          <div
+                                            id="field-dialog"
+                                            className={`options-modal ${
+                                              fieldDeleteDialog
+                                                ? "show"
+                                                : "hidden"
+                                            }`}
+                                          >
+                                            <ul>
+                                              <li
+                                                onClick={() =>
+                                                  removeField(item.id)
+                                                }
+                                              >
+                                                Remove
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </div>
                                     </div>
                                   </div>
                                 )}
@@ -574,10 +633,11 @@ const DropArea = (props: any) => {
         })}
       </div>
 
-      <div className="flex  justify-content-end mt-2 mb-3 mr-5">
+      <div className="drop-form-submit">
         <Button
           label="Cancel"
           className="surface-300 border-300 text-color mr-5"
+          onClick={() => navigate(-1)}
         />
         <Button
           label="Save"

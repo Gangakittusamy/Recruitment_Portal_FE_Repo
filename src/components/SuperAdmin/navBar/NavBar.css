@@ -5,10 +5,25 @@
   top: 0;
   background-color: #ffffff;
   z-index: 1001;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
 }
 .NavBar_Division {
   width: 20%;
+  display: flex;
+  align-items: center;
 }
+.NavBar_Division .logo{
+  display: flex;
+  align-items: center;
+}
+/* .NavBar_Division .logo img{
+  max-width: 50px;
+  max-height: 50px;
+  display: block;
+} */
 .NavBar_Search {
   width: 60%;
 }
@@ -39,3 +54,62 @@
   overflow: auto;
   height: 400px;
 }
+
+.p-overlaypanel .p-overlaypanel-content {
+  padding: 0.5rem !important;
+}
+
+.profile ul {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.profile ul li{
+  margin: 5px 0;
+}
+
+.profile ul li:hover{
+  background-color: rgba(237, 1, 86, 0.1) !important;
+  cursor: pointer;
+}
+
+.modulesList img {
+  margin-left: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 992px) {
+  .NavBar_Main {
+    display: block;
+    position: relative;
+    height: 6vh;
+    margin-bottom: 75px;
+  }
+  .NavBar_Division{
+    display: block;
+  }
+  .NavBar_Division .logo{
+    margin-top: 10px;
+  }
+  .NavBar_Division .logo p{
+    margin: 0 !important;
+  }
+  .modulesList img {
+    margin-left: 0.3rem;
+    margin-right: 0.5rem;
+  }
+  .nav-right{
+    position: absolute;
+    right: 0;
+    margin-top: -88px;
+  }
+}
+
+/* @media (min-width:749px) and (max-width: 992px) {
+  .NavBar_Main {
+    height: 13vh;
+  }
+} */
+

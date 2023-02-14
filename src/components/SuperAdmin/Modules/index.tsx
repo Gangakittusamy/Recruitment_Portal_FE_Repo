@@ -1,76 +1,77 @@
-import { TabView, TabPanel } from "primereact/tabview";
-import { useEffect, useState } from "react";
-import { InputText } from "primereact/inputtext";
-import ModuleScreen from "./modules";
-import { Button } from "primereact/button";
-import { useNavigate } from "react-router";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import { TabView, TabPanel } from "primereact/tabview"
+import { useEffect, useState } from "react"
+import { InputText } from "primereact/inputtext"
+import ModuleScreen from "./modules"
+import { Button } from "primereact/button"
+import { useNavigate } from "react-router"
+import { DataTable } from "primereact/datatable"
+import { Column } from "primereact/column"
 
-import { Dropdown } from "primereact/dropdown";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { useSelector, useDispatch } from "react-redux";
+import { Dropdown } from "primereact/dropdown"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { useSelector, useDispatch } from "react-redux"
 import {
   ModuleNameGet,
   ModuleNameDelete,
   ModuleNameUpdate,
   ModuleNameGetFormsaa,
   resetModuleForms
-} from "../../../features/Modules/module";
-import { SpeedDial } from "primereact/speeddial";
-import NavBar from "../navBar";
-import ModuleSideBar from "./moduleSidebar";
-import "./Modules.css";
-import { Link } from "react-router-dom";
+} from "../../../features/Modules/module"
+import { SpeedDial } from "primereact/speeddial"
+import NavBar from "../navBar"
+import ModuleSideBar from "./moduleSidebar"
+import "./Modules.css"
+import { Link } from "react-router-dom"
 
 const SettingsModules = (props: any) => {
-  const [value3, setValue3] = useState("");
-  const [activeIndex1, setActiveIndex1] = useState(0);
-  const [state, setState] = useState<any>([]);
-  const [id, setId] = useState<any>();
-  const navigate: any = useNavigate();
-  const dispatch: any = useAppDispatch();
-  const count: any = useSelector((state) => state);
+  const [value3, setValue3] = useState("")
+  const [activeIndex1, setActiveIndex1] = useState(0)
+  const [state, setState] = useState<any>([])
+  const [id, setId] = useState<any>()
+  const navigate: any = useNavigate()
+  const dispatch: any = useAppDispatch()
+  const count: any = useSelector((state) => state)
+  const [showSideNavbar, setShowSideNavbar] = useState(false)
 
   const NextPage = () => {
     dispatch(resetModuleForms())
-    navigate("/super-admin/create-form");
-  };
+    navigate("/super-admin/create-form")
+  }
 
   useEffect(() => {
-    GetModuleName();
-  }, []);
+    GetModuleName()
+  }, [])
 
   const GetModuleName = async () => {
-    let res = await dispatch(ModuleNameGet());
-    setState(res.payload.data.user);
-  };
+    let res = await dispatch(ModuleNameGet())
+    setState(res.payload.data.user)
+  }
 
   const items = [
     {
       label: "Update",
       icon: "pi pi-pencil",
       command: async (y: any) => {
-        let res = await dispatch(ModuleNameGetFormsaa(id));
+        let res = await dispatch(ModuleNameGetFormsaa(id))
 
         if (res.payload.status === 200) {
-          setId(null);
-          navigate(`/super-admin/edit/${id}`);
+          setId(null)
+          navigate(`/super-admin/edit/${id}`)
         }
-      },
+      }
     },
     {
       label: "Delete",
       icon: "pi pi-trash",
       command: async (y: any) => {
-        let res = await dispatch(ModuleNameDelete(id));
+        let res = await dispatch(ModuleNameDelete(id))
         if (res.payload.status == 202) {
-          setId(null);
-          GetModuleName();
+          setId(null)
+          GetModuleName()
         }
-      },
-    },
-  ];
+      }
+    }
+  ]
   const layoutPagelick = (rowdata: any) => {
     return (
       <div>
@@ -81,32 +82,42 @@ const SettingsModules = (props: any) => {
           <span className="text-blue-500">{rowdata.modulename}</span>
         </Link>
       </div>
-    );
-  };
+    )
+  }
   const editPolicy = (data: any) => {
     return (
       <div className="speeddial-linear-demo ">
         <SpeedDial
           model={items}
           onClick={(x: any) => {
-            setId(data._id);
+            setId(data._id)
           }}
           direction="right"
         />
       </div>
-    );
+    )
+  }
+
+  const navbarClicked = () => {
+    setShowSideNavbar(false);
   };
 
   return (
-    <div style={{ background: "rgb(250, 250, 251)", height: "100vh" }}>
+    <div
+      style={{ background: "rgb(250, 250, 251)", height: "100vh" }}
+      className="modulesList"
+    >
       <div>
         <NavBar />
+        <div className="nav-open-icon">
+          <i className="pi pi-align-justify" style={{fontSize:"1.5rem"}} onClick={()=>setShowSideNavbar(prev => !prev)}></i>
+        </div>
         <div className="flex mt-3 create_form_main">
-          <div style={{ background: "gainsboro" }}>
-            <ModuleSideBar />
+          <div style={{ background: "gainsboro" }} className={`side-nav-bar ${showSideNavbar ? 'show' : ''}`}>
+            <ModuleSideBar navbarClicked={navbarClicked}/>
           </div>
 
-          <div className="create_form_main_division ml-3">
+          <div className="create_form_main_division">
             <TabView
               className="tabview"
               activeIndex={activeIndex1}
@@ -123,7 +134,7 @@ const SettingsModules = (props: any) => {
                         placeholder="Search"
                       />
                     </span>
-                    <span>
+                    <span className="pl-1">
                       <Button
                         label="New Module"
                         icon="pi pi-plus"
@@ -165,6 +176,6 @@ const SettingsModules = (props: any) => {
         </div>
       </div>
     </div>
-  );
-};
-export default SettingsModules;
+  )
+}
+export default SettingsModules

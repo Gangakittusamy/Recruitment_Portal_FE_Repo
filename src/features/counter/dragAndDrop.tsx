@@ -1,6 +1,7 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 import { idText } from "typescript";
 import { RootState } from "../../app/store";
+import _ from "lodash";
 
 interface userReducerState {
   initialStateDrag: null;
@@ -42,7 +43,10 @@ export const userReducer = createSlice({
       state.DialogOpenIndex = action.payload;
     },
     dragAndDropValueSuperAdmin: (state: any, action) => {
-      state.initialStartDragSuperAdmin = action.payload;
+      const sameArray = _.isEqual( state.initialStartDragSuperAdmin, action.payload)
+      if(!sameArray){
+        state.initialStartDragSuperAdmin = action.payload;
+      }
     },
     dragAndDropDialogIndexSuperAdmin: (state: any, action) => {
       state.DialogIndex = action.payload;
