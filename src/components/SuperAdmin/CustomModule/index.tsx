@@ -10,6 +10,7 @@ import { InputTextarea } from "primereact/inputtextarea"
 import { InputMask } from "primereact/inputmask"
 import { Button } from "primereact/button"
 import { Checkbox } from "primereact/checkbox"
+import { InputNumber } from "primereact/inputnumber"
 import noImages from "../../../images//noimage.jpg"
 import { useSelector, useDispatch } from "react-redux"
 import { useAppDispatch } from "../../../app/hooks"
@@ -106,26 +107,25 @@ const CustomModule = (props: any) => {
                             >
                               {item.type === "Pick List" ? (
                                 <div className="names">
-                                  <div className="flex">
-                                    <p className="grey">{item.DataHeader}</p>
-                                    <Dropdown
-                                      options={item.options}
-                                      optionLabel="value"
-                                      placeholder="Select"
-                                      name={item.DataHeader}
-                                      value={state[item.DataHeader]}
-                                      onChange={handleChange}
-                                      style={{
-                                        position: "relative",
-                                        left: "28px",
-                                        height: "34px",
-                                        top: "10px",
-                                        border: "1px solid lightgrey",
-                                        color: "#8083A3"
-                                      }}
-                                      className="border-0"
-                                    />
-                                  </div>
+                                  <p className="grey">{item.DataHeader}</p>
+                                  <Dropdown
+                                    options={item.options}
+                                    optionLabel="value"
+                                    placeholder="Select"
+                                    name={item.DataHeader}
+                                    value={state[item.DataHeader]}
+                                    onChange={handleChange}
+                                    style={{
+                                      position: "relative",
+                                      left: "28px",
+                                      height: "34px",
+                                      top: "10px",
+                                      border: "1px solid lightgrey",
+                                      color: "#8083A3",
+                                      width: "-webkit-fill-available"
+                                    }}
+                                    className="border-0"
+                                  />
                                 </div>
                               ) : (
                                 <div className="names">
@@ -148,6 +148,7 @@ const CustomModule = (props: any) => {
                                         name={item.value}
                                         value={state.Currency}
                                         onChange={handleChange}
+                                        style={{width:"190px"}}
                                       />
                                     </span>
                                   ) : item.DataHeader === "Percent" ? (
@@ -238,6 +239,7 @@ const CustomModule = (props: any) => {
                                         name={item.value}
                                         value={state.Multi}
                                         onChange={handleChange}
+                                        style={{width:"190px"}}
                                       />
                                     </p>
                                   ) : item.DataHeader === "Date" ? (
@@ -257,7 +259,8 @@ const CustomModule = (props: any) => {
                                           position: "relative",
                                           right: "120px",
                                           height: "44px",
-                                          top: "15px"
+                                          top: "15px",
+                                          width: "-webkit-fill-available"
                                         }}
                                         onChange={handleChange}
                                         checked={state[item.value]}
@@ -266,14 +269,14 @@ const CustomModule = (props: any) => {
                                   ) : item.DataHeader === "Phone" ? (
                                     <p>
                                       {" "}
-                                      <InputMask
+                                      <InputNumber
                                         id="phone"
-                                        mask="99-99-99-99-99"
                                         name={item.value}
                                         value={state.lastName}
-                                        onChange={handleChange}
-                                        placeholder="(999) 999-9999"
-                                      ></InputMask>
+                                        onChange={(e)=>handleChange(e.originalEvent)}
+                                        placeholder="(+91) 999-9999-999"
+                                        useGrouping={false}
+                                      />
                                     </p>
                                   ) : item.DataHeader === "Number" ? (
                                     <p>

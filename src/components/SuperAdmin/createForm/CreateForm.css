@@ -159,6 +159,11 @@
   margin-bottom: 1rem;
 }
 
+.dropped-item-info {
+  width: 150px;
+  padding: 4px;
+}
+
 @media (max-width: 992px) {
   .create_form_main {
     height: auto;
@@ -202,6 +207,12 @@
   .create_form_main_division {
     width: 100% !important;
   }
+  .dropped-item-info {
+    display: none !important;
+  }
+  /* .dragCard {
+    display: block !important;
+  } */
 }
 
 @media (min-width: 1600px) {

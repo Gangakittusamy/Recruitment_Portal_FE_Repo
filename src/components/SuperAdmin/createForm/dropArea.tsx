@@ -205,7 +205,7 @@ const DropArea = (props: any) => {
 
     Object.keys(response || {}).map((list: any, i: number) => {
       response[list] = response[list].map((x: any) => {
-        if (x.names === "Pick List") {
+        if (x.subName === "Pick List") {
           const pickListDropdownData = count.dragAndDrop.PickListData.filter(
             (p: any) => {
               return p.itemId === x.id
@@ -409,6 +409,14 @@ const DropArea = (props: any) => {
     setCurrentField("")
   }
 
+  const checkWindow = () => {
+    if (window.location.pathname === `/super-admin/edit/${editId}`) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return (
     <div className="">
       <Toast ref={toast} />
@@ -478,6 +486,8 @@ const DropArea = (props: any) => {
                                                 width: "100px"
                                               }}
                                               className="border-0"
+                                              onFocus={(e) => e.target.value = ""}
+                                              onBlur={(e) => e.target.value = getFieldName(item)}
                                               onChange={(e) =>
                                                 picklistNameHandler(e, item)
                                               }
@@ -504,6 +514,8 @@ const DropArea = (props: any) => {
                                               height: "44px",
                                               border: "1px solid lightgrey"
                                             }}
+                                            onFocus={(e) => e.target.value = ""}
+                                            onBlur={(e) => e.target.value = item.names || item.type}
                                             value={item.names || item.type}
                                             onChange={(e) => {
                                               handleChange(
@@ -537,6 +549,8 @@ const DropArea = (props: any) => {
                                             border: "1px solid lightgrey"
                                             // color: "#8083A3",
                                           }}
+                                          onFocus={(e) => e.target.value = ""}
+                                          onBlur={(e) => e.target.value = item.names || item.type}
                                           value={item.names || item.type}
                                           onChange={(e) => {
                                             handleChange(
@@ -553,11 +567,7 @@ const DropArea = (props: any) => {
 
                                       {showSection(item) && (
                                         <section
-                                          className="grey font-semibold  "
-                                          style={{
-                                            width: "150px",
-                                            padding: "4px"
-                                          }}
+                                          className="grey font-semibold dropped-item-info"
                                         >
                                           {item.subName || item.fieldname}
                                         </section>
@@ -571,6 +581,7 @@ const DropArea = (props: any) => {
                                             )
                                             setCurrentField(item.id)
                                           }}
+                                          disabled={checkWindow()}
                                           onBlur={() => {
                                             setFieldDeleteDialog(false)
                                           }}

@@ -191,7 +191,7 @@ const FieldListTablePage = (props: any) => {
         onChange={onColumnToggle}
         style={{ width: "20em" }}
       />
-      <Link
+      {buttonName && (<Link
         to="/super-admin/CustomModule/being"
         state={{
           forms: groupByForms(Get),
@@ -201,7 +201,7 @@ const FieldListTablePage = (props: any) => {
         }}
       >
         <Button label={`Create a ${buttonName}`} />
-      </Link>
+      </Link>)}
     </div>
   );
 

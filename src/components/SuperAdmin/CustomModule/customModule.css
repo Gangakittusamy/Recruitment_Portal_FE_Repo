@@ -32,7 +32,7 @@
   width: 100%;
 }
 
-.names .grey {
+.createForm .names .grey {
   min-width: 40%;
   display: flex;
   justify-content: flex-end;
