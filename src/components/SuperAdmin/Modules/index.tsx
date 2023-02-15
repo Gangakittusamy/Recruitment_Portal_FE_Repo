@@ -17,6 +17,9 @@ import {
   ModuleNameGetFormsaa,
   resetModuleForms
 } from "../../../features/Modules/module"
+import {
+  setPickListDropDownData
+} from "../../../features/counter/dragAndDrop"
 import { SpeedDial } from "primereact/speeddial"
 import NavBar from "../navBar"
 import ModuleSideBar from "./moduleSidebar"
@@ -40,6 +43,7 @@ const SettingsModules = (props: any) => {
 
   useEffect(() => {
     GetModuleName()
+    dispatch(setPickListDropDownData([]))
   }, [])
 
   const GetModuleName = async () => {
@@ -53,7 +57,6 @@ const SettingsModules = (props: any) => {
       icon: "pi pi-pencil",
       command: async (y: any) => {
         let res = await dispatch(ModuleNameGetFormsaa(id))
-
         if (res.payload.status === 200) {
           setId(null)
           navigate(`/super-admin/edit/${id}`)

@@ -3,12 +3,12 @@ import React, { useState, useEffect } from "react"
 import { DragDropContext, DraggableLocation } from "react-beautiful-dnd"
 import { v4 as uuidv4 } from "uuid"
 import { ITEMS } from "../Constant/const"
-
 import {
   dragAndDropValueSuperAdmin,
   formEditIdDragAndDrop,
   dragAndDropDialogIndexSuperAdmin,
-  selectStructuredData
+  selectStructuredData,
+  setPickListDropDownData
 } from "../../features/counter/dragAndDrop"
 import { useSelector, useDispatch } from "react-redux"
 import NavBar from "./navBar"
@@ -64,7 +64,7 @@ const SuperAdmin = () => {
   useEffect(() => {
     if (window.location.pathname !== `/super-admin/edit/${editId}`) {
       setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
-    }
+    } 
   }, [count.dragAndDrop.initialStartDragSuperAdmin])
 
   const reorder = (
@@ -166,16 +166,31 @@ const SuperAdmin = () => {
       let valuess = Object.values(value)
 
       let app: any = []
+      let pickListDropdownData = _.cloneDeep(count.dragAndDrop.PickListData)
       valuess.map((x: any, i) => {
         x = x.map((y: any, o: number) => {
-          return {
-            names: y.type,
-            subName: y.fieldname,
-            id: uuidv4()
+          const newId = uuidv4()
+          if (y.options) {
+            const newItems = getDropdownItems(y.options, newId)
+            pickListDropdownData = pickListDropdownData.concat(newItems)
+          }
+          if (y.type === "Pick List") {
+            return {
+              names: y.fieldname,
+              subName: y.type,
+              id: newId
+            }
+          } else {
+            return {
+              names: y.type,
+              subName: y.fieldname,
+              id: newId
+            }
           }
         })
         app.push([x])
       })
+      dispatch(setPickListDropDownData(pickListDropdownData))
 
       let resObj: any = {}
       keyss.map((ke: any, idx: any) => {
@@ -212,6 +227,19 @@ const SuperAdmin = () => {
       }
     }
   }, [complete])
+
+  const getDropdownItems = (options: any, id: any) => {
+    const newItems = options.map((o: any) => {
+      return {
+        fieldLabel: o.fieldLabel,
+        formID: o.formID,
+        itemId: id,
+        type: o.type,
+        value: o.value
+      }
+    })
+    return newItems
+  }
 
   const handleClick = (e: any) => {
     setId(e)
@@ -278,9 +306,7 @@ const SuperAdmin = () => {
               )}
 
               {window.location.pathname == "/super-admin" ? (
-                <h2>
-                  Dashboard
-                </h2>
+                <h2>Dashboard</h2>
               ) : (
                 ""
               )}

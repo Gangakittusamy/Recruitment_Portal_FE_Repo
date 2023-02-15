@@ -20,6 +20,7 @@
 .p-speeddial-direction-right {
   align-items: center !important;
   height: 10px !important;
+  justify-content: flex-start !important;
 }
 .p-column-title{
   color: black;

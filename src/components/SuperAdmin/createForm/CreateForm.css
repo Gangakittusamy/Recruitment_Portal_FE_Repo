@@ -105,6 +105,7 @@
   border: 1px solid #fff;
   box-shadow: 0 -1px 10px rgb(0 0 0 / 10%);
   background-color: #fff;
+  z-index: 1;
 }
 .options-modal .show {
   display: block;
@@ -159,6 +160,11 @@
   margin-bottom: 1rem;
 }
 
+.dropped-item-info {
+  width: 150px;
+  padding: 4px;
+}
+
 @media (max-width: 992px) {
   .create_form_main {
     height: auto;
@@ -200,6 +206,12 @@
     width: 55%;
   }
   .create_form_main_division {
+    width: 100% !important;
+  }
+  .dropped-item-info {
+    display: none !important;
+  }
+  .form-item{
     width: 100% !important;
   }
 }

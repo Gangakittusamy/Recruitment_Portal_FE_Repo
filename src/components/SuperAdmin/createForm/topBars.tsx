@@ -11,6 +11,7 @@ import { InputTextarea } from "primereact/inputtextarea"
 import { InputMask } from "primereact/inputmask"
 import { Button } from "primereact/button"
 import { Checkbox } from "primereact/checkbox"
+import { InputNumber } from "primereact/inputnumber"
 import noImages from "../../../images//noimage.jpg"
 import { useSelector, useDispatch } from "react-redux"
 import { TabMenu } from "primereact/tabmenu"
@@ -86,11 +87,11 @@ const TopBars = (props: any) => {
       <Sidebar
         visible={preview}
         position="top"
-        style={{ width: "100vw", height: "70vw" }}
+        style={{ width: "100vw", height: "inherit" }}
         onHide={() => setPreview(!preview)}
       >
         <div>
-          <div className="flex  justify-content-center">
+          {/* <div className="flex  justify-content-center">
             <div className="dropdownBorderStyle">
               <span className="flex">
                 Preview layout as
@@ -104,7 +105,7 @@ const TopBars = (props: any) => {
                 />
               </span>
             </div>
-          </div>
+          </div> */}
           <div className="border-black-alpha-30 border-1 pb-7">
             <span className="contactName ">Create Untitled</span>
             <div className="module-profile">
@@ -132,7 +133,6 @@ const TopBars = (props: any) => {
                             >
                               {item.subName === "Pick List" ? (
                                 <div className="names">
-                                  <div className="flex">
                                     <p className="grey">{getFieldName(item)}</p>
                                     <Dropdown
                                       options={getDropDownValue(item)}
@@ -142,14 +142,13 @@ const TopBars = (props: any) => {
                                         position: "relative",
                                         left: "28px",
                                         height: "34px",
-                                        top: "10px"
+                                        top: "10px",
+                                        width: "-webkit-fill-available"
                                       }}
                                     />
-                                  </div>
                                 </div>
                               ) : item.subName === "Checkbox" ? (
                                 <div className="names">
-                                  <div className="flex">
                                     <p className="grey">
                                       {item.names || item.type}
                                     </p>
@@ -158,10 +157,10 @@ const TopBars = (props: any) => {
                                         position: "relative",
                                         left: "50px",
                                         height: "44px",
-                                        top: "15px"
+                                        top: "15px",
+                                        width: "-webkit-fill-available"
                                       }}
                                     />
-                                  </div>
                                 </div>
                               ) : (
                                 <div className="names">
@@ -194,6 +193,7 @@ const TopBars = (props: any) => {
                                         className="mt-3 "
                                         disabled
                                         value={item.names || item.type}
+                                        style={{width:"190px"}}
                                       />
                                     </span>
                                   ) : item.names || item.type === "Percent" ? (
@@ -244,15 +244,10 @@ const TopBars = (props: any) => {
                                   ) : item.names ||
                                     item.type === "File Upload" ? (
                                     <p>
-                                      {/* <Dropdown
-                                      className="mr-6"
-                                      value={selectedCity1}
-                                      options={fileUpload}
-                                      onChange={onCityChange}
-                                      optionLabel="name"
-                                      style={{ width: "99%" }}
-                                      placeholder="Select a file"
-                                    /> */}
+                                      <InputText
+                                        value={item.names || item.type}
+                                        disabled
+                                      />
                                     </p>
                                   ) : item.names ||
                                     item.type === "Email Opt Out" ? (
@@ -300,6 +295,7 @@ const TopBars = (props: any) => {
                                       <InputTextarea
                                         value={item.names || item.type}
                                         disabled
+                                        style={{width:"190px"}}
                                       />
                                     </p>
                                   ) : item.names || item.type === "Date" ? (
@@ -328,12 +324,11 @@ const TopBars = (props: any) => {
                                   ) : item.names || item.type === "Phone" ? (
                                     <p>
                                       {" "}
-                                      <InputMask
+                                      <InputNumber
                                         id="phone"
-                                        mask="99-99-99-99-99"
                                         disabled
                                         placeholder="(999) 999-9999"
-                                      ></InputMask>
+                                      />
                                     </p>
                                   ) : item.names ||
                                     item.type === "Long integer" ? (
@@ -352,15 +347,10 @@ const TopBars = (props: any) => {
                                     </p>
                                   ) : item.names || item.type === "User" ? (
                                     <span className="p-input-icon-right ">
-                                      {/* <Dropdown
-                                      className="mr-6"
-                                      value={selectedCity1}
-                                      options={cities}
-                                      onChange={onCityChange}
-                                      optionLabel="name"
-                                      style={{ width: "99%" }}
-                                      placeholder="Select a City"
-                                    /> */}
+                                      <InputText
+                                        value={item.names || item.type}
+                                        disabled
+                                      />
                                     </span>
                                   ) : (
                                     <InputText

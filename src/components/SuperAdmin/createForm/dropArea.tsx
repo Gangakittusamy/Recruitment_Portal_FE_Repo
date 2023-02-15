@@ -55,6 +55,7 @@ const DropArea = (props: any) => {
   const [fieldDeleteDialog, setFieldDeleteDialog] = useState(false)
   const [currentField, setCurrentField] = useState("")
   const user: any = useAppSelector((state) => state)
+  const [openPicklistEditdialog, setOpenPicklistEditDialog] = useState(false)
 
   useEffect(() => {
     GetModuleName()
@@ -182,6 +183,9 @@ const DropArea = (props: any) => {
               pickListDialogVisible={true}
               formID={list}
               itemId={item.id}
+              editMode={false}
+              isDialogClosed={(isOpen: any) => {}}
+              editDropdownData= {{}}
             />
           )
         }
@@ -205,7 +209,7 @@ const DropArea = (props: any) => {
 
     Object.keys(response || {}).map((list: any, i: number) => {
       response[list] = response[list].map((x: any) => {
-        if (x.names === "Pick List") {
+        if (x.subName === "Pick List") {
           const pickListDropdownData = count.dragAndDrop.PickListData.filter(
             (p: any) => {
               return p.itemId === x.id
@@ -409,6 +413,26 @@ const DropArea = (props: any) => {
     setCurrentField("")
   }
 
+  const openPickListEditModal = (item: any, list: any) => {
+    if(currentField === item.id){
+      const pickListDropdownData = count.dragAndDrop.PickListData
+    return (
+      <Picklist
+        pickListDialogVisible={true}
+        formID={list}
+        itemId={item.id}
+        editMode={true}
+        isDialogClosed={(isClosed: any) => {
+          if (isClosed) {
+            setOpenPicklistEditDialog(false)
+          }
+        }}
+        editDropdownData= {pickListDropdownData}
+      />
+    )
+    }
+  }
+
   return (
     <div className="">
       <Toast ref={toast} />
@@ -478,6 +502,13 @@ const DropArea = (props: any) => {
                                                 width: "100px"
                                               }}
                                               className="border-0"
+                                              onFocus={(e) =>
+                                                (e.target.value = "")
+                                              }
+                                              onBlur={(e) =>
+                                                (e.target.value =
+                                                  getFieldName(item))
+                                              }
                                               onChange={(e) =>
                                                 picklistNameHandler(e, item)
                                               }
@@ -504,6 +535,13 @@ const DropArea = (props: any) => {
                                               height: "44px",
                                               border: "1px solid lightgrey"
                                             }}
+                                            onFocus={(e) =>
+                                              (e.target.value = "")
+                                            }
+                                            onBlur={(e) =>
+                                              (e.target.value =
+                                                item.names || item.type)
+                                            }
                                             value={item.names || item.type}
                                             onChange={(e) => {
                                               handleChange(
@@ -537,6 +575,11 @@ const DropArea = (props: any) => {
                                             border: "1px solid lightgrey"
                                             // color: "#8083A3",
                                           }}
+                                          onFocus={(e) => (e.target.value = "")}
+                                          onBlur={(e) =>
+                                            (e.target.value =
+                                              item.names || item.type)
+                                          }
                                           value={item.names || item.type}
                                           onChange={(e) => {
                                             handleChange(
@@ -552,13 +595,7 @@ const DropArea = (props: any) => {
                                       )}
 
                                       {showSection(item) && (
-                                        <section
-                                          className="grey font-semibold  "
-                                          style={{
-                                            width: "150px",
-                                            padding: "4px"
-                                          }}
-                                        >
+                                        <section className="grey font-semibold dropped-item-info">
                                           {item.subName || item.fieldname}
                                         </section>
                                       )}
@@ -587,6 +624,17 @@ const DropArea = (props: any) => {
                                             }`}
                                           >
                                             <ul>
+                                              {item.subName === "Pick List" && (
+                                                <li
+                                                  onClick={() =>
+                                                    setOpenPicklistEditDialog(
+                                                      true
+                                                    )
+                                                  }
+                                                >
+                                                  Edit
+                                                </li>
+                                              )}
                                               <li
                                                 onClick={() =>
                                                   removeField(item.id)
@@ -609,6 +657,9 @@ const DropArea = (props: any) => {
                               item.subName == "Pick List"
                                 ? openDialog(item, list)
                                 : ""}
+                              {item.subName == "Pick List" &&
+                                openPicklistEditdialog &&
+                                openPickListEditModal(item, list)}
                             </div>
                           ))
                         ) : (
