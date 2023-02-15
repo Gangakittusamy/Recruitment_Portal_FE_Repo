@@ -165,7 +165,7 @@ const NavBar = (props: any) => {
             </form>
           </div>
         </OverlayPanel>
-        <section className="flex modulesList">
+        <section className="flex modulesListing">
           <div className="flex align-items-center mt-2 super_Admin_Sidebar_Dashboard sideBarOnClick">
             <img src={Dashboard} width={16} height={16}/>
             <p className=" font-bold">Dashboard</p>
@@ -197,7 +197,7 @@ const NavBar = (props: any) => {
               })
             : ""}
           {checkRecentTab() && (
-            <div className="flex " style={{ right: "86px" }}>
+            <div className="recent-tab" style={{ right: "86px" }}>
               <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
                 <span className="text-yellow-600">
                   {displayNav || localStorage.getItem("moduleName")}

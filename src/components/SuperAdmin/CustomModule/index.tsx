@@ -228,6 +228,7 @@ const CustomModule = (props: any) => {
                                   ) : item.DataHeader === "URL" ? (
                                     <p>
                                       <InputText
+                                        type="url"
                                         name={item.value}
                                         value={state.URL}
                                         onChange={handleChange}

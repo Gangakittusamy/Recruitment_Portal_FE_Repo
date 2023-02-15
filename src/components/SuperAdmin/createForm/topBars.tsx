@@ -87,11 +87,11 @@ const TopBars = (props: any) => {
       <Sidebar
         visible={preview}
         position="top"
-        style={{ width: "100vw", height: "70vw" }}
+        style={{ width: "100vw", height: "inherit" }}
         onHide={() => setPreview(!preview)}
       >
         <div>
-          <div className="flex  justify-content-center">
+          {/* <div className="flex  justify-content-center">
             <div className="dropdownBorderStyle">
               <span className="flex">
                 Preview layout as
@@ -105,7 +105,7 @@ const TopBars = (props: any) => {
                 />
               </span>
             </div>
-          </div>
+          </div> */}
           <div className="border-black-alpha-30 border-1 pb-7">
             <span className="contactName ">Create Untitled</span>
             <div className="module-profile">
@@ -244,15 +244,10 @@ const TopBars = (props: any) => {
                                   ) : item.names ||
                                     item.type === "File Upload" ? (
                                     <p>
-                                      {/* <Dropdown
-                                      className="mr-6"
-                                      value={selectedCity1}
-                                      options={fileUpload}
-                                      onChange={onCityChange}
-                                      optionLabel="name"
-                                      style={{ width: "99%" }}
-                                      placeholder="Select a file"
-                                    /> */}
+                                      <InputText
+                                        value={item.names || item.type}
+                                        disabled
+                                      />
                                     </p>
                                   ) : item.names ||
                                     item.type === "Email Opt Out" ? (
@@ -352,15 +347,10 @@ const TopBars = (props: any) => {
                                     </p>
                                   ) : item.names || item.type === "User" ? (
                                     <span className="p-input-icon-right ">
-                                      {/* <Dropdown
-                                      className="mr-6"
-                                      value={selectedCity1}
-                                      options={cities}
-                                      onChange={onCityChange}
-                                      optionLabel="name"
-                                      style={{ width: "99%" }}
-                                      placeholder="Select a City"
-                                    /> */}
+                                      <InputText
+                                        value={item.names || item.type}
+                                        disabled
+                                      />
                                     </span>
                                   ) : (
                                     <InputText

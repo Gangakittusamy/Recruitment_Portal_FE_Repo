@@ -210,9 +210,9 @@
   .dropped-item-info {
     display: none !important;
   }
-  /* .dragCard {
-    display: block !important;
-  } */
+  .form-item{
+    width: 100% !important;
+  }
 }
 
 @media (min-width: 1600px) {

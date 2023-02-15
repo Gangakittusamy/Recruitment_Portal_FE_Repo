@@ -35,11 +35,9 @@
   background-color: white;
   width: 436px;
   border: 2px solid #f6f5f5;
- 
 }
 
 .dragCard {
-
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-left: 12px;
@@ -99,8 +97,8 @@
 }
 
 .previewCardAligment {
- display: grid;
- grid-template-columns: 1fr 1fr ;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .setpermissionRadio {
@@ -108,5 +106,12 @@
   justify-content: space-around;
   column-gap: 67px;
   margin-right: 42px;
+}
 
+@media (max-width: 992px) {
+  .dragCard {
+    display: flex;
+    margin-left: 12px;
+    flex-wrap: wrap;
+  }
 }
