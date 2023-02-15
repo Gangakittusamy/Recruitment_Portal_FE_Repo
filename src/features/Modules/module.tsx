@@ -139,8 +139,10 @@ export const userReducer = createSlice({
         state.isLoading = true;
       })
       .addCase(ModuleNameGet.fulfilled, (state, action) => {
-        state.rolesGet = action.payload.data.user;
-        state.modules = action.payload.data.user;
+        if(action.payload.data.user){
+          state.rolesGet = action.payload.data.user;
+          state.modules = action.payload.data.user;
+        }
       })
       .addCase(ModuleNameGet.rejected, (state) => {
         state.status = "error";
