@@ -1,206 +1,231 @@
-import { Dialog } from "primereact/dialog";
-import { Button } from "primereact/button";
-import { useState, useEffect, useRef } from "react";
-import { Dropdown } from "primereact/dropdown";
-import { Checkbox } from "primereact/checkbox";
-import { InputText } from "primereact/inputtext";
-import { OverlayPanel } from "primereact/overlaypanel";
-import { ColorPicker } from "primereact/colorpicker";
-import { InputTextarea } from "primereact/inputtextarea";
-import "./PickList.css";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { pickListDropDownData } from "../../../features/counter/dragAndDrop";
+import { Dialog } from "primereact/dialog"
+import { Button } from "primereact/button"
+import { useState, useEffect, useRef } from "react"
+import { Dropdown } from "primereact/dropdown"
+import { Checkbox } from "primereact/checkbox"
+import { InputText } from "primereact/inputtext"
+import { OverlayPanel } from "primereact/overlaypanel"
+import { ColorPicker } from "primereact/colorpicker"
+import { InputTextarea } from "primereact/inputtextarea"
+import "./PickList.css"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { pickListDropDownData, setPickListDropDownData} from "../../../features/counter/dragAndDrop"
+import { useSelector, useDispatch } from "react-redux"
+import _ from "lodash"
+
 
 interface PickListProps {
-  pickListDialogVisible: boolean;
-  formID:any;
-  itemId:any
+  pickListDialogVisible: boolean
+  formID: any
+  itemId: any
+  editMode: boolean
+  isDialogClosed: any
+  editDropdownData:any
 }
 
-const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, itemId}) => {
+const Picklist: React.FC<PickListProps> = ({
+  pickListDialogVisible,
+  formID,
+  itemId,
+  editMode,
+  isDialogClosed,
+  editDropdownData
+}) => {
   const inputArr = [
     {
       type: "text",
       id: 1,
       value: "",
-      formID:"",
-      itemId:"",
-      fieldLabel:""
-    },
-  ];
-  const [checked, setChecked] = useState(false);
-  const [colorchecked, setcolorchecked] = useState(false);
-  const [state, setState] = useState(false);
-  const [OptionOne, setOptionOne] = useState(false);
-  const [OptionTwo, setOptionTwo] = useState(false);
-  const [OptionThree, setOptionThree] = useState(false);
-  const [picklist, setpicklist] = useState<any>();
-  const [order, setOrder] = useState("");
-  const [arr, setArr] = useState(inputArr);
-  const [fieldLabel, setFieldLabel] = useState('PickList');
+      formID: "",
+      itemId: "",
+      fieldLabel: ""
+    }
+  ]
+  const [checked, setChecked] = useState(false)
+  const [colorchecked, setcolorchecked] = useState(false)
+  const [state, setState] = useState(false)
+  const [OptionOne, setOptionOne] = useState(false)
+  const [OptionTwo, setOptionTwo] = useState(false)
+  const [OptionThree, setOptionThree] = useState(false)
+  const [picklist, setpicklist] = useState<any>()
+  const [order, setOrder] = useState("")
+  const [arr, setArr] = useState(inputArr)
+  const [fieldLabel, setFieldLabel] = useState("PickList")
   const [selectedCity1, setSelectedCity1] = useState<any>([
-    { name: "Normal", code: "NY" },
-  ]);
-  const [Multiselect, setMultiselect] = useState<any>([]);
-  const [color2, setColor2] = useState("");
-  const [showWarning, setShowWarning] = useState(false);
+    { name: "Normal", code: "NY" }
+  ])
+  const [Multiselect, setMultiselect] = useState<any>([])
+  const [color2, setColor2] = useState("")
+  const [showWarning, setShowWarning] = useState(false)
 
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.logIn);
-  const op: any = useRef(null);
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.logIn)
+  const op: any = useRef(null)
+
+  useEffect(()=>{
+    if(editMode){
+      const currentFieldOptions = editDropdownData.filter((d:any)=>{
+        return d.itemId === itemId
+      })
+      setArr(currentFieldOptions)
+      const fieldLabel =  currentFieldOptions[0] ? currentFieldOptions[0].fieldLabel : ""
+      setFieldLabel(fieldLabel)
+    }
+  },[])
 
   const Days = [
     {
       names: "Monday",
 
-      id: 1,
+      id: 1
     },
     {
       names: "Tuesday",
 
-      id: 2,
+      id: 2
     },
     {
       names: "Wednesday",
 
-      id: 3,
+      id: 3
     },
     {
       names: "Thursday",
 
-      id: 4,
+      id: 4
     },
     {
       names: "Friday",
 
-      id: 5,
+      id: 5
     },
     {
       names: "Friday",
 
-      id: 6,
+      id: 6
     },
     {
       names: "Saturday",
 
-      id: 7,
-    },
-  ];
+      id: 7
+    }
+  ]
   const Month = [
     {
       names: "january",
 
-      id: 1,
+      id: 1
     },
     {
       names: "feburary",
 
-      id: 2,
+      id: 2
     },
     {
       names: "March",
 
-      id: 3,
+      id: 3
     },
     {
       names: "April",
 
-      id: 4,
+      id: 4
     },
     {
       names: "May",
 
-      id: 5,
+      id: 5
     },
     {
       names: "June",
 
-      id: 6,
+      id: 6
     },
     {
       names: "July",
 
-      id: 7,
+      id: 7
     },
     {
       names: "Augest",
 
-      id: 8,
+      id: 8
     },
     {
       names: "September",
 
-      id: 9,
+      id: 9
     },
     {
       names: "October",
 
-      id: 10,
+      id: 10
     },
     {
       names: "November",
 
-      id: 11,
+      id: 11
     },
     {
       names: "December",
 
-      id: 12,
-    },
-  ];
+      id: 12
+    }
+  ]
   const Continent = [
     {
       names: "Asia ",
 
-      id: 1,
+      id: 1
     },
     {
       names: "North America",
 
-      id: 2,
+      id: 2
     },
     {
       names: "South America",
 
-      id: 3,
+      id: 3
     },
     {
       names: "Africa",
 
-      id: 4,
+      id: 4
     },
     {
       names: "Antartica",
 
-      id: 5,
+      id: 5
     },
     {
       names: "Australia",
 
-      id: 6,
+      id: 6
     },
     {
       names: "Eroup",
 
-      id: 7,
-    },
-  ];
+      id: 7
+    }
+  ]
+
   useEffect(() => {
-    setState(pickListDialogVisible);
-  }, [pickListDialogVisible]);
+    setState(pickListDialogVisible)
+  }, [pickListDialogVisible])
 
   const cities = [
     { name: "New York", code: "NY" },
     { name: "Rome", code: "RM" },
-    { name: "London", code: "LDN" },
-  ];
+    { name: "London", code: "LDN" }
+  ]
   function ClickPickList(name: any) {
     if (name == "days") {
-      setpicklist(Days);
+      setpicklist(Days)
     } else if (name == "month") {
-      setpicklist(Month);
+      setpicklist(Month)
     } else if (name == "Continents") {
-      setpicklist(Continent);
+      setpicklist(Continent)
     }
   }
   // function ClickMonths (){
@@ -208,84 +233,99 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
   //   setMonths(!Months)
   // }
   function handlerSiebarOptionOne() {
-    setOptionOne(!OptionOne);
+    setOptionOne(!OptionOne)
   }
   function handlerSiebarOptionTwo() {
-    setOptionTwo(!OptionTwo);
+    setOptionTwo(!OptionTwo)
   }
   function handlerSiebarOptionThree() {
-    setOptionThree(!OptionThree);
+    setOptionThree(!OptionThree)
   }
   const handlerCheck = (e: any) => {
-    setChecked(!checked);
-  };
+    setChecked(!checked)
+  }
   const handlerCheckcolor = (e: any) => {
-    setcolorchecked(!colorchecked);
-  };
-  var k = 1;
+    setcolorchecked(!colorchecked)
+  }
+  var k = 1
   const handlerCheckclose = (e: any) => {
-    setState(false);
-  };
+    setState(false)
+  }
 
   const addInput = () => {
     setArr((s: any) => {
-      const lastId = s[s.length - 1].id;
+      const lastId = s[s.length - 1].id
       return [
         ...s,
         {
           type: "text",
-          value: "",
-        },
-      ];
-    });
-  };
+          value: ""
+        }
+      ]
+    })
+  }
   const deleteinput = (i: any) => {
-    const deleteVal = [...arr];
-    deleteVal.splice(i, 1);
-    setArr(deleteVal);
-  };
+    const deleteVal = [...arr]
+    deleteVal.splice(i, 1)
+    setArr(deleteVal)
+  }
 
   const onValueChange = (e: any) => {
-    setOrder(e.target.value);
-  };
+    setOrder(e.target.value)
+  }
 
   const defaultValue = (e: { value: any }) => {
-    setSelectedCity1(e.value);
-  };
+    setSelectedCity1(e.value)
+  }
 
   const onCityChange = (e: any) => {
-    let selectedCities: any[] = [];
-    selectedCities = [...Multiselect];
+    let selectedCities: any[] = []
+    selectedCities = [...Multiselect]
 
-    if (e.checked) selectedCities.push(e.value);
-    else selectedCities.splice(selectedCities.indexOf(e.value), 1);
+    if (e.checked) selectedCities.push(e.value)
+    else selectedCities.splice(selectedCities.indexOf(e.value), 1)
 
-    setMultiselect(selectedCities);
-  };
+    setMultiselect(selectedCities)
+  }
   const handleChange = (e: any) => {
     setShowWarning(false)
-    e.preventDefault();
+    e.preventDefault()
 
-    const index = e.target.id;
+    const index = e.target.id
     setArr((s) => {
-     
-      const newArr = s.slice();
-      newArr[index].value = e.target.value;
-      newArr[index].formID = formID;
-      newArr[index].itemId = itemId;
+      const newArr =  _.cloneDeep(s)
+      newArr[index].value = e.target.value
+      newArr[index].formID = formID
+      newArr[index].itemId = itemId
       newArr[index].fieldLabel = fieldLabel
-      
-      return newArr;
-    });
-  };
+      return newArr
+    })
+  }
 
   const submitPickList = () => {
-    if(arr[0].value){
-      setState(!state);
-      dispatch(pickListDropDownData(arr))
+    if (arr[0].value) {
+      setState(!state)
+      dialogClosed()
+      if(!editMode){
+        dispatch(pickListDropDownData(arr))
+      } else {
+        updatePickListdata()
+      }
     } else {
       setShowWarning(true)
     }
+  }
+
+  const updatePickListdata = () => {
+    const otherPicklistData = editDropdownData.filter((d:any)=>{
+      return d.itemId !== itemId
+    })
+    const UpdatedArray = otherPicklistData.concat(arr)
+    dispatch(setPickListDropDownData(UpdatedArray))
+  }
+
+  const dialogClosed = () => {
+    isDialogClosed(true)
   }
 
   return (
@@ -420,11 +460,19 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
           visible={state}
           style={{ width: "50vw" }}
           position="top"
-          onHide={() => setState(false)}
+          onHide={() => {
+            setState(false)
+            dialogClosed()
+          }}
         >
           <p>
             Field Label <br />
-            <InputText type="text" className="w-7 mt-1" value={fieldLabel} onChange={(e) => setFieldLabel(e.target.value)}/>
+            <InputText
+              type="text"
+              className="w-7 mt-1"
+              value={fieldLabel}
+              onChange={(e) => setFieldLabel(e.target.value)}
+            />
           </p>
           <div className="flex justify-content-between ">
             <span>Pick List Option</span>{" "}
@@ -510,7 +558,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
                       <div>
                         <div className="ml-4 mt-3"> {list.names}</div>
                       </div>
-                    );
+                    )
                   })}
                   {/* {picklist} */}
                 </div>
@@ -568,7 +616,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
           <section className="multipleSelectDialogOption_main mt-2">
             {arr.map((item, i: any) => {
               return (
-                <section className="multipleSelectDialogOption">
+                <section className="multipleSelectDialogOption" key={i}>
                   <span>
                     {" "}
                     {colorchecked ? (
@@ -593,7 +641,7 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
                     onClick={() => deleteinput(i)}
                   ></i>
                 </section>
-              );
+              )
             })}
           </section>
           {/* <p className="text-sm">Select default value </p>
@@ -673,18 +721,20 @@ const Picklist: React.FC<PickListProps> = ({ pickListDialogVisible, formID, item
           </section> */}
           <div className="currencyProperties_cancel">
             <p className="">Don't save this field.</p>
-            {showWarning && (<p style={{ color: "red" }}>Please add the options</p>)}
+            {showWarning && (
+              <p style={{ color: "red" }}>Please add the options</p>
+            )}
             <Button
               label="Done"
               onClick={() => {
-                submitPickList();
+                submitPickList()
               }}
             />
           </div>
         </Dialog>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Picklist;
+export default Picklist
