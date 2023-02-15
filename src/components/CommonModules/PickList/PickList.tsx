@@ -9,10 +9,12 @@ import { ColorPicker } from "primereact/colorpicker"
 import { InputTextarea } from "primereact/inputtextarea"
 import "./PickList.css"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { pickListDropDownData, setPickListDropDownData} from "../../../features/counter/dragAndDrop"
+import {
+  pickListDropDownData,
+  setPickListDropDownData
+} from "../../../features/counter/dragAndDrop"
 import { useSelector, useDispatch } from "react-redux"
 import _ from "lodash"
-
 
 interface PickListProps {
   pickListDialogVisible: boolean
@@ -20,7 +22,7 @@ interface PickListProps {
   itemId: any
   editMode: boolean
   isDialogClosed: any
-  editDropdownData:any
+  editDropdownData: any
 }
 
 const Picklist: React.FC<PickListProps> = ({
@@ -62,16 +64,18 @@ const Picklist: React.FC<PickListProps> = ({
   const user = useAppSelector((state) => state.logIn)
   const op: any = useRef(null)
 
-  useEffect(()=>{
-    if(editMode){
-      const currentFieldOptions = editDropdownData.filter((d:any)=>{
+  useEffect(() => {
+    if (editMode) {
+      const currentFieldOptions = editDropdownData.filter((d: any) => {
         return d.itemId === itemId
       })
       setArr(currentFieldOptions)
-      const fieldLabel =  currentFieldOptions[0] ? currentFieldOptions[0].fieldLabel : ""
+      const fieldLabel = currentFieldOptions[0]
+        ? currentFieldOptions[0].fieldLabel
+        : ""
       setFieldLabel(fieldLabel)
     }
-  },[])
+  }, [])
 
   const Days = [
     {
@@ -293,7 +297,7 @@ const Picklist: React.FC<PickListProps> = ({
 
     const index = e.target.id
     setArr((s) => {
-      const newArr =  _.cloneDeep(s)
+      const newArr = _.cloneDeep(s)
       newArr[index].value = e.target.value
       newArr[index].formID = formID
       newArr[index].itemId = itemId
@@ -306,7 +310,7 @@ const Picklist: React.FC<PickListProps> = ({
     if (arr[0].value) {
       setState(!state)
       dialogClosed()
-      if(!editMode){
+      if (!editMode) {
         dispatch(pickListDropDownData(arr))
       } else {
         updatePickListdata()
@@ -317,11 +321,28 @@ const Picklist: React.FC<PickListProps> = ({
   }
 
   const updatePickListdata = () => {
-    const otherPicklistData = editDropdownData.filter((d:any)=>{
+    const otherPicklistData = editDropdownData.filter((d: any) => {
       return d.itemId !== itemId
     })
     const UpdatedArray = otherPicklistData.concat(arr)
     dispatch(setPickListDropDownData(UpdatedArray))
+  }
+
+  const updateFieldLabelOnEdit = (value: any) => {
+    if (editMode) {
+      const pickListData = _.cloneDeep(arr)
+      const fieldLabelUpdatedArray = pickListData.map((d: any) => {
+        return {
+          fieldLabel: value,
+          formID: d.formID,
+          itemId: d.itemId,
+          type: d.type,
+          value: d.value,
+          id:d.id
+        }
+      })
+      setArr(fieldLabelUpdatedArray)
+    }
   }
 
   const dialogClosed = () => {
@@ -471,7 +492,10 @@ const Picklist: React.FC<PickListProps> = ({
               type="text"
               className="w-7 mt-1"
               value={fieldLabel}
-              onChange={(e) => setFieldLabel(e.target.value)}
+              onChange={(e) => {
+                setFieldLabel(e.target.value)
+                updateFieldLabelOnEdit(e.target.value)
+              }}
             />
           </p>
           <div className="flex justify-content-between ">
