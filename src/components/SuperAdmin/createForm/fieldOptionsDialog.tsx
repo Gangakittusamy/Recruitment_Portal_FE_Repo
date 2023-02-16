@@ -5,16 +5,18 @@ import { dragAndDropValueSuperAdmin } from "../../../features/counter/dragAndDro
 
 interface MultipleSelectProps {
   item: any
+  formId: any
   dialogVisible: boolean
-  isFieldremoved: any
+  closeDialog: any
   isEditDialogOpen: any
 }
 
 const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
   dialogVisible,
-  isFieldremoved,
+  closeDialog,
   isEditDialogOpen,
-  item
+  item,
+  formId
 }) => {
   const count: any = useAppSelector((state) => state)
   const dispatch = useAppDispatch()
@@ -31,10 +33,29 @@ const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
       modifiedModule[key] = modifiedForm
     }
     dispatch(dragAndDropValueSuperAdmin(modifiedModule))
-    isFieldremoved(true)
+    closeDialog(true)
   }
 
-  const markAsRequired = (itemId: any) => {}
+  const markAsRequired = (itemId: any, required: any) => {
+    const currentFormElements = count.dragAndDrop.initialStartDragSuperAdmin
+    let modifiedModule: any = {}
+    for (const key in currentFormElements) {
+      const currentFormId = key
+      const modifiedForm = currentFormElements[currentFormId].map((f: any) => {
+        if (f.id === itemId) {
+          return {
+            ...f,
+            required: required
+          }
+        } else {
+          return { ...f }
+        }
+      })
+      modifiedModule[key] = modifiedForm
+    }
+    dispatch(dragAndDropValueSuperAdmin(modifiedModule))
+    closeDialog(true)
+  }
 
   return (
     <div
@@ -42,7 +63,17 @@ const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
       className={`options-modal ${dialogVisible ? "show" : "hidden"}`}
     >
       <ul>
-        <li onClick={() => markAsRequired(item.id)}>Mark as required</li>
+        {(!item.required || item.required === false) && (
+          <li onClick={() => markAsRequired(item.id, true)}>
+            Mark as required
+          </li>
+        )}
+
+        {item.required && item.required === true && (
+          <li onClick={() => markAsRequired(item.id, false)}>
+            <i className="pi pi-check pr-1" style={{fontSize: "12px"}}></i> Mark as required
+          </li>
+        )}
         {item.subName === "Pick List" && (
           <li onClick={() => isEditDialogOpen(true)}>Edit Properties</li>
         )}

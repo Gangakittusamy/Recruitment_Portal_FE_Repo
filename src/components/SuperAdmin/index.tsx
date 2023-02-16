@@ -65,8 +65,7 @@ const SuperAdmin = () => {
   useEffect(() => {
     if (window.location.pathname !== `/super-admin/edit/${editId}`) {
       setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
-    } 
-    else {
+    } else {
       if (editScreenUpdated) {
         setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
       }
@@ -184,13 +183,15 @@ const SuperAdmin = () => {
             return {
               names: y.fieldname,
               subName: y.type,
-              id: newId
+              id: newId,
+              required: y.required
             }
           } else {
             return {
               names: y.type,
               subName: y.fieldname,
-              id: newId
+              id: newId,
+              required: y.required
             }
           }
         })

@@ -219,13 +219,15 @@ const DropArea = (props: any) => {
           return {
             type: x.subName,
             fieldname: pickListDropdownData[0].fieldLabel,
-            options: pickListDropdownData
+            options: pickListDropdownData,
+            required: x.required ? x.required : false
           }
         } else {
           return {
             type: x.names,
             fieldname: x.subName,
-            defaultvalue: x.names
+            defaultvalue: x.names,
+            required: x.required ? x.required : false
           }
         }
       })
@@ -472,7 +474,11 @@ const DropArea = (props: any) => {
                               >
                                 {(provided, snapshot) => (
                                   <div
-                                    className="Dropcard px-2"
+                                    className={`Dropcard px-2 ${
+                                      item.required && item.required === true
+                                        ? "required-field"
+                                        : ""
+                                    }`}
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     style={provided.draggableProps.style}
@@ -597,8 +603,9 @@ const DropArea = (props: any) => {
                                         {currentField === item.id && (
                                           <FieldOptionsDialog
                                             item={item}
+                                            formId={list}
                                             dialogVisible={fieldDeleteDialog}
-                                            isFieldremoved={() =>
+                                            closeDialog={() =>
                                               setCurrentField("")
                                             }
                                             isEditDialogOpen={() =>

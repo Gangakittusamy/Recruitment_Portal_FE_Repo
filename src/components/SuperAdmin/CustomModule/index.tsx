@@ -107,7 +107,15 @@ const CustomModule = (props: any) => {
                             >
                               {item.type === "Pick List" ? (
                                 <div className="names">
-                                  <p className="grey">{item.DataHeader}</p>
+                                  <p
+                                    className={`grey ${
+                                      item.required && item.required === true
+                                        ? "required"
+                                        : ""
+                                    }`}
+                                  >
+                                    {item.DataHeader}
+                                  </p>
                                   <Dropdown
                                     options={item.options}
                                     optionLabel="value"
@@ -129,7 +137,15 @@ const CustomModule = (props: any) => {
                                 </div>
                               ) : (
                                 <div className="names">
-                                  <p className="grey">{item.value}</p>
+                                  <p
+                                    className={`grey ${
+                                      item.required && item.required === true
+                                        ? "required"
+                                        : ""
+                                    }`}
+                                  >
+                                    {item.value}
+                                  </p>
                                   {item.DataHeader === "Untitled Owner" ? (
                                     <span className="p-input-icon-right ">
                                       <i className="pi pi-lock mt-0" />
@@ -148,7 +164,7 @@ const CustomModule = (props: any) => {
                                         name={item.value}
                                         value={state.Currency}
                                         onChange={handleChange}
-                                        style={{width:"190px"}}
+                                        style={{ width: "190px" }}
                                       />
                                     </span>
                                   ) : item.DataHeader === "Percent" ? (
@@ -240,7 +256,7 @@ const CustomModule = (props: any) => {
                                         name={item.value}
                                         value={state.Multi}
                                         onChange={handleChange}
-                                        style={{width:"190px"}}
+                                        style={{ width: "190px" }}
                                       />
                                     </p>
                                   ) : item.DataHeader === "Date" ? (
@@ -274,7 +290,9 @@ const CustomModule = (props: any) => {
                                         id="phone"
                                         name={item.value}
                                         value={state.lastName}
-                                        onChange={(e)=>handleChange(e.originalEvent)}
+                                        onChange={(e) =>
+                                          handleChange(e.originalEvent)
+                                        }
                                         placeholder="(+91) 999-9999-999"
                                         useGrouping={false}
                                       />
