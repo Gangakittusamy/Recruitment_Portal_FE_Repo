@@ -126,6 +126,10 @@ const NavBar = (props: any) => {
     }
   }
 
+  const getNumberOfModulesToBeShown= () => {
+    return window.innerWidth > 1280 ? 10 : 5
+  }
+
   return (
     <div className="NavBar_Main">
       <Toast ref={toast} position="top-center"></Toast>
@@ -179,7 +183,7 @@ const NavBar = (props: any) => {
                   >
                     <div>
                       {" "}
-                      {index <= 7 ? (
+                      {index <= getNumberOfModulesToBeShown() ? (
                         <div>
                           <div
                             className="nav_text capitalize"
