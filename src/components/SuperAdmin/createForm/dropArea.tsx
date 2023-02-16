@@ -29,6 +29,7 @@ import { Dropdown } from "primereact/dropdown"
 import { Checkbox } from "primereact/checkbox"
 import { useParams } from "react-router-dom"
 import _ from "lodash"
+import FieldOptionsDialog from "./fieldOptionsDialog"
 
 interface formModel {
   name: string
@@ -185,7 +186,7 @@ const DropArea = (props: any) => {
               itemId={item.id}
               editMode={false}
               isDialogClosed={(isOpen: any) => {}}
-              editDropdownData= {{}}
+              editDropdownData={{}}
             />
           )
         }
@@ -398,38 +399,23 @@ const DropArea = (props: any) => {
     }
   }
 
-  const removeField = (itemId: any) => {
-    const currentFormElements = count.dragAndDrop.initialStartDragSuperAdmin
-    let modifiedModule: any = {}
-    for (const key in currentFormElements) {
-      const currentFormId = key
-      let currentFields = currentFormElements[currentFormId]
-      const modifiedForm = currentFields.filter((f: any) => {
-        return f.id !== itemId
-      })
-      modifiedModule[key] = modifiedForm
-    }
-    dispatch(dragAndDropValueSuperAdmin(modifiedModule))
-    setCurrentField("")
-  }
-
   const openPickListEditModal = (item: any, list: any) => {
-    if(currentField === item.id){
+    if (currentField === item.id) {
       const pickListDropdownData = count.dragAndDrop.PickListData
-    return (
-      <Picklist
-        pickListDialogVisible={true}
-        formID={list}
-        itemId={item.id}
-        editMode={true}
-        isDialogClosed={(isClosed: any) => {
-          if (isClosed) {
-            setOpenPicklistEditDialog(false)
-          }
-        }}
-        editDropdownData= {pickListDropdownData}
-      />
-    )
+      return (
+        <Picklist
+          pickListDialogVisible={true}
+          formID={list}
+          itemId={item.id}
+          editMode={true}
+          isDialogClosed={(isClosed: any) => {
+            if (isClosed) {
+              setOpenPicklistEditDialog(false)
+            }
+          }}
+          editDropdownData={pickListDropdownData}
+        />
+      )
     }
   }
 
@@ -498,10 +484,7 @@ const DropArea = (props: any) => {
                                           <div className="flex">
                                             <InputText
                                               value={getFieldName(item)}
-                                              style={{
-                                                width: "100px"
-                                              }}
-                                              className="border-0"
+                                              className="border-0 dropAreaInput"
                                               onFocus={(e) =>
                                                 (e.target.value = "")
                                               }
@@ -530,9 +513,8 @@ const DropArea = (props: any) => {
                                         <div className="flex">
                                           <input
                                             type="text"
-                                            name="names "
+                                            name="names"
                                             style={{
-                                              height: "44px",
                                               border: "1px solid lightgrey"
                                             }}
                                             onFocus={(e) =>
@@ -552,7 +534,7 @@ const DropArea = (props: any) => {
                                                 item.id
                                               )
                                             }}
-                                            className=" text-500  border-0 "
+                                            className=" border-0 dropAreaInput"
                                           />
                                           <Checkbox
                                             style={{
@@ -569,11 +551,9 @@ const DropArea = (props: any) => {
                                       ) : (
                                         <input
                                           type="text"
-                                          name="names "
+                                          name="names"
                                           style={{
-                                            height: "44px",
                                             border: "1px solid lightgrey"
-                                            // color: "#8083A3",
                                           }}
                                           onFocus={(e) => (e.target.value = "")}
                                           onBlur={(e) =>
@@ -590,7 +570,7 @@ const DropArea = (props: any) => {
                                               item.id
                                             )
                                           }}
-                                          className=" text-500  border-0 "
+                                          className="border-0 dropAreaInput"
                                         />
                                       )}
 
@@ -614,38 +594,17 @@ const DropArea = (props: any) => {
                                         >
                                           <i className="pi pi-ellipsis-v"></i>
                                         </button>
-                                        {currentField === item.id ? (
-                                          <div
-                                            id="field-dialog"
-                                            className={`options-modal ${
-                                              fieldDeleteDialog
-                                                ? "show"
-                                                : "hidden"
-                                            }`}
-                                          >
-                                            <ul>
-                                              {item.subName === "Pick List" && (
-                                                <li
-                                                  onClick={() =>
-                                                    setOpenPicklistEditDialog(
-                                                      true
-                                                    )
-                                                  }
-                                                >
-                                                  Edit
-                                                </li>
-                                              )}
-                                              <li
-                                                onClick={() =>
-                                                  removeField(item.id)
-                                                }
-                                              >
-                                                Remove
-                                              </li>
-                                            </ul>
-                                          </div>
-                                        ) : (
-                                          ""
+                                        {currentField === item.id && (
+                                          <FieldOptionsDialog
+                                            item={item}
+                                            dialogVisible={fieldDeleteDialog}
+                                            isFieldremoved={() =>
+                                              setCurrentField("")
+                                            }
+                                            isEditDialogOpen={() =>
+                                              setOpenPicklistEditDialog(true)
+                                            }
+                                          />
                                         )}
                                       </div>
                                     </div>
