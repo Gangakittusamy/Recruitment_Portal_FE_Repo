@@ -179,7 +179,7 @@ const NavBar = (props: any) => {
                   >
                     <div>
                       {" "}
-                      {index <= 5 ? (
+                      {index <= 7 ? (
                         <div>
                           <div
                             className="nav_text capitalize"
