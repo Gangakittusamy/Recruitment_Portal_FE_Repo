@@ -115,7 +115,6 @@ export const userReducer = createSlice({
     },
     resetStatus: (state, action) => {
       state.error = "";
-      //   state.status = "";
     },
     formNameForPreview :(state, action) => {
       state.formNameArray = action.payload
@@ -123,15 +122,6 @@ export const userReducer = createSlice({
   },
   extraReducers: builder => {
     builder
-      // .addCase(NewModuleCreation.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(NewModuleCreation.fulfilled, (state,action) => {
-      //   state.roles = action.payload;
-      // })
-      // .addCase(NewModuleCreation.rejected, (state) => {
-      //   state.status = "error";
-      // })
       .addCase(ModuleNameGetFormsaa.fulfilled, (state,action) => {
         state.rolesGetForms = action.payload.data.data;
       })

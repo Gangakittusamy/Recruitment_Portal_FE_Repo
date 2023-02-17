@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
-import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks"
 import _ from "lodash"
-import { dragAndDropValueSuperAdmin } from "../../../features/counter/dragAndDrop"
+import { dragAndDropValueSuperAdmin } from "../../../../features/counter/dragAndDrop"
 
 interface MultipleSelectProps {
   item: any
@@ -68,7 +68,6 @@ const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
             Mark as required
           </li>
         )}
-
         {item.required && item.required === true && (
           <li onClick={() => markAsRequired(item.id, false)}>
             <i className="pi pi-check pr-1" style={{fontSize: "12px"}}></i> Mark as required

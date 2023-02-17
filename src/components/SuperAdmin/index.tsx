@@ -8,7 +8,8 @@ import {
   formEditIdDragAndDrop,
   dragAndDropDialogIndexSuperAdmin,
   selectStructuredData,
-  setPickListDropDownData
+  setPickListDropDownData,
+  setSingleColumnForms
 } from "../../features/counter/dragAndDrop"
 import { useSelector, useDispatch } from "react-redux"
 import NavBar from "./navBar"
@@ -144,6 +145,16 @@ const SuperAdmin = () => {
 
       let totalValue = count.module?.rolesGetForms
 
+      if (totalValue) {
+        dispatch(
+          setSingleColumnForms(
+            totalValue[0]?.singleColumnForms
+              ? totalValue[0]?.singleColumnForms
+              : []
+          )
+        )
+      }
+      
       let value = Object.assign(
         {},
         totalValue ? totalValue[0]?.moduleelements : {}

@@ -24,6 +24,7 @@ const TopBars = (props: any) => {
   const [formNames, setFormNames] = useState<any>()
 
   const [checked1, setChecked1] = useState(false)
+  const [singleColumnForms, setSingleColumnForms] = useState<string[]>([])
   const dlist = [{}]
 
   const onCityChange = (e: any) => {
@@ -34,6 +35,10 @@ const TopBars = (props: any) => {
   useEffect(() => {
     setFormNames(count.module.formNameArray)
   }, [count.module.formNameArray])
+
+  useEffect(() => {
+    setSingleColumnForms(count.dragAndDrop.singleColumnForms)
+  }, [count.dragAndDrop.singleColumnForms])
 
   useEffect(() => {
     setPreviewData(count.dragAndDrop.initialStartDragSuperAdmin)
@@ -124,7 +129,13 @@ const TopBars = (props: any) => {
                   return (
                     <div key={i} className="indv-form">
                       <h4 className="formName">{getFormName(list)}</h4>
-                      <div className="indv-form-elem">
+                      <div
+                        className={`indv-form-elem ${
+                          singleColumnForms && singleColumnForms.includes(list)
+                            ? "single-col"
+                            : ""
+                        }`}
+                      >
                         {previewData[list]?.map((item: any, index: number) => {
                           return (
                             <div
@@ -133,34 +144,35 @@ const TopBars = (props: any) => {
                             >
                               {item.subName === "Pick List" ? (
                                 <div className="names">
-                                    <p className="grey">{getFieldName(item)}</p>
-                                    <Dropdown
-                                      options={getDropDownValue(item)}
-                                      optionLabel="value"
-                                      placeholder="Select"
-                                      style={{
-                                        position: "relative",
-                                        left: "28px",
-                                        height: "34px",
-                                        top: "10px",
-                                        width: "-webkit-fill-available"
-                                      }}
-                                    />
+                                  <p className="grey">{getFieldName(item)}</p>
+                                  <Dropdown
+                                    options={getDropDownValue(item)}
+                                    optionLabel="value"
+                                    placeholder="Select"
+                                    style={{
+                                      position: "relative",
+                                      left: "28px",
+                                      height: "34px",
+                                      top: "10px",
+                                      width: "-webkit-fill-available"
+                                    }}
+                                  />
                                 </div>
-                              ) : item.subName === "Checkbox" ? (
+                              ) : item.subName === "Checkbox" ||
+                                item.subName === "Email Opt Out" ? (
                                 <div className="names">
-                                    <p className="grey">
-                                      {item.names || item.type}
-                                    </p>
-                                    <Checkbox
-                                      style={{
-                                        position: "relative",
-                                        left: "50px",
-                                        height: "44px",
-                                        top: "15px",
-                                        width: "-webkit-fill-available"
-                                      }}
-                                    />
+                                  <p className="grey">
+                                    {item.names || item.type}
+                                  </p>
+                                  <Checkbox
+                                    style={{
+                                      position: "relative",
+                                      left: "50px",
+                                      height: "44px",
+                                      top: "15px",
+                                      width: "-webkit-fill-available"
+                                    }}
+                                  />
                                 </div>
                               ) : (
                                 <div className="names">
@@ -193,7 +205,7 @@ const TopBars = (props: any) => {
                                         className="mt-3 "
                                         disabled
                                         value={item.names || item.type}
-                                        style={{width:"190px"}}
+                                        style={{ width: "190px" }}
                                       />
                                     </span>
                                   ) : item.names || item.type === "Percent" ? (
@@ -295,7 +307,7 @@ const TopBars = (props: any) => {
                                       <InputTextarea
                                         value={item.names || item.type}
                                         disabled
-                                        style={{width:"190px"}}
+                                        style={{ width: "190px" }}
                                       />
                                     </p>
                                   ) : item.names || item.type === "Date" ? (

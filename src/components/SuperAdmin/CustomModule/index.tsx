@@ -38,6 +38,11 @@ const CustomModule = (props: any) => {
   const navigate = useNavigate()
   const [ids, setIds] = useState<any>()
   const toast: any = useRef(null)
+  const [singleColumnForms, setSingleColumnForms] = useState<string[]>([])
+
+  useEffect(() => {
+    setSingleColumnForms(count.dragAndDrop.singleColumnForms)
+  }, [count.dragAndDrop.singleColumnForms])
 
   function handleChange(evt: any) {
     let value = ""
@@ -120,7 +125,13 @@ const CustomModule = (props: any) => {
                   return (
                     <div key={index} className="indv-form">
                       <h4 className="formName">{formName}</h4>
-                      <div className="indv-form-elem">
+                      <div
+                        className={`indv-form-elem ${
+                          singleColumnForms.includes(formName)
+                            ? "single-col"
+                            : ""
+                        }`}
+                      >
                         {forms[formName].map((item: any, index: number) => {
                           return (
                             <div
@@ -290,7 +301,8 @@ const CustomModule = (props: any) => {
                                         placeholder="DD/MM/YY   "
                                       />
                                     </p>
-                                  ) : item.DataHeader === "Checkbox" ? (
+                                  ) : item.DataHeader === "Checkbox" ||
+                                    item.DataHeader === "Email Opt Out" ? (
                                     <div>
                                       <Checkbox
                                         name={item.value}

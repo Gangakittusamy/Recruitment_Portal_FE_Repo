@@ -89,7 +89,8 @@
 .field-options {
   position: relative;
 }
-.field-options button {
+.field-options button,
+.form-elem-options button {
   cursor: pointer;
   border: none;
   background: none !important;
@@ -174,8 +175,40 @@
   height: 44px !important;
 }
 
-.dragCard .required-field{
+.dragCard .required-field {
   border-left: 5px solid red;
+}
+
+#drop-area .form-element {
+  width: 100%;
+  display: flex;
+}
+
+#drop-area .form-elem-options {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+#drop-area .form-elem-options i {
+  font-size: 1rem;
+}
+
+#drop-area .form-elem-options .form-dialog {
+  left: auto !important;
+  right: -130px !important;
+  top: 15px !important;
+}
+
+.createForm .single-col{
+  display: block !important;
+}
+
+@media (min-width: 992px) {
+  #drop-area .single-col {
+    display: block;
+  }
 }
 
 @media (max-width: 992px) {

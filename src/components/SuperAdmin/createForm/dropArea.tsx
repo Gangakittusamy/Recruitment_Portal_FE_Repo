@@ -29,7 +29,8 @@ import { Dropdown } from "primereact/dropdown"
 import { Checkbox } from "primereact/checkbox"
 import { useParams } from "react-router-dom"
 import _ from "lodash"
-import FieldOptionsDialog from "./fieldOptionsDialog"
+import FieldOptionsDialog from "./DialogComponents/fieldOptionsDialog"
+import FormOptionsDialog from "./DialogComponents/formOptionsDialog"
 
 interface formModel {
   name: string
@@ -53,10 +54,14 @@ const DropArea = (props: any) => {
   const [store, setstore] = useState<any>([])
   const [editArray, setEditArray] = useState<any>()
   const [finaValue, setFinalValue] = useState<any>({})
-  const [fieldDeleteDialog, setFieldDeleteDialog] = useState(false)
   const [currentField, setCurrentField] = useState("")
+  const [fieldOptionsDialog, setFieldOptionsDialog] = useState(false)
+  const [currentForm, setCurrentForm] = useState("")
+  const [currentFormIndex, setCurrentFormIndex] = useState<any>()
+  const [formOptionsDialog, setFormOptionsDialog] = useState(false)
   const user: any = useAppSelector((state) => state)
   const [openPicklistEditdialog, setOpenPicklistEditDialog] = useState(false)
+  const [singleColumnForms, setSingleColumnForms] = useState<string[]>([])
 
   useEffect(() => {
     GetModuleName()
@@ -85,21 +90,13 @@ const DropArea = (props: any) => {
     }
 
     if (window.location.pathname == `/super-admin/edit/${editId}`) {
-      // let totalValue = count.module.rolesGetForms[0].moduleelements;
-      // let keyValue;
-      // for (let key in totalValue) {
-      //   keyValue = totalValue[key];
-      //   setEditArray(totalValue[key]);
-      // }
-      // let arrayValue = [];
-      // let arrayVal = [];
-      // for (let val in keyValue) {
-      //   arrayValue.push(keyValue[val]);
-      //   arrayVal.push(val);
-      // }
       setuidv4(count.dragAndDrop.initialStartDragSuperAdmin)
     }
   }, [count.dragAndDrop.initialStartDragSuperAdmin])
+
+  useEffect(() => {
+    setSingleColumnForms(count.dragAndDrop.singleColumnForms)
+  }, [count.dragAndDrop.singleColumnForms])
 
   const add = async () => {
     let index: any
@@ -236,7 +233,8 @@ const DropArea = (props: any) => {
     let payload: any = {
       modulename: moduleName,
       recuriter: count?.userValue?.roles?.id,
-      moduleelements: response
+      moduleelements: response,
+      singleColumnForms
     }
 
     if (
@@ -394,7 +392,11 @@ const DropArea = (props: any) => {
   }
 
   const showSection = (item: any) => {
-    if (item.subName !== "Pick List" && item.subName !== "Checkbox") {
+    if (
+      item.subName !== "Pick List" &&
+      item.subName !== "Checkbox" &&
+      item.subName !== "Email Opt Out"
+    ) {
       return true
     } else {
       return false
@@ -425,11 +427,10 @@ const DropArea = (props: any) => {
     <div className="">
       <Toast ref={toast} />
       <div className="ml-8 pl-2"></div>
-
       <div className="FormDiv1">
         {Object.keys(uidv4 || {}).map((list: any, i: number) => {
           return (
-            <div key={list}>
+            <div key={list} id="drop-area">
               <Droppable key={list} droppableId={list}>
                 {(provided, snapshot) => (
                   <div className="border-dotted border-400 mt-4 ml-3 mr-3">
@@ -439,21 +440,54 @@ const DropArea = (props: any) => {
                             return (
                               <div key={idx} className="ml-3">
                                 {i == idx ? (
-                                  <input
-                                    placeholder="Untitled form"
-                                    className="mx-auto  text-sm text-900 form-name-input"
-                                    style={{
-                                      height: "48px",
-                                      color: "#333333"
-                                    }}
-                                    value={x.name}
-                                    onChange={(e) =>
-                                      handleChangeForm(i, e, list)
-                                    }
-                                    onBlur={() => {
-                                      dispatch(formNameForPreview(formName))
-                                    }}
-                                  />
+                                  <div className="form-element">
+                                    <div>
+                                      <input
+                                        placeholder="Untitled form"
+                                        className="mx-auto  text-sm text-900 form-name-input"
+                                        style={{
+                                          height: "48px",
+                                          color: "#333333"
+                                        }}
+                                        value={x.name}
+                                        onChange={(e) =>
+                                          handleChangeForm(i, e, list)
+                                        }
+                                        onBlur={() => {
+                                          dispatch(formNameForPreview(formName))
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="form-elem-options">
+                                      <button
+                                        onClick={() => {
+                                          setFormOptionsDialog(
+                                            (prevState) => !prevState
+                                          )
+                                          setCurrentForm(x.name)
+                                          setCurrentFormIndex(idx)
+                                        }}
+                                        // onBlur={() => {
+                                        //   setFormOptionsDialog(false)
+                                        // }}
+                                      >
+                                        <i className="pi pi-cog"></i>
+                                      </button>
+                                      {currentForm === x.name &&
+                                        currentFormIndex === idx && (
+                                          <FormOptionsDialog
+                                            dialogVisible={formOptionsDialog}
+                                            formDetails={x}
+                                            formIndex={idx}
+                                            closeDialog={() => {
+                                              setFormOptionsDialog(false)
+                                              setCurrentForm("")
+                                              setCurrentFormIndex(undefined)
+                                            }}
+                                          />
+                                        )}
+                                    </div>
+                                  </div>
                                 ) : (
                                   ""
                                 )}
@@ -462,7 +496,14 @@ const DropArea = (props: any) => {
                           })
                         : ""}
                     </section>
-                    <div className="dragCard" ref={provided.innerRef}>
+                    <div
+                      className={`dragCard ${
+                        singleColumnForms && singleColumnForms.includes(list)
+                          ? "single-col"
+                          : ""
+                      }`}
+                      ref={provided.innerRef}
+                    >
                       {
                         uidv4[list].length ? (
                           uidv4[list].map((item: any, index: number) => (
@@ -515,7 +556,8 @@ const DropArea = (props: any) => {
                                             />
                                           </div>
                                         </>
-                                      ) : item.subName === "Checkbox" ? (
+                                      ) : item.subName === "Checkbox" ||
+                                        item.subName === "Email Opt Out" ? (
                                         <div className="flex">
                                           <input
                                             type="text"
@@ -545,7 +587,7 @@ const DropArea = (props: any) => {
                                           <Checkbox
                                             style={{
                                               position: "relative",
-                                              left: "28px",
+                                              left: "80px",
                                               height: "44px",
                                               top: "10px",
                                               border: "1px solid lightgrey",
@@ -589,13 +631,13 @@ const DropArea = (props: any) => {
                                       <div className="field-options">
                                         <button
                                           onClick={() => {
-                                            setFieldDeleteDialog(
+                                            setFieldOptionsDialog(
                                               (prevState) => !prevState
                                             )
                                             setCurrentField(item.id)
                                           }}
                                           onBlur={() => {
-                                            setFieldDeleteDialog(false)
+                                            setFieldOptionsDialog(false)
                                           }}
                                         >
                                           <i className="pi pi-ellipsis-v"></i>
@@ -604,7 +646,7 @@ const DropArea = (props: any) => {
                                           <FieldOptionsDialog
                                             item={item}
                                             formId={list}
-                                            dialogVisible={fieldDeleteDialog}
+                                            dialogVisible={fieldOptionsDialog}
                                             closeDialog={() =>
                                               setCurrentField("")
                                             }
