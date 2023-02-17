@@ -2,7 +2,7 @@ import Edit from "../../../assets/edit.png"
 import Add from "../../../assets/add.png"
 import Actions from "../../../assets/actions.png"
 import { Sidebar } from "primereact/sidebar"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Dropdown } from "primereact/dropdown"
 import { InputText } from "primereact/inputtext"
 import { Calendar } from "primereact/calendar"
@@ -25,6 +25,7 @@ import { leadGenerationTable } from "../../../features/Modules/leadGeneration"
 import { LoginUserDetails } from "../../../features/Auth/userDetails"
 import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration"
 import "./customModule.css"
+import { Toast } from "primereact/toast"
 
 const CustomModule = (props: any) => {
   const [state, setState] = React.useState<any>([])
@@ -36,6 +37,7 @@ const CustomModule = (props: any) => {
   const { forms, id, recId, module } = location.state
   const navigate = useNavigate()
   const [ids, setIds] = useState<any>()
+  const toast: any = useRef(null)
 
   function handleChange(evt: any) {
     let value = ""
@@ -51,19 +53,38 @@ const CustomModule = (props: any) => {
   }
 
   const saveForm = async () => {
-    let payload = {
-      recuriter: ids,
-      moduleId: recId,
-      tableData: {
-        tableData: [state]
-      }
+    let requiredElements: any = []
+    for (const key in forms) {
+      const currentFormId = key
+      const requiredFields = forms[currentFormId]
+        .filter((f: any) => f.required && f.required === true)
+        .map((f: any) => (f.type === "Pick List" ? f.DataHeader : f.value))
+      requiredElements = requiredElements.concat(requiredFields)
     }
-
-    const res = await dispatch(leadGenerationTable(payload))
-
-    if (res.payload.status == "Form-tableData created successfully") {
-      navigate(-1)
-      await dispatch(leadGenerationTableGet(id))
+    const submittedElements = Object.keys(state)
+    const isFormValid = requiredElements.every((ai: any) =>
+      submittedElements.includes(ai)
+    )
+    if (isFormValid) {
+      let payload = {
+        recuriter: ids,
+        moduleId: recId,
+        tableData: {
+          tableData: [state]
+        }
+      }
+      const res = await dispatch(leadGenerationTable(payload))
+      if (res.payload.status == "Form-tableData created successfully") {
+        navigate(-1)
+        await dispatch(leadGenerationTableGet(id))
+      }
+    } else {
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please fill the required fields",
+        life: 3000
+      })
     }
   }
 
@@ -78,6 +99,7 @@ const CustomModule = (props: any) => {
 
   return (
     <div>
+      <Toast ref={toast} />
       <div>
         <div className="border-black-alpha-30 border-1 pb-7">
           <span className="contactName ">{`Create ${module}`}</span>
@@ -107,7 +129,15 @@ const CustomModule = (props: any) => {
                             >
                               {item.type === "Pick List" ? (
                                 <div className="names">
-                                  <p className="grey">{item.DataHeader}</p>
+                                  <p
+                                    className={`grey ${
+                                      item.required && item.required === true
+                                        ? "required"
+                                        : ""
+                                    }`}
+                                  >
+                                    {item.DataHeader}
+                                  </p>
                                   <Dropdown
                                     options={item.options}
                                     optionLabel="value"
@@ -129,7 +159,15 @@ const CustomModule = (props: any) => {
                                 </div>
                               ) : (
                                 <div className="names">
-                                  <p className="grey">{item.value}</p>
+                                  <p
+                                    className={`grey ${
+                                      item.required && item.required === true
+                                        ? "required"
+                                        : ""
+                                    }`}
+                                  >
+                                    {item.value}
+                                  </p>
                                   {item.DataHeader === "Untitled Owner" ? (
                                     <span className="p-input-icon-right ">
                                       <i className="pi pi-lock mt-0" />
@@ -148,7 +186,7 @@ const CustomModule = (props: any) => {
                                         name={item.value}
                                         value={state.Currency}
                                         onChange={handleChange}
-                                        style={{width:"190px"}}
+                                        style={{ width: "190px" }}
                                       />
                                     </span>
                                   ) : item.DataHeader === "Percent" ? (
@@ -240,7 +278,7 @@ const CustomModule = (props: any) => {
                                         name={item.value}
                                         value={state.Multi}
                                         onChange={handleChange}
-                                        style={{width:"190px"}}
+                                        style={{ width: "190px" }}
                                       />
                                     </p>
                                   ) : item.DataHeader === "Date" ? (
@@ -274,7 +312,9 @@ const CustomModule = (props: any) => {
                                         id="phone"
                                         name={item.value}
                                         value={state.lastName}
-                                        onChange={(e)=>handleChange(e.originalEvent)}
+                                        onChange={(e) =>
+                                          handleChange(e.originalEvent)
+                                        }
                                         placeholder="(+91) 999-9999-999"
                                         useGrouping={false}
                                       />

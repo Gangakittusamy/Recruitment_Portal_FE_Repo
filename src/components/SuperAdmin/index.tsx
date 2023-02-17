@@ -54,6 +54,7 @@ const SuperAdmin = () => {
   const dispatch = useDispatch()
   const { editId } = useParams()
   const [id, setId] = useState()
+  const [editScreenUpdated, setEditScreenUpdated] = useState<any>(false)
   const [complete, setCompleted] = useState<any>({
     [uuidv4()]: []
   })
@@ -64,7 +65,11 @@ const SuperAdmin = () => {
   useEffect(() => {
     if (window.location.pathname !== `/super-admin/edit/${editId}`) {
       setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
-    } 
+    } else {
+      if (editScreenUpdated) {
+        setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
+      }
+    }
   }, [count.dragAndDrop.initialStartDragSuperAdmin])
 
   const reorder = (
@@ -178,13 +183,15 @@ const SuperAdmin = () => {
             return {
               names: y.fieldname,
               subName: y.type,
-              id: newId
+              id: newId,
+              required: y.required
             }
           } else {
             return {
               names: y.type,
               subName: y.fieldname,
-              id: newId
+              id: newId,
+              required: y.required
             }
           }
         })
@@ -225,6 +232,7 @@ const SuperAdmin = () => {
       if (Object.keys(complete).length) {
         dispatch(dragAndDropValueSuperAdmin(result))
       }
+      setEditScreenUpdated(true)
     }
   }, [complete])
 

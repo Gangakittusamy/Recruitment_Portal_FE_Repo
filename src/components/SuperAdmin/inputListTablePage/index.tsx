@@ -82,6 +82,7 @@ const FieldListTablePage = (props: any) => {
           value: value[list][heading].defaultvalue,
           options:value[list][heading].options,
           type:value[list][heading].type,
+          required:value[list][heading].required ? value[list][heading].required : false
         });
         TableData.push(heading);
         forms.push(value[list][heading]);

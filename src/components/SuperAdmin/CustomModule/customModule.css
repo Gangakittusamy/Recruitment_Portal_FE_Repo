@@ -39,7 +39,13 @@
   margin-right: 20px;
 }
 
-@media(max-width:992px){
+.createForm .names .required::after {
+  content: "*";
+  color: red;
+  padding-left: 2px;
+}
+
+@media (max-width: 992px) {
   .createForm .names .grey {
     min-width: 45%;
   }
