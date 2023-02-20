@@ -198,8 +198,10 @@ const DropArea = (props: any) => {
 
     if (formName[0].id !== "") {
       formName.map((f: formModel, i: number) => {
+       if(value[f.id]){
         value[f.name] = value[f.id]
         delete value[f.id]
+       }
       })
     }
 
@@ -423,6 +425,13 @@ const DropArea = (props: any) => {
     }
   }
 
+  const getFormName = (id:any) => {
+    const form = formName.find((f:any)=>{
+      return f.id === id
+    })
+    return form?.name
+  }
+
   return (
     <div className="">
       <Toast ref={toast} />
@@ -484,6 +493,7 @@ const DropArea = (props: any) => {
                                               setCurrentForm("")
                                               setCurrentFormIndex(undefined)
                                             }}
+                                            isSingleColumn={singleColumnForms && singleColumnForms.includes(getFormName(list))}
                                           />
                                         )}
                                     </div>
@@ -498,7 +508,7 @@ const DropArea = (props: any) => {
                     </section>
                     <div
                       className={`dragCard ${
-                        singleColumnForms && singleColumnForms.includes(list)
+                        singleColumnForms && singleColumnForms.includes(getFormName(list))
                           ? "single-col"
                           : ""
                       }`}

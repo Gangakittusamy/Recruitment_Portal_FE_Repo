@@ -80,7 +80,7 @@ const TopBars = (props: any) => {
     })
     return options
   }
-
+  
   return (
     <div>
       <TabMenu
@@ -131,7 +131,7 @@ const TopBars = (props: any) => {
                       <h4 className="formName">{getFormName(list)}</h4>
                       <div
                         className={`indv-form-elem ${
-                          singleColumnForms && singleColumnForms.includes(list)
+                          singleColumnForms && singleColumnForms.includes(getFormName(list))
                             ? "single-col"
                             : ""
                         }`}

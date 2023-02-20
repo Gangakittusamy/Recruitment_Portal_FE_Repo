@@ -56,6 +56,8 @@ const SuperAdmin = () => {
   const { editId } = useParams()
   const [id, setId] = useState()
   const [editScreenUpdated, setEditScreenUpdated] = useState<any>(false)
+  const [editScreenModified, setEditScreenModified] = useState<any>(false)
+
   const [complete, setCompleted] = useState<any>({
     [uuidv4()]: []
   })
@@ -69,6 +71,7 @@ const SuperAdmin = () => {
     } else {
       if (editScreenUpdated) {
         setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
+        setEditScreenModified(true)
       }
     }
   }, [count.dragAndDrop.initialStartDragSuperAdmin])
@@ -143,9 +146,11 @@ const SuperAdmin = () => {
     if (window.location.pathname === `/super-admin/edit/${editId}`) {
       const result = applyFormChanges()
 
-      let totalValue = count.module?.rolesGetForms
+      let totalValue = editScreenModified
+        ? complete
+        : count.module?.rolesGetForms
 
-      if (totalValue) {
+      if (totalValue && !editScreenModified) {
         dispatch(
           setSingleColumnForms(
             totalValue[0]?.singleColumnForms
@@ -154,7 +159,7 @@ const SuperAdmin = () => {
           )
         )
       }
-      
+
       let value = Object.assign(
         {},
         totalValue ? totalValue[0]?.moduleelements : {}
@@ -167,7 +172,13 @@ const SuperAdmin = () => {
       res1.map((x, i) => {
         if (i + 1 < res1.length && res2.length < res1.length) {
           let ab: any = [uuidv4()]
-          complete[ab] = []
+          if (!editScreenUpdated) {
+            complete[ab] = []
+          } else {
+            if (complete[ab]) {
+              complete[ab] = []
+            }
+          }
         }
       })
 
