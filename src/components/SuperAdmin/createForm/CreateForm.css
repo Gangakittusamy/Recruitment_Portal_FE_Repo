@@ -99,9 +99,9 @@
   position: absolute;
   will-change: transform;
   top: 10px;
-  left: -90px;
+  left: -120px;
   transform: translate3d(-124px, 24px, 0px);
-  width: 250px;
+  width: 280px;
   border-radius: 10px;
   border: 1px solid #fff;
   box-shadow: 0 -1px 10px rgb(0 0 0 / 10%);

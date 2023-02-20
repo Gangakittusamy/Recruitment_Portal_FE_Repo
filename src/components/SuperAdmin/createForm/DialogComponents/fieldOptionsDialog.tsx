@@ -9,6 +9,7 @@ interface MultipleSelectProps {
   dialogVisible: boolean
   closeDialog: any
   isEditDialogOpen: any
+  fieldName: any
 }
 
 const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
@@ -16,7 +17,8 @@ const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
   closeDialog,
   isEditDialogOpen,
   item,
-  formId
+  formId,
+  fieldName
 }) => {
   const count: any = useAppSelector((state) => state)
   const dispatch = useAppDispatch()
@@ -36,16 +38,24 @@ const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
     closeDialog(true)
   }
 
-  const markAsRequired = (itemId: any, required: any) => {
+  const modifyField = (type: any, itemId: any, value: any) => {
     const currentFormElements = count.dragAndDrop.initialStartDragSuperAdmin
     let modifiedModule: any = {}
     for (const key in currentFormElements) {
       const currentFormId = key
       const modifiedForm = currentFormElements[currentFormId].map((f: any) => {
         if (f.id === itemId) {
-          return {
-            ...f,
-            required: required
+          switch (type) {
+            case "required":
+              return {
+                ...f,
+                required: value
+              }
+            case "duplicateValues":
+              return {
+                ...f,
+                unique: value
+              }
           }
         } else {
           return { ...f }
@@ -64,15 +74,31 @@ const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
     >
       <ul>
         {(!item.required || item.required === false) && (
-          <li onClick={() => markAsRequired(item.id, true)}>
+          <li onClick={() => modifyField("required", item.id, true)}>
             Mark as required
           </li>
         )}
         {item.required && item.required === true && (
-          <li onClick={() => markAsRequired(item.id, false)}>
-            <i className="pi pi-check pr-1" style={{fontSize: "12px"}}></i> Mark as required
+          <li onClick={() => modifyField("required", item.id, false)}>
+            <i className="pi pi-check pr-1" style={{ fontSize: "12px" }}></i>{" "}
+            Mark as required
           </li>
         )}
+        {item.subName !== "Pick List" &&
+          item.subName !== "Checkbox" &&
+          !item.unique && (
+            <li onClick={() => modifyField("duplicateValues", item.id, true)}>
+              Do Not Allow Duplicate Values
+            </li>
+          )}
+        {item.subName !== "Pick List" &&
+          item.subName !== "Checkbox" &&
+          item.unique && (
+            <li onClick={() => modifyField("duplicateValues", item.id, false)}>
+              <i className="pi pi-check pr-1" style={{ fontSize: "12px" }}></i>{" "}
+              Do Not Allow Duplicate Values
+            </li>
+          )}
         {item.subName === "Pick List" && (
           <li onClick={() => isEditDialogOpen(true)}>Edit Properties</li>
         )}

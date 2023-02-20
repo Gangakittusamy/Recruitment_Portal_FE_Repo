@@ -198,10 +198,10 @@ const DropArea = (props: any) => {
 
     if (formName[0].id !== "") {
       formName.map((f: formModel, i: number) => {
-       if(value[f.id]){
-        value[f.name] = value[f.id]
-        delete value[f.id]
-       }
+        if (value[f.id]) {
+          value[f.name] = value[f.id]
+          delete value[f.id]
+        }
       })
     }
 
@@ -219,14 +219,16 @@ const DropArea = (props: any) => {
             type: x.subName,
             fieldname: pickListDropdownData[0].fieldLabel,
             options: pickListDropdownData,
-            required: x.required ? x.required : false
+            required: x.required ? x.required : false,
+            unique: x.unique ? x.unique : false
           }
         } else {
           return {
             type: x.names,
             fieldname: x.subName,
             defaultvalue: x.names,
-            required: x.required ? x.required : false
+            required: x.required ? x.required : false,
+            unique: x.unique ? x.unique : false
           }
         }
       })
@@ -425,8 +427,8 @@ const DropArea = (props: any) => {
     }
   }
 
-  const getFormName = (id:any) => {
-    const form = formName.find((f:any)=>{
+  const getFormName = (id: any) => {
+    const form = formName.find((f: any) => {
       return f.id === id
     })
     return form?.name
@@ -493,7 +495,12 @@ const DropArea = (props: any) => {
                                               setCurrentForm("")
                                               setCurrentFormIndex(undefined)
                                             }}
-                                            isSingleColumn={singleColumnForms && singleColumnForms.includes(getFormName(list))}
+                                            isSingleColumn={
+                                              singleColumnForms &&
+                                              singleColumnForms.includes(
+                                                getFormName(list)
+                                              )
+                                            }
                                           />
                                         )}
                                     </div>
@@ -508,7 +515,8 @@ const DropArea = (props: any) => {
                     </section>
                     <div
                       className={`dragCard ${
-                        singleColumnForms && singleColumnForms.includes(getFormName(list))
+                        singleColumnForms &&
+                        singleColumnForms.includes(getFormName(list))
                           ? "single-col"
                           : ""
                       }`}
@@ -634,7 +642,7 @@ const DropArea = (props: any) => {
 
                                       {showSection(item) && (
                                         <section className="grey font-semibold dropped-item-info">
-                                          {item.subName || item.fieldname}
+                                          {item.subName || item.fieldname}{item.unique && "(Unique)"}
                                         </section>
                                       )}
 
@@ -663,6 +671,7 @@ const DropArea = (props: any) => {
                                             isEditDialogOpen={() =>
                                               setOpenPicklistEditDialog(true)
                                             }
+                                            fieldName={item.names}
                                           />
                                         )}
                                       </div>

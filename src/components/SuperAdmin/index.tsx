@@ -206,14 +206,16 @@ const SuperAdmin = () => {
               names: y.fieldname,
               subName: y.type,
               id: newId,
-              required: y.required
+              required: y.required,
+              unique: y.unique
             }
           } else {
             return {
               names: y.type,
               subName: y.fieldname,
               id: newId,
-              required: y.required
+              required: y.required,
+              unique: y.unique
             }
           }
         })
