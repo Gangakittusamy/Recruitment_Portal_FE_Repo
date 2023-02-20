@@ -88,6 +88,21 @@ export const ModuleNameUpdate: any = createAsyncThunk(
   }
 );
 
+export const UpdateFieldsForModuleUpdate: any = createAsyncThunk(
+  "module/moduleCreation",
+  async (para1: any, thunkAPI) => {
+    try {
+      const response: Object = await axios.put(
+        `${BASEURL}/api/formdatas/updatetabledatafield/${para1.editId}`,
+        para1.payload
+      );
+      return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const ModuleNameGetFormsaa: any = createAsyncThunk(
   "app/moduleCreationn",
   async (para1, thunkAPI) => {

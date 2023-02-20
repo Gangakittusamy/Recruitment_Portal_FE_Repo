@@ -17,7 +17,8 @@ import {
   NewModuleCreation,
   ModuleNameUpdate,
   ModuleNameGet,
-  formNameForPreview
+  formNameForPreview,
+  UpdateFieldsForModuleUpdate
 } from "../../../features/Modules/module"
 import { object } from "yup"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
@@ -89,7 +90,7 @@ const DropArea = (props: any) => {
       setuidv4(count.dragAndDrop.initialStartDragSuperAdmin)
     }
 
-    if (window.location.pathname == `/super-admin/edit/${editId}`) {
+    if (window.location.pathname === `/super-admin/edit/${editId}`) {
       setuidv4(count.dragAndDrop.initialStartDragSuperAdmin)
     }
   }, [count.dragAndDrop.initialStartDragSuperAdmin])
@@ -255,6 +256,7 @@ const DropArea = (props: any) => {
         res = await dispatch(ModuleNameUpdate(val))
         if (res.payload.status == 200) {
           dispatch(ModuleNameGet())
+          updateFieldNames()
         }
       } else {
         res = await dispatch(NewModuleCreation(payload))
@@ -283,6 +285,38 @@ const DropArea = (props: any) => {
         life: 3000
       })
     }
+  }
+
+  const updateFieldNames = async () => {
+    let oldForm = count.dragAndDrop.initiallyUpdatedModuleData
+    let oldFormElements: any = []
+    for (const key in oldForm) {
+      oldFormElements = oldFormElements.concat(oldForm[key])
+    }
+
+    let newForm = uidv4
+    let newFormElements: any = []
+    for (const key in newForm) {
+      newFormElements = newFormElements.concat(newForm[key])
+    }
+
+    let payload: any = {}
+    const changedElements = _.difference(oldFormElements, newFormElements)
+
+    newFormElements.map((i: any) => {
+      if (changedElements.some((j: any) => j.id === i.id)) {
+        const alteredField: any = changedElements.find(
+          (el: any) => el.id === i.id
+        )
+        payload[alteredField.names] = i.names
+      }
+    })
+
+    let val = {
+      payload: payload,
+      editId: editId
+    }
+    await dispatch(UpdateFieldsForModuleUpdate(val))
   }
 
   const isValidModuleName = (module: any) => {
@@ -642,7 +676,8 @@ const DropArea = (props: any) => {
 
                                       {showSection(item) && (
                                         <section className="grey font-semibold dropped-item-info">
-                                          {item.subName || item.fieldname}{item.unique && "(Unique)"}
+                                          {item.subName || item.fieldname}
+                                          {item.unique && "(Unique)"}
                                         </section>
                                       )}
 

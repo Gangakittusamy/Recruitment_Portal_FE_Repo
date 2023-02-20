@@ -9,7 +9,8 @@ import {
   dragAndDropDialogIndexSuperAdmin,
   selectStructuredData,
   setPickListDropDownData,
-  setSingleColumnForms
+  setSingleColumnForms,
+  setInitiallyUpdatedModuleData
 } from "../../features/counter/dragAndDrop"
 import { useSelector, useDispatch } from "react-redux"
 import NavBar from "./navBar"
@@ -239,12 +240,18 @@ const SuperAdmin = () => {
         if (a1.length > a2.length) {
           setCompleted(resObj)
           dispatch(dragAndDropValueSuperAdmin(resObj))
+          if(!editScreenModified){
+            dispatch(setInitiallyUpdatedModuleData(resObj))
+          }
         }
         if (a2.length > a1.length) {
           const sameArray = _.isEqual(complete, result)
           if (!sameArray) {
             setCompleted(result)
             dispatch(dragAndDropValueSuperAdmin(result))
+            if(!editScreenModified){
+              dispatch(setInitiallyUpdatedModuleData(result))
+            }
           }
         }
       }
@@ -255,6 +262,9 @@ const SuperAdmin = () => {
 
       if (Object.keys(complete).length) {
         dispatch(dragAndDropValueSuperAdmin(result))
+        if(!editScreenModified){
+          dispatch(setInitiallyUpdatedModuleData(result))
+        }
       }
       setEditScreenUpdated(true)
     }
