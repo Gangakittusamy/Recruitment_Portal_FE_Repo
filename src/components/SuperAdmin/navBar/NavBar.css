@@ -84,6 +84,13 @@
   margin-top: -8px;
 }
 
+.nav_text p.active {
+  color: #ffffff;
+  background: #6366f1;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
 @media (max-width: 992px) {
   .NavBar_Main {
     display: block;

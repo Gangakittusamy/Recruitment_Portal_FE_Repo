@@ -126,6 +126,14 @@ const NavBar = (props: any) => {
     }
   }
 
+  const checkActiveModule = (module: any) => {
+    const activeModule = localStorage.getItem("moduleName")
+    if (module?.modulename === activeModule) {
+      return true
+    }
+    return false
+  }
+
   return (
     <div className="NavBar_Main">
       <Toast ref={toast} position="top-center"></Toast>
@@ -172,7 +180,14 @@ const NavBar = (props: any) => {
             onClick={() => navigate(`/super-admin`)}
           >
             <img src={Dashboard} width={16} height={16} />
-            <p className="font-bold">Dashboard</p>
+            <p
+              className="font-bold"
+              onClick={() => {
+                localStorage.setItem("moduleName", "")
+              }}
+            >
+              Dashboard
+            </p>
           </div>
           {state
             ? state.map((x: any, index: any) => {
@@ -189,7 +204,13 @@ const NavBar = (props: any) => {
                             className="nav_text capitalize"
                             onClick={(e: any) => NavbarEdit(x)}
                           >
-                            <p className="font-bold">{x.modulename}</p>
+                            <p
+                              className={`font-bold ${
+                                checkActiveModule(x) ? "active" : ""
+                              }`}
+                            >
+                              {x.modulename}
+                            </p>
                           </div>
                         </div>
                       ) : (
@@ -301,6 +322,7 @@ const NavBar = (props: any) => {
                     accept: async () => {
                       let res: any = await dispatch(logOut())
                       if (res.payload.status === "success") {
+                        localStorage.clear()
                         Cookies.remove("token")
                         Cookies.remove("access_token")
                         navigate("/")

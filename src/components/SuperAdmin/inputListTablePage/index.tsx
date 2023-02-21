@@ -227,11 +227,13 @@ const FieldListTablePage = (props: any) => {
       <div>
         <NavBar />
         {isLoading && (
-          <ProgressSpinner
-            style={{ width: "50px", height: "50px" }}
-            strokeWidth="8"
-            className=""
-          />
+          <div  className="create_form_main" >
+            <ProgressSpinner
+              style={{ width: "50px", height: "80vh" }}
+              strokeWidth="8"
+              className=""
+            />
+          </div>
         )}
         {!isLoading && (
           <div className="flex mt-3 create_form_main">
