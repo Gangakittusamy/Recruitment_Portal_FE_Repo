@@ -229,7 +229,7 @@ const FieldListTablePage = (props: any) => {
         {isLoading && (
           <div  className="create_form_main" >
             <ProgressSpinner
-              style={{ width: "50px", height: "80vh" }}
+              style={{ width: "50px", height: "75vh" }}
               strokeWidth="8"
               className=""
             />
