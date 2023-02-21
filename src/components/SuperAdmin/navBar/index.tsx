@@ -234,21 +234,21 @@ const NavBar = (props: any) => {
                     )
                   })
                 : ""}
-              {checkRecentTab() && (
-                <div className="recent-tab" style={{ right: "86px" }}>
-                  {/* <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
+              {/* {checkRecentTab() && ( */}
+              <div className="recent-tab" style={{ right: "86px" }}>
+                {/* <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
                 <span className="text-yellow-600">
                   {displayNav || localStorage.getItem("moduleName")}
                 </span>
               </span> */}
-                  <div
-                    onClick={(e) => op.current?.toggle(e)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <i className="pi pi-angle-double-right mr-6 mt-4"></i>
-                  </div>
+                <div
+                  onClick={(e) => op.current?.toggle(e)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <i className="pi pi-angle-double-right mr-6 mt-4"></i>
                 </div>
-              )}
+              </div>
+              {/* )} */}
               <OverlayPanel
                 ref={op}
                 showCloseIcon
@@ -277,7 +277,10 @@ const NavBar = (props: any) => {
                                   <div>
                                     <div
                                       className="nav_text_overlay capitalize"
-                                      onClick={(e: any) => NavbarEdit(x)}
+                                      onClick={(e: any) => {
+                                        NavbarEdit(x)
+                                        op.current?.toggle(e)
+                                      }}
                                     >
                                       {x.modulename}{" "}
                                     </div>
