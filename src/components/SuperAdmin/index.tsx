@@ -116,13 +116,13 @@ const SuperAdmin = () => {
               return {
                 names: alteredValue.names,
                 id: currentFields[i].id,
-                subName: currentFields[i].subName
+                subName: currentFields[i].subName,
+                required: currentFields[i].required,
+                unique: currentFields[i].unique
               }
             } else {
               return {
-                names: currentFields[i].names,
-                id: currentFields[i].id,
-                subName: currentFields[i].subName
+                ...currentFields[i]
               }
             }
           })
@@ -240,7 +240,7 @@ const SuperAdmin = () => {
         if (a1.length > a2.length) {
           setCompleted(resObj)
           dispatch(dragAndDropValueSuperAdmin(resObj))
-          if(!editScreenModified){
+          if (!editScreenModified) {
             dispatch(setInitiallyUpdatedModuleData(resObj))
           }
         }
@@ -249,7 +249,7 @@ const SuperAdmin = () => {
           if (!sameArray) {
             setCompleted(result)
             dispatch(dragAndDropValueSuperAdmin(result))
-            if(!editScreenModified){
+            if (!editScreenModified) {
               dispatch(setInitiallyUpdatedModuleData(result))
             }
           }
@@ -262,7 +262,7 @@ const SuperAdmin = () => {
 
       if (Object.keys(complete).length) {
         dispatch(dragAndDropValueSuperAdmin(result))
-        if(!editScreenModified){
+        if (!editScreenModified) {
           dispatch(setInitiallyUpdatedModuleData(result))
         }
       }

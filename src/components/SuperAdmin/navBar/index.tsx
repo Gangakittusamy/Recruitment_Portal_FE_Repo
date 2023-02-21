@@ -126,10 +126,6 @@ const NavBar = (props: any) => {
     }
   }
 
-  const getNumberOfModulesToBeShown= () => {
-    return window.innerWidth > 1280 ? 10 : 5
-  }
-
   return (
     <div className="NavBar_Main">
       <Toast ref={toast} position="top-center"></Toast>
@@ -170,9 +166,13 @@ const NavBar = (props: any) => {
           </div>
         </OverlayPanel>
         <section className="flex modulesListing">
-          <div className="flex align-items-center mt-2 super_Admin_Sidebar_Dashboard sideBarOnClick">
-            <img src={Dashboard} width={16} height={16}/>
-            <p className=" font-bold">Dashboard</p>
+          <div
+            className="flex align-items-center mt-2 super_Admin_Sidebar_Dashboard sideBarOnClick"
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`/super-admin`)}
+          >
+            <img src={Dashboard} width={16} height={16} />
+            <p className="font-bold">Dashboard</p>
           </div>
           {state
             ? state.map((x: any, index: any) => {
@@ -183,13 +183,13 @@ const NavBar = (props: any) => {
                   >
                     <div>
                       {" "}
-                      {index <= getNumberOfModulesToBeShown() ? (
+                      {index <= 5 ? (
                         <div>
                           <div
                             className="nav_text capitalize"
                             onClick={(e: any) => NavbarEdit(x)}
                           >
-                            {x.modulename}
+                            <p className="font-bold">{x.modulename}</p>
                           </div>
                         </div>
                       ) : (
@@ -202,12 +202,15 @@ const NavBar = (props: any) => {
             : ""}
           {checkRecentTab() && (
             <div className="recent-tab" style={{ right: "86px" }}>
-              <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
+              {/* <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
                 <span className="text-yellow-600">
                   {displayNav || localStorage.getItem("moduleName")}
                 </span>
-              </span>
-              <div onClick={(e) => op.current?.toggle(e)}>
+              </span> */}
+              <div
+                onClick={(e) => op.current?.toggle(e)}
+                style={{ cursor: "pointer" }}
+              >
                 <i className="pi pi-angle-double-right mr-6 mt-4"></i>
               </div>
             </div>

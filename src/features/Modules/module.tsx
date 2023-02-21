@@ -89,7 +89,7 @@ export const ModuleNameUpdate: any = createAsyncThunk(
 );
 
 export const UpdateFieldsForModuleUpdate: any = createAsyncThunk(
-  "module/moduleCreation",
+  "module/updateFieldsForModuleUpdate",
   async (para1: any, thunkAPI) => {
     try {
       const response: Object = await axios.put(
@@ -112,6 +112,21 @@ export const ModuleNameGetFormsaa: any = createAsyncThunk(
       );
 
       return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const isValueAlreadyExist: any = createAsyncThunk(
+  "module/isValueAlreadyExist",
+  async (para1: any, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${BASEURL}/api/formdatas/isvalueAlreadyExist/${para1.editId}`,
+        para1.payload
+      );
+      return response.data
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error);
     }

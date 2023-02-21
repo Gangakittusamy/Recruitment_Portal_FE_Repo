@@ -25,6 +25,7 @@ import { useParams } from "react-router-dom"
 import { ModuleNameGetFormsaa } from "../../../features/Modules/module"
 import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration"
 import { LoginUserDetails } from "../../../features/Auth/userDetails"
+import { ProgressSpinner } from "primereact/progressspinner"
 import _ from "lodash"
 
 //rolesGetForms
@@ -46,12 +47,15 @@ const FieldListTablePage = (props: any) => {
   const [selectedColumns, setSelectedColumns] = useState<any>(null)
   const [columns, setColumns] = useState<any>([])
   const [userSelectedColumns, setUserSelectedColumns] = useState<any>([])
+  const [isLoading, setIsLoading] = useState<any>()
 
   async function firstGetApi() {
+    setIsLoading(true)
     let [res, response] = await Promise.all([
       dispatch(ModuleNameGetFormsaa(editTableId)),
       dispatch(leadGenerationTableGet(editTableId))
     ])
+    setIsLoading(false)
 
     if (res) {
       setButtonName(res?.payload?.data?.data[0]?.modulename)
@@ -84,10 +88,15 @@ const FieldListTablePage = (props: any) => {
           formData: list,
           DataHeader: value[list][heading].fieldname,
           value: value[list][heading].defaultvalue,
-          options: value[list][heading].options,
+          options: value[list][heading].options
+            ? value[list][heading].options
+            : {},
           type: value[list][heading].type,
           required: value[list][heading].required
             ? value[list][heading].required
+            : false,
+          unique: value[list][heading].unique
+            ? value[list][heading].unique
             : false
         })
         TableData.push(heading)
@@ -217,49 +226,57 @@ const FieldListTablePage = (props: any) => {
     <div style={{ background: "rgb(250, 250, 251)", height: "100vh" }}>
       <div>
         <NavBar />
-        <div className="flex mt-3 create_form_main">
-          <div style={{ background: "gainsboro" }}>
-            <TablePageSideBar />
-          </div>
-
-          <div className="create_form_main_division ml-3">
-            <div>
+        {isLoading && (
+          <ProgressSpinner
+            style={{ width: "50px", height: "50px" }}
+            strokeWidth="8"
+            className=""
+          />
+        )}
+        {!isLoading && (
+          <div className="flex mt-3 create_form_main">
+            <div style={{ background: "gainsboro" }}>
+              <TablePageSideBar />
+            </div>
+            <div className="create_form_main_division ml-3">
               <div>
-                <DataTable
-                  value={getdata}
-                  paginator
-                  responsiveLayout="scroll"
-                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
-                  rows={5}
-                  rowsPerPageOptions={[5, 10, 15]}
-                  selectionMode="single"
-                  header={header}
-                  resizableColumns
-                  columnResizeMode="fit"
-                  selection={selectedProducts}
-                  onSelectionChange={(e) => setSelectedProducts(e.value)}
-                >
-                  <Column
-                    selectionMode="multiple"
-                    headerStyle={{ width: "3rem" }}
-                    exportable={false}
-                  ></Column>
+                <div>
+                  <DataTable
+                    value={getdata}
+                    paginator
+                    responsiveLayout="scroll"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+                    rows={5}
+                    rowsPerPageOptions={[5, 10, 15]}
+                    selectionMode="single"
+                    header={header}
+                    resizableColumns
+                    columnResizeMode="fit"
+                    selection={selectedProducts}
+                    onSelectionChange={(e) => setSelectedProducts(e.value)}
+                  >
+                    <Column
+                      selectionMode="multiple"
+                      headerStyle={{ width: "3rem" }}
+                      exportable={false}
+                    ></Column>
 
-                  {userSelectedColumns.length > 0 &&
-                    userSelectedColumns.map((column: any, index: any) => {
-                      return (
-                        <Column
-                          key={index}
-                          field={column}
-                          header={column}
-                        ></Column>
-                      )
-                    })}
-                </DataTable>
+                    {userSelectedColumns.length > 0 &&
+                      userSelectedColumns.map((column: any, index: any) => {
+                        return (
+                          <Column
+                            key={index}
+                            field={column}
+                            header={column}
+                          ></Column>
+                        )
+                      })}
+                  </DataTable>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

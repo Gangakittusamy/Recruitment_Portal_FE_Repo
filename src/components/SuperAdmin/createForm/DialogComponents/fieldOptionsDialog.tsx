@@ -67,6 +67,21 @@ const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
     closeDialog(true)
   }
 
+  const duplicateItemCheckList = (item: any) => {
+    if (
+      item.subName === "Untitled Owner" ||
+      item.subName === "Single Line" ||
+      item.subName === "Untitled Name" ||
+      item.subName === "Email" ||
+      item.subName === "URL" ||
+      item.subName === "Phone"
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return (
     <div
       id="field-dialog"
@@ -84,21 +99,17 @@ const FieldOptionsDialog: React.FC<MultipleSelectProps> = ({
             Mark as required
           </li>
         )}
-        {item.subName !== "Pick List" &&
-          item.subName !== "Checkbox" &&
-          !item.unique && (
-            <li onClick={() => modifyField("duplicateValues", item.id, true)}>
-              Do Not Allow Duplicate Values
-            </li>
-          )}
-        {item.subName !== "Pick List" &&
-          item.subName !== "Checkbox" &&
-          item.unique && (
-            <li onClick={() => modifyField("duplicateValues", item.id, false)}>
-              <i className="pi pi-check pr-1" style={{ fontSize: "12px" }}></i>{" "}
-              Do Not Allow Duplicate Values
-            </li>
-          )}
+        {duplicateItemCheckList(item) && !item.unique && (
+          <li onClick={() => modifyField("duplicateValues", item.id, true)}>
+            Do Not Allow Duplicate Values
+          </li>
+        )}
+        {duplicateItemCheckList(item) && item.unique && (
+          <li onClick={() => modifyField("duplicateValues", item.id, false)}>
+            <i className="pi pi-check pr-1" style={{ fontSize: "12px" }}></i> Do
+            Not Allow Duplicate Values
+          </li>
+        )}
         {item.subName === "Pick List" && (
           <li onClick={() => isEditDialogOpen(true)}>Edit Properties</li>
         )}
