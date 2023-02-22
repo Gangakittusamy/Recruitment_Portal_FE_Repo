@@ -28,6 +28,7 @@ import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration
 import "./customModule.css"
 import { Toast } from "primereact/toast"
 import _ from "lodash"
+import NavBar from "../navBar"
 
 const CustomModule = (props: any) => {
   const [state, setState] = React.useState<any>([])
@@ -138,6 +139,7 @@ const CustomModule = (props: any) => {
 
   return (
     <div>
+      <NavBar />
       <Toast ref={toast} />
       <div>
         <div className="border-black-alpha-30 border-1 pb-7">
@@ -192,12 +194,8 @@ const CustomModule = (props: any) => {
                                     onChange={handleChange}
                                     style={{
                                       position: "relative",
-                                      left: "28px",
-                                      height: "34px",
-                                      top: "10px",
-                                      border: "1px solid lightgrey",
-                                      color: "#8083A3",
-                                      width: "-webkit-fill-available"
+                                      height: "30px",
+                                      color: "#8083A3"
                                     }}
                                     className="border-0"
                                   />
@@ -234,18 +232,18 @@ const CustomModule = (props: any) => {
                                       />
                                     </span>
                                   ) : item.DataHeader === "Currency" ? (
-                                    <span className="p-input-icon-left">
-                                      <i className="pi pi-dollar mt-0" />
-                                      <InputText
-                                        className="mt-3 "
-                                        name={item.value}
-                                        value={state[item.value]}
-                                        onChange={handleChange}
-                                        style={{ width: "190px" }}
-                                      />
-                                    </span>
+                                    <p className="field-container">
+                                      <span className="p-input-icon-left">
+                                        <i className="pi pi-dollar mt-0" style={{top:"8px"}}/>
+                                        <InputText
+                                          name={item.value}
+                                          value={state[item.value]}
+                                          onChange={handleChange}
+                                        />
+                                      </span>
+                                    </p>
                                   ) : item.DataHeader === "Percent" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         name={item.value}
                                         value={state[item.value]}
@@ -254,7 +252,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Single Line" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         placeholder={
                                           item.unique ? "Unique Field" : ""
@@ -272,7 +270,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Untitled Name" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         placeholder={
                                           item.unique ? "Unique Field" : ""
@@ -290,14 +288,14 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Image Upload" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <Button
                                         label="+ Image Upload"
                                         className="bg-blue-100 text-primary"
                                       />
                                     </p>
                                   ) : item.DataHeader === "Email" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         placeholder={
                                           item.unique ? "Unique Field" : ""
@@ -315,14 +313,14 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "File Upload" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <Button
                                         label="+ File Upload"
                                         className="bg-blue-100 text-primary"
                                       />
                                     </p>
                                   ) : item.DataHeader === "Date/Time" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <Calendar
                                         name={item.value}
                                         value={state[item.value]}
@@ -333,7 +331,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Decimal" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         name={item.value}
                                         value={state[item.value]}
@@ -341,7 +339,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Long integer" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         name={item.value}
                                         value={state[item.value]}
@@ -349,7 +347,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "URL" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         placeholder={
                                           item.unique ? "Unique Field" : ""
@@ -368,7 +366,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Multi-Line" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputTextarea
                                         name={item.value}
                                         value={state[item.value]}
@@ -377,7 +375,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Date" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <Calendar
                                         name={item.value}
                                         value={state[item.value]}
@@ -402,7 +400,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </div>
                                   ) : item.DataHeader === "Phone" ? (
-                                    <p>
+                                    <p className="field-container">
                                       {" "}
                                       <InputNumber
                                         placeholder={
@@ -425,7 +423,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Number" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         name={item.value}
                                         value={state[item.value]}

@@ -86,7 +86,7 @@
 
 .nav_text p.active {
   color: #ffffff;
-  background: #6366f1;
+  background: black;
   padding: 5px 10px;
   border-radius: 5px;
 }

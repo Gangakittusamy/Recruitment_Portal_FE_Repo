@@ -198,13 +198,13 @@ const FieldListTablePage = (props: any) => {
   }
 
   const header = (
-    <div className="flex justify-content-between">
+    <div className="flex justify-content-between align-items-center">
       <MultiSelect
         value={selectedColumns}
         options={columns}
         optionLabel="header"
         onChange={onColumnToggle}
-        style={{ width: "20em" }}
+        style={{ width: "20em", height: "3em" }}
       />
       {buttonName && (
         <Link
@@ -227,7 +227,7 @@ const FieldListTablePage = (props: any) => {
       <div>
         <NavBar />
         {isLoading && (
-          <div  className="create_form_main" >
+          <div className="create_form_main">
             <ProgressSpinner
               style={{ width: "50px", height: "75vh" }}
               strokeWidth="8"

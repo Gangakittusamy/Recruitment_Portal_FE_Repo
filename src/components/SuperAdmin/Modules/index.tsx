@@ -26,11 +26,13 @@ import NavBar from "../navBar"
 import ModuleSideBar from "./moduleSidebar"
 import "./Modules.css"
 import { Link } from "react-router-dom"
+import _ from "lodash"
 
 const SettingsModules = (props: any) => {
   const [value3, setValue3] = useState("")
   const [activeIndex1, setActiveIndex1] = useState(0)
   const [state, setState] = useState<any>([])
+  const [tableData, setTableData] = useState<any>([])
   const [id, setId] = useState<any>()
   const navigate: any = useNavigate()
   const dispatch: any = useAppDispatch()
@@ -50,6 +52,7 @@ const SettingsModules = (props: any) => {
 
   const GetModuleName = async () => {
     let res = await dispatch(ModuleNameGet())
+    setTableData(res.payload.data.user)
     setState(res.payload.data.user)
   }
 
@@ -105,8 +108,20 @@ const SettingsModules = (props: any) => {
   }
 
   const navbarClicked = () => {
-    setShowSideNavbar(false);
-  };
+    setShowSideNavbar(false)
+  }
+
+  const filterTable = (searchText: any) => {
+    const tableData = _.cloneDeep(state)
+    if (searchText.length) {
+      const filteredModules = tableData.filter((m:any)=>{
+        return m.modulename.toLowerCase().includes(searchText.toLowerCase())
+      })
+      setTableData(filteredModules)
+    } else {
+      setTableData(tableData)
+    }
+  }
 
   return (
     <div
@@ -116,11 +131,18 @@ const SettingsModules = (props: any) => {
       <div>
         <NavBar />
         <div className="nav-open-icon">
-          <i className="pi pi-align-justify" style={{fontSize:"1.5rem"}} onClick={()=>setShowSideNavbar(prev => !prev)}></i>
+          <i
+            className="pi pi-align-justify"
+            style={{ fontSize: "1.5rem" }}
+            onClick={() => setShowSideNavbar((prev) => !prev)}
+          ></i>
         </div>
         <div className="flex mt-3 create_form_main">
-          <div style={{ background: "gainsboro" }} className={`side-nav-bar ${showSideNavbar ? 'show' : ''}`}>
-            <ModuleSideBar navbarClicked={navbarClicked}/>
+          <div
+            style={{ background: "gainsboro" }}
+            className={`side-nav-bar ${showSideNavbar ? "show" : ""}`}
+          >
+            <ModuleSideBar navbarClicked={navbarClicked} />
           </div>
 
           <div className="create_form_main_division">
@@ -133,10 +155,13 @@ const SettingsModules = (props: any) => {
                 <div>
                   <div className="flex justify-content-between mb-3">
                     <span className="p-input-icon-left">
-                      <i className="pi pi-search" />
+                      <i className="pi pi-search" style={{ top: "40%" }} />
                       <InputText
                         value={value3}
-                        onChange={(e) => setValue3(e.target.value)}
+                        onChange={(e) => {
+                          setValue3(e.target.value)
+                          filterTable(e.target.value)
+                        }}
                         placeholder="Search"
                       />
                     </span>
@@ -150,7 +175,7 @@ const SettingsModules = (props: any) => {
                   </div>
                   <div>
                     <DataTable
-                      value={state}
+                      value={tableData}
                       paginator
                       responsiveLayout="scroll"
                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
