@@ -165,11 +165,12 @@
 .dropped-item-info {
   width: 150px;
   padding: 4px;
+  font-size: 13px !important;
 }
 
 .dropAreaInput {
   width: 100px !important;
-  font-size: 15px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   color: #495057 !important;
   height: 44px !important;

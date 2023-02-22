@@ -221,7 +221,7 @@ const CustomModule = (props: any) => {
                                           item.unique ? "Unique Field" : ""
                                         }
                                         name={item.value}
-                                        value={state.Owner}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         className="mt-3"
                                         onBlur={(e) => {
@@ -239,7 +239,7 @@ const CustomModule = (props: any) => {
                                       <InputText
                                         className="mt-3 "
                                         name={item.value}
-                                        value={state.Currency}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         style={{ width: "190px" }}
                                       />
@@ -248,7 +248,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <InputText
                                         name={item.value}
-                                        value={state.Percent}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         placeholder="Percent"
                                       />
@@ -260,7 +260,7 @@ const CustomModule = (props: any) => {
                                           item.unique ? "Unique Field" : ""
                                         }
                                         name={item.value}
-                                        value={state.SingleLine}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         onBlur={(e) => {
                                           verifyUniqueField(
@@ -278,7 +278,7 @@ const CustomModule = (props: any) => {
                                           item.unique ? "Unique Field" : ""
                                         }
                                         name={item.value}
-                                        value={state.Name}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         onBlur={(e) => {
                                           verifyUniqueField(
@@ -303,7 +303,7 @@ const CustomModule = (props: any) => {
                                           item.unique ? "Unique Field" : ""
                                         }
                                         name={item.value}
-                                        value={state.Email}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         onBlur={(e) => {
                                           verifyUniqueField(
@@ -325,7 +325,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <Calendar
                                         name={item.value}
-                                        value={state.DateTime}
+                                        value={state[item.value]}
                                         showTime
                                         showSeconds
                                         placeholder="Enter the date"
@@ -336,7 +336,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <InputText
                                         name={item.value}
-                                        value={state.Decimal}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                       />
                                     </p>
@@ -344,7 +344,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <InputText
                                         name={item.value}
-                                        value={state.LongInteger}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                       />
                                     </p>
@@ -356,7 +356,7 @@ const CustomModule = (props: any) => {
                                         }
                                         type="url"
                                         name={item.value}
-                                        value={state.URL}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         onBlur={(e) => {
                                           verifyUniqueField(
@@ -371,7 +371,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <InputTextarea
                                         name={item.value}
-                                        value={state.Multi}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         style={{ width: "190px" }}
                                       />
@@ -380,7 +380,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <Calendar
                                         name={item.value}
-                                        value={item.Date}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         placeholder="DD/MM/YY   "
                                       />
@@ -410,7 +410,7 @@ const CustomModule = (props: any) => {
                                         }
                                         id="phone"
                                         name={item.value}
-                                        value={state.lastName}
+                                        value={state[item.value]}
                                         onChange={(e) =>
                                           handleChange(e.originalEvent)
                                         }
@@ -428,7 +428,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <InputText
                                         name={item.value}
-                                        value={item.Number}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                       />
                                     </p>
