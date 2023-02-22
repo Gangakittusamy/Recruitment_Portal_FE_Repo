@@ -89,7 +89,8 @@
 .field-options {
   position: relative;
 }
-.field-options button {
+.field-options button,
+.form-elem-options button {
   cursor: pointer;
   border: none;
   background: none !important;
@@ -98,9 +99,9 @@
   position: absolute;
   will-change: transform;
   top: 10px;
-  left: -90px;
+  left: -120px;
   transform: translate3d(-124px, 24px, 0px);
-  width: 250px;
+  width: 280px;
   border-radius: 10px;
   border: 1px solid #fff;
   box-shadow: 0 -1px 10px rgb(0 0 0 / 10%);
@@ -164,18 +165,51 @@
 .dropped-item-info {
   width: 150px;
   padding: 4px;
+  font-size: 13px !important;
 }
 
 .dropAreaInput {
   width: 100px !important;
-  font-size: 15px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   color: #495057 !important;
   height: 44px !important;
 }
 
-.dragCard .required-field{
+.dragCard .required-field {
   border-left: 5px solid red;
+}
+
+#drop-area .form-element {
+  width: 100%;
+  display: flex;
+}
+
+#drop-area .form-elem-options {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+#drop-area .form-elem-options i {
+  font-size: 1rem;
+}
+
+#drop-area .form-elem-options .form-dialog {
+  left: auto !important;
+  right: -130px !important;
+  top: 15px !important;
+}
+
+.createForm .single-col{
+  display: block !important;
+}
+
+@media (min-width: 992px) {
+  #drop-area .single-col {
+    display: block;
+  }
 }
 
 @media (max-width: 992px) {

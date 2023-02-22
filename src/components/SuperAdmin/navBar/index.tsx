@@ -31,6 +31,7 @@ import {
   LogoNameGet
 } from "../../../features/Modules/projectLogoName"
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
+import { ProgressSpinner } from "primereact/progressspinner"
 
 const NavBar = (props: any) => {
   const [text, setText] = useState("Req-Portal")
@@ -42,6 +43,7 @@ const NavBar = (props: any) => {
   const [displayNav, setdisplayNav] = useState()
   const dispatch = useAppDispatch()
   const [imgShow, setimgShow] = useState<any>(Vector)
+  const [isLoading, setIsLoading] = useState<any>()
 
   const navigate = useNavigate()
   const user: any = useAppSelector((state) => state)
@@ -75,10 +77,12 @@ const NavBar = (props: any) => {
   }
 
   const GetHeadingName = async () => {
+    setIsLoading(true)
     let res = await dispatch(LogoNameGet())
 
     setText(res.payload.data.data[0].title || "Req-Portal")
     setimgShow(res.payload.data.data[0].profile || { imgShow })
+    setIsLoading(false)
     //setState(res.payload.data.user);
   }
 
@@ -126,192 +130,230 @@ const NavBar = (props: any) => {
     }
   }
 
-  const getNumberOfModulesToBeShown= () => {
-    return window.innerWidth > 1280 ? 10 : 5
+  const checkActiveModule = (module: any) => {
+    const activeModule = localStorage.getItem("moduleName")
+    if (module?.modulename === activeModule) {
+      return true
+    }
+    return false
   }
 
   return (
-    <div className="NavBar_Main">
-      <Toast ref={toast} position="top-center"></Toast>
-      <section className="NavBar_Division">
-        <div className="logo">
-          <img src={imgShow} alt="Vector" width={30} height={30} />
-          <div onClick={(e) => title.current?.toggle(e)}>
-            <p className="font-bold text-2xl line-height-1 white-space-nowrap ml-1">
-              {text}
-            </p>
-          </div>
-        </div>
-
-        <OverlayPanel
-          ref={title}
-          showCloseIcon
-          id="overlay_panel"
-          style={{ width: "350px" }}
-          className="overlaypanel-demo"
-        >
-          <div>
-            <form>
-              <InputText type="file" onChange={handleChange} />
-              <InputText
-                value={valuein}
-                onChange={(e) => setvaluein(e.target.value)}
-                placeholder="Enter Product Name"
-                className="w-12 mt-2"
-                style={{ width: "148px" }}
-              />
-              <div className="flex justify-content-end" style={{ gap: "17px" }}>
-                <Button className="mt-2">Cancel</Button>
-                <Button type="submit" className="mt-2 " onClick={ChangeSubmit}>
-                  Change
-                </Button>
+    <div>
+      {!isLoading && (
+        <div className="NavBar_Main">
+          <Toast ref={toast} position="top-center"></Toast>
+          <section className="NavBar_Division">
+            <div className="logo">
+              <img src={imgShow} alt="Vector" width={30} height={30} />
+              <div onClick={(e) => title.current?.toggle(e)}>
+                <p className="font-bold text-2xl line-height-1 white-space-nowrap ml-1">
+                  {text}
+                </p>
               </div>
-            </form>
-          </div>
-        </OverlayPanel>
-        <section className="flex modulesListing">
-          <div className="flex align-items-center mt-2 super_Admin_Sidebar_Dashboard sideBarOnClick">
-            <img src={Dashboard} width={16} height={16}/>
-            <p className=" font-bold">Dashboard</p>
-          </div>
-          {state
-            ? state.map((x: any, index: any) => {
-                return (
+            </div>
+
+            <OverlayPanel
+              ref={title}
+              showCloseIcon
+              id="overlay_panel"
+              style={{ width: "350px" }}
+              className="overlaypanel-demo"
+            >
+              <div>
+                <form>
+                  <InputText type="file" onChange={handleChange} />
+                  <InputText
+                    value={valuein}
+                    onChange={(e) => setvaluein(e.target.value)}
+                    placeholder="Enter Product Name"
+                    className="w-12 mt-2"
+                    style={{ width: "148px" }}
+                  />
                   <div
-                    key={index}
-                    className="flex align-items-center mt-2 white-space-nowrap "
+                    className="flex justify-content-end"
+                    style={{ gap: "17px" }}
                   >
-                    <div>
-                      {" "}
-                      {index <= getNumberOfModulesToBeShown() ? (
-                        <div>
-                          <div
-                            className="nav_text capitalize"
-                            onClick={(e: any) => NavbarEdit(x)}
-                          >
-                            {x.modulename}
-                          </div>
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+                    <Button className="mt-2">Cancel</Button>
+                    <Button
+                      type="submit"
+                      className="mt-2 "
+                      onClick={ChangeSubmit}
+                    >
+                      Change
+                    </Button>
                   </div>
-                )
-              })
-            : ""}
-          {checkRecentTab() && (
-            <div className="recent-tab" style={{ right: "86px" }}>
-              <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
+                </form>
+              </div>
+            </OverlayPanel>
+            <section className="flex modulesListing">
+              <div
+                className="flex align-items-center mt-2 super_Admin_Sidebar_Dashboard sideBarOnClick"
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/super-admin`)}
+              >
+                <img src={Dashboard} width={16} height={16} />
+                <p
+                  className="font-bold"
+                  onClick={() => {
+                    localStorage.setItem("moduleName", "")
+                  }}
+                >
+                  Dashboard
+                </p>
+              </div>
+              {state
+                ? state.map((x: any, index: any) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex align-items-center mt-2 white-space-nowrap "
+                      >
+                        <div>
+                          {" "}
+                          {index <= 5 ? (
+                            <div>
+                              <div
+                                className="nav_text capitalize"
+                                onClick={(e: any) => NavbarEdit(x)}
+                              >
+                                <p
+                                  className={`font-bold ${
+                                    checkActiveModule(x) ? "active" : ""
+                                  }`}
+                                >
+                                  {x.modulename}
+                                </p>
+                              </div>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })
+                : ""}
+              {/* {checkRecentTab() && ( */}
+              <div className="recent-tab" style={{ right: "86px" }}>
+                {/* <span className="nav_text  flex align-items-center mt-2 white-space-nowrap capitalize">
                 <span className="text-yellow-600">
                   {displayNav || localStorage.getItem("moduleName")}
                 </span>
-              </span>
-              <div onClick={(e) => op.current?.toggle(e)}>
-                <i className="pi pi-angle-double-right mr-6 mt-4"></i>
+              </span> */}
+                <div
+                  onClick={(e) => op.current?.toggle(e)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <i className="pi pi-angle-double-right mr-6 mt-4"></i>
+                </div>
               </div>
-            </div>
-          )}
-          <OverlayPanel
-            ref={op}
-            showCloseIcon
-            id="overlay_panel"
-            style={{ width: "275px" }}
-            className="overlaypanel-demo"
-          >
-            <div>
-              <span className="p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText
-                  value={value3}
-                  onChange={(e) => setValue3(e.target.value)}
-                  placeholder="Search"
-                  style={{ width: "148px" }}
-                />
-              </span>
-              <div className="overflow_overlay">
-                {state
-                  ? state.map((x: any, index: any) => {
-                      return (
-                        <div key={index} className="">
-                          <div className="">
-                            {" "}
-                            {index >= 6 ? (
-                              <div>
-                                <div
-                                  className="nav_text_overlay capitalize"
-                                  onClick={(e: any) => NavbarEdit(x)}
-                                >
-                                  {x.modulename}{" "}
-                                </div>
+              {/* )} */}
+              <OverlayPanel
+                ref={op}
+                showCloseIcon
+                id="overlay_panel"
+                style={{ width: "275px" }}
+                className="overlaypanel-demo"
+              >
+                <div>
+                  <span className="p-input-icon-left">
+                    <i className="pi pi-search" />
+                    <InputText
+                      value={value3}
+                      onChange={(e) => setValue3(e.target.value)}
+                      placeholder="Search"
+                      style={{ width: "148px" }}
+                    />
+                  </span>
+                  <div className="overflow_overlay">
+                    {state
+                      ? state.map((x: any, index: any) => {
+                          return (
+                            <div key={index} className="">
+                              <div className="">
+                                {" "}
+                                {index >= 6 ? (
+                                  <div>
+                                    <div
+                                      className="nav_text_overlay capitalize"
+                                      onClick={(e: any) => {
+                                        NavbarEdit(x)
+                                        op.current?.toggle(e)
+                                      }}
+                                    >
+                                      {x.modulename}{" "}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
                               </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      )
-                    })
-                  : ""}
-              </div>
-              <div
-                className="mt-5 cursor-pointer text-primary"
-                onClick={NextPage}
-              >
-                {" "}
-                + Create New Module{" "}
-              </div>
-            </div>
-          </OverlayPanel>
-        </section>
-      </section>
+                            </div>
+                          )
+                        })
+                      : ""}
+                  </div>
+                  <div
+                    className="mt-5 cursor-pointer text-primary"
+                    onClick={NextPage}
+                  >
+                    {" "}
+                    + Create New Module{" "}
+                  </div>
+                </div>
+              </OverlayPanel>
+            </section>
+          </section>
+          <section className="nav-right">
+            <ConfirmDialog />
+            <i
+              className="pi pi-cog ml-3 mr-2 pog"
+              onClick={(e: any) => {
+                navigate("/super-admin/settings")
+                localStorage.setItem("moduleName", "")
+              }}
+            ></i>
+            <img src={Bell} width={26} height={26} alt="Bell" />
 
-      <section className="nav-right">
-        <ConfirmDialog />
-        <i
-          className="pi pi-cog ml-3 mr-2 pog"
-          onClick={(e: any) => {
-            // props.handleClick(9);
-            navigate("/super-admin/settings")
-          }}
-        ></i>
-        <img src={Bell} width={26} height={26} alt="Bell" />
-
-        <img
-          src={Profile}
-          width={26}
-          height={26}
-          alt="Profile"
-          className="ml-4"
-          style={{ cursor: "pointer" }}
-          onClick={(e) => profile.current?.toggle(e)}
-        />
-        <OverlayPanel ref={profile} style={{ width: "150px" }}>
-          <div className="profile">
-            <ul>
-              <li
-                onClick={(e: any) => {
-                  confirmDialog({
-                    message: "Are you sure you want to logout?",
-                    header: "Confirmation",
-                    icon: "pi pi-exclamation-triangle",
-                    accept: async () => {
-                      let res: any = await dispatch(logOut())
-                      if (res.payload.status === "success") {
-                        Cookies.remove("token")
-                        Cookies.remove("access_token")
-                        navigate("/")
-                      }
-                    }
-                  })
-                }}
-              >
-                Logout
-              </li>
-            </ul>
-          </div>
-        </OverlayPanel>
-      </section>
+            <img
+              src={Profile}
+              width={26}
+              height={26}
+              alt="Profile"
+              className="ml-4"
+              style={{ cursor: "pointer" }}
+              onClick={(e) => profile.current?.toggle(e)}
+            />
+            <OverlayPanel ref={profile} style={{ width: "150px" }}>
+              <div className="profile">
+                <ul>
+                  <li
+                    onClick={(e: any) => {
+                      confirmDialog({
+                        message: "Are you sure you want to logout?",
+                        header: "Confirmation",
+                        icon: "pi pi-exclamation-triangle",
+                        accept: async () => {
+                          let res: any = await dispatch(logOut())
+                          if (res.payload.status === "success") {
+                            localStorage.clear()
+                            Cookies.remove("token")
+                            Cookies.remove("access_token")
+                            navigate("/")
+                          }
+                        }
+                      })
+                    }}
+                  >
+                    Logout
+                  </li>
+                </ul>
+              </div>
+            </OverlayPanel>
+          </section>
+        </div>
+      )}
     </div>
   )
 }

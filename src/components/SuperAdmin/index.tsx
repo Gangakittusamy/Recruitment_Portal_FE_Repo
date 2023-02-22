@@ -8,7 +8,9 @@ import {
   formEditIdDragAndDrop,
   dragAndDropDialogIndexSuperAdmin,
   selectStructuredData,
-  setPickListDropDownData
+  setPickListDropDownData,
+  setSingleColumnForms,
+  setInitiallyUpdatedModuleData
 } from "../../features/counter/dragAndDrop"
 import { useSelector, useDispatch } from "react-redux"
 import NavBar from "./navBar"
@@ -55,6 +57,8 @@ const SuperAdmin = () => {
   const { editId } = useParams()
   const [id, setId] = useState()
   const [editScreenUpdated, setEditScreenUpdated] = useState<any>(false)
+  const [editScreenModified, setEditScreenModified] = useState<any>(false)
+
   const [complete, setCompleted] = useState<any>({
     [uuidv4()]: []
   })
@@ -68,6 +72,7 @@ const SuperAdmin = () => {
     } else {
       if (editScreenUpdated) {
         setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
+        setEditScreenModified(true)
       }
     }
   }, [count.dragAndDrop.initialStartDragSuperAdmin])
@@ -111,13 +116,13 @@ const SuperAdmin = () => {
               return {
                 names: alteredValue.names,
                 id: currentFields[i].id,
-                subName: currentFields[i].subName
+                subName: currentFields[i].subName,
+                required: currentFields[i].required,
+                unique: currentFields[i].unique
               }
             } else {
               return {
-                names: currentFields[i].names,
-                id: currentFields[i].id,
-                subName: currentFields[i].subName
+                ...currentFields[i]
               }
             }
           })
@@ -142,7 +147,19 @@ const SuperAdmin = () => {
     if (window.location.pathname === `/super-admin/edit/${editId}`) {
       const result = applyFormChanges()
 
-      let totalValue = count.module?.rolesGetForms
+      let totalValue = editScreenModified
+        ? complete
+        : count.module?.rolesGetForms
+
+      if (totalValue && !editScreenModified) {
+        dispatch(
+          setSingleColumnForms(
+            totalValue[0]?.singleColumnForms
+              ? totalValue[0]?.singleColumnForms
+              : []
+          )
+        )
+      }
 
       let value = Object.assign(
         {},
@@ -156,7 +173,13 @@ const SuperAdmin = () => {
       res1.map((x, i) => {
         if (i + 1 < res1.length && res2.length < res1.length) {
           let ab: any = [uuidv4()]
-          complete[ab] = []
+          if (!editScreenUpdated) {
+            complete[ab] = []
+          } else {
+            if (complete[ab]) {
+              complete[ab] = []
+            }
+          }
         }
       })
 
@@ -184,14 +207,16 @@ const SuperAdmin = () => {
               names: y.fieldname,
               subName: y.type,
               id: newId,
-              required: y.required
+              required: y.required,
+              unique: y.unique
             }
           } else {
             return {
               names: y.type,
               subName: y.fieldname,
               id: newId,
-              required: y.required
+              required: y.required,
+              unique: y.unique
             }
           }
         })
@@ -215,12 +240,18 @@ const SuperAdmin = () => {
         if (a1.length > a2.length) {
           setCompleted(resObj)
           dispatch(dragAndDropValueSuperAdmin(resObj))
+          if (!editScreenModified) {
+            dispatch(setInitiallyUpdatedModuleData(resObj))
+          }
         }
         if (a2.length > a1.length) {
           const sameArray = _.isEqual(complete, result)
           if (!sameArray) {
             setCompleted(result)
             dispatch(dragAndDropValueSuperAdmin(result))
+            if (!editScreenModified) {
+              dispatch(setInitiallyUpdatedModuleData(result))
+            }
           }
         }
       }
@@ -231,6 +262,9 @@ const SuperAdmin = () => {
 
       if (Object.keys(complete).length) {
         dispatch(dragAndDropValueSuperAdmin(result))
+        if (!editScreenModified) {
+          dispatch(setInitiallyUpdatedModuleData(result))
+        }
       }
       setEditScreenUpdated(true)
     }

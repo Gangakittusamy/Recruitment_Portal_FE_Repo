@@ -88,6 +88,21 @@ export const ModuleNameUpdate: any = createAsyncThunk(
   }
 );
 
+export const UpdateFieldsForModuleUpdate: any = createAsyncThunk(
+  "module/updateFieldsForModuleUpdate",
+  async (para1: any, thunkAPI) => {
+    try {
+      const response: Object = await axios.put(
+        `${BASEURL}/api/formdatas/updatetabledatafield/${para1.editId}`,
+        para1.payload
+      );
+      return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const ModuleNameGetFormsaa: any = createAsyncThunk(
   "app/moduleCreationn",
   async (para1, thunkAPI) => {
@@ -97,6 +112,21 @@ export const ModuleNameGetFormsaa: any = createAsyncThunk(
       );
 
       return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const isValueAlreadyExist: any = createAsyncThunk(
+  "module/isValueAlreadyExist",
+  async (para1: any, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${BASEURL}/api/formdatas/isvalueAlreadyExist/${para1.editId}`,
+        para1.payload
+      );
+      return response.data
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -115,7 +145,6 @@ export const userReducer = createSlice({
     },
     resetStatus: (state, action) => {
       state.error = "";
-      //   state.status = "";
     },
     formNameForPreview :(state, action) => {
       state.formNameArray = action.payload
@@ -123,15 +152,6 @@ export const userReducer = createSlice({
   },
   extraReducers: builder => {
     builder
-      // .addCase(NewModuleCreation.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(NewModuleCreation.fulfilled, (state,action) => {
-      //   state.roles = action.payload;
-      // })
-      // .addCase(NewModuleCreation.rejected, (state) => {
-      //   state.status = "error";
-      // })
       .addCase(ModuleNameGetFormsaa.fulfilled, (state,action) => {
         state.rolesGetForms = action.payload.data.data;
       })

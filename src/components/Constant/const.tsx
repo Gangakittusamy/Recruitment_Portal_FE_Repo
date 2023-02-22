@@ -103,7 +103,6 @@ export const SIDEBARITEMS = [
     icon: url,
     id: uuidv4(),
   },
-
   {
     names: "File Upload",
     icon: fileupload,
@@ -112,6 +111,16 @@ export const SIDEBARITEMS = [
   {
     names: "Image Upload",
     icon: imageupload,
+    id: uuidv4(),
+  },
+  {
+    names: "lookup",
+    icon: lookup,
+    id: uuidv4(),
+  },
+  {
+    names: "Email Opt Out",
+    icon: mail,
     id: uuidv4(),
   },
 ];
@@ -194,7 +203,6 @@ export const ITEMS = [
     subName: "URL",
     id: uuidv4(),
   },
-
   {
     names: "File Upload",
     subName: "File Upload",
@@ -203,6 +211,16 @@ export const ITEMS = [
   {
     names: "Image Upload",
     subName: "Image Upload",
+    id: uuidv4(),
+  },
+  {
+    names: "lookup",
+    subName: "lookup",
+    id: uuidv4(),
+  },
+  {
+    names: "Email Opt Out",
+    subName: "Email Opt Out",
     id: uuidv4(),
   },
 ];

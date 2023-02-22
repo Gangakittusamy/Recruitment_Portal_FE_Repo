@@ -18,7 +18,8 @@ import {
   resetModuleForms
 } from "../../../features/Modules/module"
 import {
-  setPickListDropDownData
+  setPickListDropDownData,
+  setSingleColumnForms
 } from "../../../features/counter/dragAndDrop"
 import { SpeedDial } from "primereact/speeddial"
 import NavBar from "../navBar"
@@ -38,6 +39,7 @@ const SettingsModules = (props: any) => {
 
   const NextPage = () => {
     dispatch(resetModuleForms())
+    dispatch(setSingleColumnForms([]))
     navigate("/super-admin/create-form")
   }
 
@@ -56,6 +58,7 @@ const SettingsModules = (props: any) => {
       label: "Update",
       icon: "pi pi-pencil",
       command: async (y: any) => {
+        dispatch(setSingleColumnForms([]))
         let res = await dispatch(ModuleNameGetFormsaa(id))
         if (res.payload.status === 200) {
           setId(null)

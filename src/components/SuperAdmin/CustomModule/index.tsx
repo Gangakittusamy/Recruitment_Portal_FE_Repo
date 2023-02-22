@@ -18,7 +18,8 @@ import { useLocation } from "react-router-dom"
 import {
   NewModuleCreation,
   ModuleNameGetFormsaa,
-  ModuleNameUpdate
+  ModuleNameUpdate,
+  isValueAlreadyExist
 } from "../../../features/Modules/module"
 import { useNavigate } from "react-router-dom"
 import { leadGenerationTable } from "../../../features/Modules/leadGeneration"
@@ -26,6 +27,7 @@ import { LoginUserDetails } from "../../../features/Auth/userDetails"
 import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration"
 import "./customModule.css"
 import { Toast } from "primereact/toast"
+import _ from "lodash"
 
 const CustomModule = (props: any) => {
   const [state, setState] = React.useState<any>([])
@@ -38,6 +40,11 @@ const CustomModule = (props: any) => {
   const navigate = useNavigate()
   const [ids, setIds] = useState<any>()
   const toast: any = useRef(null)
+  const [singleColumnForms, setSingleColumnForms] = useState<string[]>([])
+
+  useEffect(() => {
+    setSingleColumnForms(count.dragAndDrop.singleColumnForms)
+  }, [count.dragAndDrop.singleColumnForms])
 
   function handleChange(evt: any) {
     let value = ""
@@ -53,36 +60,52 @@ const CustomModule = (props: any) => {
   }
 
   const saveForm = async () => {
-    let requiredElements: any = []
-    for (const key in forms) {
-      const currentFormId = key
-      const requiredFields = forms[currentFormId]
-        .filter((f: any) => f.required && f.required === true)
-        .map((f: any) => (f.type === "Pick List" ? f.DataHeader : f.value))
-      requiredElements = requiredElements.concat(requiredFields)
-    }
-    const submittedElements = Object.keys(state)
-    const isFormValid = requiredElements.every((ai: any) =>
-      submittedElements.includes(ai)
-    )
-    if (isFormValid) {
-      let payload = {
-        recuriter: ids,
-        moduleId: recId,
-        tableData: {
-          tableData: [state]
-        }
+    const formValues = _.cloneDeep(state)
+    let isDuplicateValueExist = false
+    for (const key in formValues) {
+      if (formValues[key] === "Duplicate value") {
+        isDuplicateValueExist = true
       }
-      const res = await dispatch(leadGenerationTable(payload))
-      if (res.payload.status == "Form-tableData created successfully") {
-        navigate(-1)
-        await dispatch(leadGenerationTableGet(id))
+    }
+    if (!isDuplicateValueExist) {
+      let requiredElements: any = []
+      for (const key in forms) {
+        const currentFormId = key
+        const requiredFields = forms[currentFormId]
+          .filter((f: any) => f.required && f.required === true)
+          .map((f: any) => (f.type === "Pick List" ? f.DataHeader : f.value))
+        requiredElements = requiredElements.concat(requiredFields)
+      }
+      const submittedElements = Object.keys(state)
+      const isFormValid = requiredElements.every((ai: any) =>
+        submittedElements.includes(ai)
+      )
+      if (isFormValid) {
+        let payload = {
+          recuriter: ids,
+          moduleId: recId,
+          tableData: {
+            tableData: [state]
+          }
+        }
+        const res = await dispatch(leadGenerationTable(payload))
+        if (res.payload.status == "Form-tableData created successfully") {
+          navigate(-1)
+          await dispatch(leadGenerationTableGet(id))
+        }
+      } else {
+        toast.current.show({
+          severity: "warn",
+          summary: "Warning",
+          detail: "Please fill the required fields",
+          life: 3000
+        })
       }
     } else {
       toast.current.show({
         severity: "warn",
         summary: "Warning",
-        detail: "Please fill the required fields",
+        detail: "Form contains duplicate values",
         life: 3000
       })
     }
@@ -95,6 +118,22 @@ const CustomModule = (props: any) => {
   async function apple() {
     let value = await dispatch(LoginUserDetails())
     setIds(value.payload.user.id)
+  }
+
+  const verifyUniqueField = async (e: any, field: any, unique: any) => {
+    if (unique) {
+      let data: any = { editId: recId }
+      data.payload = {}
+      data.payload[field] = e.target.value
+      const res = await dispatch(isValueAlreadyExist(data))
+      if (res.payload.status === true) {
+        setState({
+          ...state,
+          [e.target.name]: "Duplicate value"
+        })
+        e.target.value = "Duplicate value"
+      }
+    }
   }
 
   return (
@@ -120,7 +159,13 @@ const CustomModule = (props: any) => {
                   return (
                     <div key={index} className="indv-form">
                       <h4 className="formName">{formName}</h4>
-                      <div className="indv-form-elem">
+                      <div
+                        className={`indv-form-elem ${
+                          singleColumnForms.includes(formName)
+                            ? "single-col"
+                            : ""
+                        }`}
+                      >
                         {forms[formName].map((item: any, index: number) => {
                           return (
                             <div
@@ -172,10 +217,20 @@ const CustomModule = (props: any) => {
                                     <span className="p-input-icon-right ">
                                       <i className="pi pi-lock mt-0" />
                                       <InputText
+                                        placeholder={
+                                          item.unique ? "Unique Field" : ""
+                                        }
                                         name={item.value}
-                                        value={state.Owner}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         className="mt-3"
+                                        onBlur={(e) => {
+                                          verifyUniqueField(
+                                            e,
+                                            item.value,
+                                            item.unique
+                                          )
+                                        }}
                                       />
                                     </span>
                                   ) : item.DataHeader === "Currency" ? (
@@ -184,7 +239,7 @@ const CustomModule = (props: any) => {
                                       <InputText
                                         className="mt-3 "
                                         name={item.value}
-                                        value={state.Currency}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         style={{ width: "190px" }}
                                       />
@@ -193,7 +248,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <InputText
                                         name={item.value}
-                                        value={state.Percent}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         placeholder="Percent"
                                       />
@@ -201,17 +256,37 @@ const CustomModule = (props: any) => {
                                   ) : item.DataHeader === "Single Line" ? (
                                     <p>
                                       <InputText
+                                        placeholder={
+                                          item.unique ? "Unique Field" : ""
+                                        }
                                         name={item.value}
-                                        value={state.SingleLine}
+                                        value={state[item.value]}
                                         onChange={handleChange}
+                                        onBlur={(e) => {
+                                          verifyUniqueField(
+                                            e,
+                                            item.value,
+                                            item.unique
+                                          )
+                                        }}
                                       />
                                     </p>
                                   ) : item.DataHeader === "Untitled Name" ? (
                                     <p>
                                       <InputText
+                                        placeholder={
+                                          item.unique ? "Unique Field" : ""
+                                        }
                                         name={item.value}
-                                        value={state.Name}
+                                        value={state[item.value]}
                                         onChange={handleChange}
+                                        onBlur={(e) => {
+                                          verifyUniqueField(
+                                            e,
+                                            item.value,
+                                            item.unique
+                                          )
+                                        }}
                                       />
                                     </p>
                                   ) : item.DataHeader === "Image Upload" ? (
@@ -224,9 +299,19 @@ const CustomModule = (props: any) => {
                                   ) : item.DataHeader === "Email" ? (
                                     <p>
                                       <InputText
+                                        placeholder={
+                                          item.unique ? "Unique Field" : ""
+                                        }
                                         name={item.value}
-                                        value={state.Email}
+                                        value={state[item.value]}
                                         onChange={handleChange}
+                                        onBlur={(e) => {
+                                          verifyUniqueField(
+                                            e,
+                                            item.value,
+                                            item.unique
+                                          )
+                                        }}
                                       />
                                     </p>
                                   ) : item.DataHeader === "File Upload" ? (
@@ -240,7 +325,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <Calendar
                                         name={item.value}
-                                        value={state.DateTime}
+                                        value={state[item.value]}
                                         showTime
                                         showSeconds
                                         placeholder="Enter the date"
@@ -251,7 +336,7 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <InputText
                                         name={item.value}
-                                        value={state.Decimal}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                       />
                                     </p>
@@ -259,24 +344,34 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <InputText
                                         name={item.value}
-                                        value={state.LongInteger}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                       />
                                     </p>
                                   ) : item.DataHeader === "URL" ? (
                                     <p>
                                       <InputText
+                                        placeholder={
+                                          item.unique ? "Unique Field" : ""
+                                        }
                                         type="url"
                                         name={item.value}
-                                        value={state.URL}
+                                        value={state[item.value]}
                                         onChange={handleChange}
+                                        onBlur={(e) => {
+                                          verifyUniqueField(
+                                            e,
+                                            item.value,
+                                            item.unique
+                                          )
+                                        }}
                                       />
                                     </p>
                                   ) : item.DataHeader === "Multi-Line" ? (
                                     <p>
                                       <InputTextarea
                                         name={item.value}
-                                        value={state.Multi}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         style={{ width: "190px" }}
                                       />
@@ -285,12 +380,13 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <Calendar
                                         name={item.value}
-                                        value={item.Date}
+                                        value={state[item.value]}
                                         onChange={handleChange}
                                         placeholder="DD/MM/YY   "
                                       />
                                     </p>
-                                  ) : item.DataHeader === "Checkbox" ? (
+                                  ) : item.DataHeader === "Checkbox" ||
+                                    item.DataHeader === "Email Opt Out" ? (
                                     <div>
                                       <Checkbox
                                         name={item.value}
@@ -309,13 +405,22 @@ const CustomModule = (props: any) => {
                                     <p>
                                       {" "}
                                       <InputNumber
+                                        placeholder={
+                                          item.unique ? "Unique Field" : ""
+                                        }
                                         id="phone"
                                         name={item.value}
-                                        value={state.lastName}
+                                        value={state[item.value]}
                                         onChange={(e) =>
                                           handleChange(e.originalEvent)
                                         }
-                                        placeholder="(+91) 999-9999-999"
+                                        onBlur={(e) => {
+                                          verifyUniqueField(
+                                            e,
+                                            item.value,
+                                            item.unique
+                                          )
+                                        }}
                                         useGrouping={false}
                                       />
                                     </p>
@@ -323,9 +428,8 @@ const CustomModule = (props: any) => {
                                     <p>
                                       <InputText
                                         name={item.value}
-                                        value={item.Number}
+                                        value={state[item.value]}
                                         onChange={handleChange}
-                                        placeholder="Number"
                                       />
                                     </p>
                                   ) : (
