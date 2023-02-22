@@ -390,7 +390,7 @@ const CustomModule = (props: any) => {
                                         name={item.value}
                                         style={{
                                           position: "relative",
-                                          right: "120px",
+                                          right: "228px",
                                           height: "44px",
                                           top: "15px",
                                           width: "-webkit-fill-available"
