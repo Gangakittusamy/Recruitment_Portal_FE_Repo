@@ -15,3 +15,32 @@
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
   margin-right: 0 !important;
 }
+
+.view-select .p-dropdown {
+  max-width: 85px !important;
+}
+
+.canvas-col-container {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.canvas-col-container .col-element:not(:first-child)::before {
+  content: "|";
+  display: inline-block;
+  padding: 0 10px;
+}
+
+.canvas-col-container .col-element .title {
+  color: #949c9c;
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.canvas-col-container .col-element .value {
+  color: #3c4141;
+  font-size: 15px;
+  line-height: 15px;
+  font-weight: 500;
+}

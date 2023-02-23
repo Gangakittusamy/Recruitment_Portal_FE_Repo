@@ -48,6 +48,10 @@ const FieldListTablePage = (props: any) => {
   const [columns, setColumns] = useState<any>([])
   const [userSelectedColumns, setUserSelectedColumns] = useState<any>([])
   const [isLoading, setIsLoading] = useState<any>()
+  const [listView, setListView] = useState<any>({
+    name: "List View",
+    icon: "list"
+  })
 
   async function firstGetApi() {
     setIsLoading(true)
@@ -197,6 +201,34 @@ const FieldListTablePage = (props: any) => {
     return groupByForms
   }
 
+  const listViews = [
+    {
+      name: "List View",
+      icon: "list"
+    },
+    { name: "Canvas View", icon: "qrcode" }
+  ]
+
+  const selectedViewTemplate = (option: any, props: any) => {
+    if (option) {
+      return (
+        <div className="flex align-items-center">
+          <i className={`pi pi-${option.icon} m-2`}></i>
+        </div>
+      )
+    }
+    return <span>{props.placeholder}</span>
+  }
+
+  const ViewOptionTemplate = (option: any) => {
+    return (
+      <div className="flex align-items-center">
+        <i className={`pi pi-${option.icon} mr-2`}></i>
+        <div>{option.name}</div>
+      </div>
+    )
+  }
+
   const header = (
     <div className="flex justify-content-between align-items-center">
       <MultiSelect
@@ -207,20 +239,50 @@ const FieldListTablePage = (props: any) => {
         style={{ width: "20em", height: "3em" }}
       />
       {buttonName && (
-        <Link
-          to="/super-admin/CustomModule/being"
-          state={{
-            forms: groupByForms(Get),
-            id: id,
-            recId: editTableId,
-            module: buttonName
-          }}
-        >
-          <Button label={`Create a ${buttonName}`} />
-        </Link>
+        <div className="flex align-items-center view-select">
+          <div>
+            <Dropdown
+              value={listView}
+              onChange={(e) => setListView(e.value)}
+              options={listViews}
+              valueTemplate={selectedViewTemplate}
+              itemTemplate={ViewOptionTemplate}
+              optionLabel="name"
+              className="w-full md:w-14rem"
+            />
+          </div>
+          <Link
+            to="/super-admin/CustomModule/being"
+            state={{
+              forms: groupByForms(Get),
+              id: id,
+              recId: editTableId,
+              module: buttonName
+            }}
+          >
+            <Button label={`Create a ${buttonName}`} />
+          </Link>
+        </div>
       )}
     </div>
   )
+
+  const getColumnForCanvasView = (rowData: any) => {
+    console.log(rowData)
+    return (
+      <div className="canvas-col-container">
+        {rowData &&
+          Object.keys(rowData).map((key: any, index: any) => {
+            return (
+              <div className="col-element">
+                <span className="title">{key}</span> :{" "}
+                <span className="value">{rowData[key]}</span>
+              </div>
+            )
+          })}
+      </div>
+    )
+  }
 
   return (
     <div style={{ background: "rgb(250, 250, 251)", height: "100vh" }}>
@@ -263,7 +325,8 @@ const FieldListTablePage = (props: any) => {
                       exportable={false}
                     ></Column>
 
-                    {userSelectedColumns.length > 0 &&
+                    {listView.name === "List View" &&
+                      userSelectedColumns.length > 0 &&
                       userSelectedColumns.map((column: any, index: any) => {
                         return (
                           <Column
@@ -273,6 +336,11 @@ const FieldListTablePage = (props: any) => {
                           ></Column>
                         )
                       })}
+
+                    {listView.name === "Canvas View" &&
+                      userSelectedColumns.length > 0 && (
+                        <Column body={getColumnForCanvasView}></Column>
+                      )}
                   </DataTable>
                 </div>
               </div>
