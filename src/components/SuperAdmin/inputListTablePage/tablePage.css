@@ -44,3 +44,9 @@
   line-height: 15px;
   font-weight: 500;
 }
+
+.row-edit-icon .p-button.p-button-icon-only {
+  width: 2rem;
+  padding: 0;
+  height: 30px;
+}

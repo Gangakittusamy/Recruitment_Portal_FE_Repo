@@ -70,7 +70,7 @@ const FieldListTablePage = (props: any) => {
 
     let resp = response.payload.data
     resp = resp.map((x: any, i: number) => {
-      return x.tableData.tableData[0]
+      return { ...x.tableData.tableData[0], id: x._id }
     })
 
     setgetdata(resp)
@@ -268,18 +268,38 @@ const FieldListTablePage = (props: any) => {
   )
 
   const getColumnForCanvasView = (rowData: any) => {
-    console.log(rowData)
     return (
       <div className="canvas-col-container">
         {rowData &&
           Object.keys(rowData).map((key: any, index: any) => {
-            return (
-              <div className="col-element">
-                <span className="title">{key}</span> :{" "}
-                <span className="value">{rowData[key]}</span>
-              </div>
-            )
+            if (key !== "id" && userSelectedColumns?.includes(key)) {
+              return (
+                <div className="col-element">
+                  <span className="title">{key}</span> :{" "}
+                  <span className="value">{rowData[key]}</span>
+                </div>
+              )
+            }
           })}
+      </div>
+    )
+  }
+
+  const rowEditButton = (rowData: any) => {
+    return (
+      <div className="row-edit-icon">
+        <Link
+          to={`/super-admin/CustomModule/edit/${rowData.id}`}
+          state={{
+            forms: groupByForms(Get),
+            id: id,
+            recId: editTableId,
+            module: buttonName,
+            rowData
+          }}
+        >
+          <Button icon="pi pi-pencil" />
+        </Link>
       </div>
     )
   }
@@ -319,6 +339,8 @@ const FieldListTablePage = (props: any) => {
                     selection={selectedProducts}
                     onSelectionChange={(e) => setSelectedProducts(e.value)}
                   >
+                    <Column body={rowEditButton}></Column>
+
                     <Column
                       selectionMode="multiple"
                       headerStyle={{ width: "3rem" }}
@@ -328,12 +350,14 @@ const FieldListTablePage = (props: any) => {
                     {listView.name === "List View" &&
                       userSelectedColumns.length > 0 &&
                       userSelectedColumns.map((column: any, index: any) => {
-                        return (
+                        return column !== "id" ? (
                           <Column
                             key={index}
                             field={column}
                             header={column}
                           ></Column>
+                        ) : (
+                          <Column />
                         )
                       })}
 

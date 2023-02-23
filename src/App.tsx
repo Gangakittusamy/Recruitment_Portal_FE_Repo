@@ -68,6 +68,7 @@ function App() {
                 <Route path="/selection" element={<Selection />} />
                 <Route path="/super-admin">
                   <Route index={true} element={<SuperAdmin />} />
+                  <Route path="create-form" element={<SuperAdmin />} />
                   <Route path="edit/:editId" element={<SuperAdmin />} />
                   <Route index={false} path="Settings" element={<Settings />} />
                   <Route
@@ -83,7 +84,7 @@ function App() {
                     element={<FieldListTablePage />}
                   />
                   <Route path="CustomModule/being" element={<CustomModule />} />
-                  <Route path="create-form" element={<SuperAdmin />} />
+                  <Route path="CustomModule/edit/:editId" element={<CustomModule />} />
                 </Route>
               </Route>
               <Route path="/login" element={<Login />} />

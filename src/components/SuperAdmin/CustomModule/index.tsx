@@ -29,6 +29,7 @@ import "./customModule.css"
 import { Toast } from "primereact/toast"
 import _ from "lodash"
 import NavBar from "../navBar"
+import { useParams } from "react-router-dom"
 
 const CustomModule = (props: any) => {
   const [state, setState] = React.useState<any>([])
@@ -37,11 +38,12 @@ const CustomModule = (props: any) => {
 
   const [checked1, setChecked1] = useState(false)
   const location = useLocation()
-  const { forms, id, recId, module } = location.state
+  const { forms, id, recId, module, rowData } = location.state
   const navigate = useNavigate()
   const [ids, setIds] = useState<any>()
   const toast: any = useRef(null)
   const [singleColumnForms, setSingleColumnForms] = useState<string[]>([])
+  const { editId } = useParams()
 
   useEffect(() => {
     setSingleColumnForms(count.dragAndDrop.singleColumnForms)
@@ -89,10 +91,12 @@ const CustomModule = (props: any) => {
             tableData: [state]
           }
         }
-        const res = await dispatch(leadGenerationTable(payload))
-        if (res.payload.status == "Form-tableData created successfully") {
-          navigate(-1)
-          await dispatch(leadGenerationTableGet(id))
+        if (!editId) {
+          const res = await dispatch(leadGenerationTable(payload))
+          if (res.payload.status == "Form-tableData created successfully") {
+            navigate(-1)
+            await dispatch(leadGenerationTableGet(id))
+          }
         }
       } else {
         toast.current.show({
@@ -114,6 +118,9 @@ const CustomModule = (props: any) => {
 
   useEffect(() => {
     apple()
+    if (editId) {
+      setState(rowData)
+    }
   }, [])
 
   async function apple() {
@@ -234,7 +241,10 @@ const CustomModule = (props: any) => {
                                   ) : item.DataHeader === "Currency" ? (
                                     <p className="field-container">
                                       <span className="p-input-icon-left">
-                                        <i className="pi pi-dollar mt-0" style={{top:"8px"}}/>
+                                        <i
+                                          className="pi pi-dollar mt-0"
+                                          style={{ top: "8px" }}
+                                        />
                                         <InputText
                                           name={item.value}
                                           value={state[item.value]}

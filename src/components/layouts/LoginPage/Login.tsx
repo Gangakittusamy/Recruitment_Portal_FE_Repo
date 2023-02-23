@@ -58,13 +58,11 @@ const Login = () => {
         })
 
         if (res.payload.access_token) {
+          navigate("/super-admin")
           let app = res.payload.access_token
           await dispatch(LoginUserDetails(app))
         }
-
-        if (res.payload.access_token) {
-          navigate("/super-admin")
-        }
+        
         if (!res.payload.access_token) {
           await toast.current.show({
             severity: "error",
