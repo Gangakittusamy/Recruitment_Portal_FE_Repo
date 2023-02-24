@@ -16,6 +16,8 @@ import NavigateFile from "./components/SuperAdmin/createForm/navigateFile";
 import LayoutPage from "./components/SuperAdmin/Layout/index";
 import FieldListTablePage from "./components/SuperAdmin/inputListTablePage/index";
 import CustomModule from "./components/SuperAdmin/CustomModule/index";
+import FormOverview from "./components/SuperAdmin/inputListTablePage/formOverview";
+
 
 // import axios from "./components/Constant/Api";
 import axios from "axios";
@@ -82,6 +84,10 @@ function App() {
                   <Route
                     path="Table-List/:editTableId"
                     element={<FieldListTablePage />}
+                  />
+                  <Route
+                    path="Form/Overview/:formId"
+                    element={<FormOverview />}
                   />
                   <Route path="CustomModule/being" element={<CustomModule />} />
                   <Route path="CustomModule/edit/:editId" element={<CustomModule />} />

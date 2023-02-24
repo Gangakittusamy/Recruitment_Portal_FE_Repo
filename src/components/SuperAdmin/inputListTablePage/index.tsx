@@ -274,7 +274,7 @@ const FieldListTablePage = (props: any) => {
           Object.keys(rowData).map((key: any, index: any) => {
             if (key !== "id" && userSelectedColumns?.includes(key)) {
               return (
-                <div className="col-element">
+                <div className="col-element" key={index}>
                   <span className="title">{key}</span> :{" "}
                   <span className="value">{rowData[key]}</span>
                 </div>
@@ -302,6 +302,18 @@ const FieldListTablePage = (props: any) => {
         </Link>
       </div>
     )
+  }
+
+  const openOverviewPage = (e: any) => {
+    const rowData = e.data
+    navigate(`/super-admin/Form/Overview/${e.data.id}`, {
+      state: {
+        formElements: groupByForms(Get),
+        moduleId: editTableId,
+        moduleName: buttonName,
+        selectedForm: rowData
+      }
+    })
   }
 
   return (
@@ -332,19 +344,19 @@ const FieldListTablePage = (props: any) => {
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
                     rows={5}
                     rowsPerPageOptions={[5, 10, 15]}
-                    selectionMode="single"
+                    selectionMode="checkbox"
                     header={header}
                     resizableColumns
                     columnResizeMode="fit"
                     selection={selectedProducts}
                     onSelectionChange={(e) => setSelectedProducts(e.value)}
+                    onRowClick={openOverviewPage}
                   >
                     <Column body={rowEditButton}></Column>
 
                     <Column
                       selectionMode="multiple"
                       headerStyle={{ width: "3rem" }}
-                      exportable={false}
                     ></Column>
 
                     {listView.name === "List View" &&
