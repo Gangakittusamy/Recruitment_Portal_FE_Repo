@@ -30,6 +30,8 @@ import { Toast } from "primereact/toast"
 import _ from "lodash"
 import NavBar from "../navBar"
 import { useParams } from "react-router-dom"
+import { OverlayPanel } from "primereact/overlaypanel"
+import { confirmDialog } from "primereact/confirmdialog"
 
 const CustomModule = (props: any) => {
   const [state, setState] = React.useState<any>([])
@@ -44,6 +46,9 @@ const CustomModule = (props: any) => {
   const toast: any = useRef(null)
   const [singleColumnForms, setSingleColumnForms] = useState<string[]>([])
   const { editId } = useParams()
+  const formImage = useRef<OverlayPanel>(null)
+  const [image, setImage] = useState<any>()
+  const [formImg, setFormImg] = useState<any>()
 
   useEffect(() => {
     setSingleColumnForms(count.dragAndDrop.singleColumnForms)
@@ -144,6 +149,17 @@ const CustomModule = (props: any) => {
     }
   }
 
+  const formImageHandler = (event: any) => {
+    const selectedFile = event.target.files[0]
+    setImage(selectedFile)
+  }
+
+  const ChangeFormImage = (e: any) => {
+    e.preventDefault()
+    setFormImg(image)
+    formImage.current?.hide()
+  }
+
   return (
     <div>
       <NavBar />
@@ -151,16 +167,72 @@ const CustomModule = (props: any) => {
       <div>
         <div className="border-black-alpha-30 border-1 pb-7">
           <span className="contactName ">{`Create ${module}`}</span>
-          <div className="module-profile">
-            <span className="contactuntitle">{`${module} image`}</span>
-            <span className="ml-5">
+          <div className="module-profile" style={{ position: "relative" }}>
+            <span className="contactuntitle mb-4">{`${module} image`}</span>
+            {formImg && (
+              <div
+                className="img-delete"
+                onClick={(e: any) => {
+                  confirmDialog({
+                    message: "Do you want to remove this image?",
+                    header: "Confirmation",
+                    icon: "pi pi-info-circle",
+                    accept: () => {
+                      setFormImg("")
+                    },
+                  })
+                }}
+              >
+                <i className="pi pi-times"></i>
+              </div>
+            )}
+            <span
+              className="ml-5"
+              style={{ cursor: "pointer" }}
+              onClick={(e) => formImage.current?.toggle(e)}
+            >
               <img
-                src={noImages}
-                style={{ width: " 56px", height: "50px" }}
+                id="formHeadImage"
+                src={formImg ? URL.createObjectURL(formImg) : noImages}
+                style={{ width: "100px", height: "100px" }}
               ></img>
             </span>
           </div>
-          {/* <span className="contactuntitle">Untitled Information </span> */}
+          <OverlayPanel
+            ref={formImage}
+            showCloseIcon
+            id="overlay_panel"
+            style={{ width: "350px" }}
+            className="overlaypanel-demo"
+          >
+            <div>
+              <form>
+                <InputText type="file" onChange={formImageHandler} />
+                <div
+                  className="flex justify-content-end"
+                  style={{ gap: "17px" }}
+                >
+                  <Button
+                    className="mt-2"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setImage("")
+                      formImage.current?.hide()
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="mt-2 "
+                    onClick={ChangeFormImage}
+                  >
+                    Change
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </OverlayPanel>
           <div>
             <div>
               <div className="createForm">

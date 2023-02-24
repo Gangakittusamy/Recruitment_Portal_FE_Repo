@@ -174,7 +174,15 @@ const NavBar = (props: any) => {
                     className="flex justify-content-end"
                     style={{ gap: "17px" }}
                   >
-                    <Button className="mt-2">Cancel</Button>
+                    <Button
+                      className="mt-2"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        title.current?.hide()
+                      }}
+                    >
+                      Cancel
+                    </Button>
                     <Button
                       type="submit"
                       className="mt-2 "
