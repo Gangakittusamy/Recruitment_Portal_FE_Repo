@@ -24,8 +24,12 @@ import { OverlayPanel } from "primereact/overlaypanel"
 import { useNavigate } from "react-router-dom"
 import {
   ModuleNameGet,
-  ModuleNameGetFormsaa
+  ModuleNameGetFormsaa,
+  resetModuleForms
 } from "../../../features/Modules/module"
+import {
+  setSingleColumnForms
+} from "../../../features/counter/dragAndDrop"
 import {
   ProjectLogoName,
   LogoNameGet
@@ -95,6 +99,8 @@ const NavBar = (props: any) => {
     }
   }
   const NextPage = () => {
+    dispatch(resetModuleForms())
+    dispatch(setSingleColumnForms([]))
     navigate("/super-admin/create-form")
   }
   function handleChange(event: any) {

@@ -34,6 +34,21 @@ export const leadGenerationTable: any = createAsyncThunk(
   }
 );
 
+export const leadGenerationTableUpdate: any = createAsyncThunk(
+  "table/tableUpdate",
+  async (data: any, thunkAPI) => {
+    try {
+      const response = await axios.put(
+        `${BASEURL}/api/formdatas/updatetabledata/${data.id}`,
+        data.payload
+      );
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const leadGenerationTableGet: any = createAsyncThunk(
   "table/tableCreation",
   async (name: any, thunkAPI) => {

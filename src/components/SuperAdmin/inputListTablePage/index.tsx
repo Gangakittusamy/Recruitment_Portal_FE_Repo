@@ -26,6 +26,8 @@ import { ModuleNameGetFormsaa } from "../../../features/Modules/module"
 import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration"
 import { LoginUserDetails } from "../../../features/Auth/userDetails"
 import { ProgressSpinner } from "primereact/progressspinner"
+import noImages from "../../../images//noimage.jpg"
+import FormSelectOptions from "./formSelectOptions"
 import _ from "lodash"
 
 //rolesGetForms
@@ -35,7 +37,7 @@ const FieldListTablePage = (props: any) => {
   const [Get, setGet] = useState<any>([])
   const [forms, setForms] = useState<any>([])
   const [formData, setformData] = useState<any>([])
-  const [selectedProducts, setSelectedProducts] = useState(null)
+  const [selectedProducts, setSelectedProducts] = useState([])
   const [TableData, setTableData] = useState<any>([])
   const navigate: any = useNavigate()
   const dispatch: any = useAppDispatch()
@@ -70,7 +72,7 @@ const FieldListTablePage = (props: any) => {
 
     let resp = response.payload.data
     resp = resp.map((x: any, i: number) => {
-      return { ...x.tableData.tableData[0], id: x._id }
+      return { ...x.tableData.tableData[0], id: x._id, formImage: x.formImage }
     })
 
     setgetdata(resp)
@@ -118,6 +120,7 @@ const FieldListTablePage = (props: any) => {
   useEffect(() => {
     firstGetApi()
     setUserSelectedColumns([])
+    setSelectedProducts([])
   }, [editTableId])
 
   function removeDuplicates(result: any) {
@@ -134,7 +137,9 @@ const FieldListTablePage = (props: any) => {
 
       let dup: any = []
       res.map((x: any, i: number) => {
-        dup.push({ field: x, header: x })
+        if (x !== "id" && x !== "formImage") {
+          dup.push({ field: x, header: x })
+        }
       })
 
       setSelectedColumns(dup)
@@ -142,9 +147,11 @@ const FieldListTablePage = (props: any) => {
       let userColumns: any = []
 
       res.map((x: any, i: number) => {
-        userColumns.push(x)
-        const column = { field: x, header: x }
-        columns.push(column)
+        if (x !== "id" && x !== "formImage") {
+          userColumns.push(x)
+          const column = { field: x, header: x }
+          columns.push(column)
+        }
       })
       setUserSelectedColumns(userColumns)
       setColumns(columns)
@@ -229,58 +236,70 @@ const FieldListTablePage = (props: any) => {
     )
   }
 
-  const header = (
-    <div className="flex justify-content-between align-items-center">
-      <MultiSelect
-        value={selectedColumns}
-        options={columns}
-        optionLabel="header"
-        onChange={onColumnToggle}
-        style={{ width: "20em", height: "3em" }}
-      />
-      {buttonName && (
-        <div className="flex align-items-center view-select">
-          <div>
-            <Dropdown
-              value={listView}
-              onChange={(e) => setListView(e.value)}
-              options={listViews}
-              valueTemplate={selectedViewTemplate}
-              itemTemplate={ViewOptionTemplate}
-              optionLabel="name"
-              className="w-full md:w-14rem"
-            />
+  const header =
+    selectedProducts.length > 0 ? (
+      <FormSelectOptions selectedProducts={selectedProducts}/>
+    ) : (
+      <div className="flex justify-content-between align-items-center">
+        <MultiSelect
+          value={selectedColumns}
+          options={columns}
+          optionLabel="header"
+          onChange={onColumnToggle}
+          style={{ width: "20em", height: "3em" }}
+        />
+        {buttonName && (
+          <div className="flex align-items-center view-select">
+            <div>
+              <Dropdown
+                value={listView}
+                onChange={(e) => setListView(e.value)}
+                options={listViews}
+                valueTemplate={selectedViewTemplate}
+                itemTemplate={ViewOptionTemplate}
+                optionLabel="name"
+                className="w-full md:w-14rem"
+              />
+            </div>
+            <Link
+              to="/super-admin/CustomModule/being"
+              state={{
+                forms: groupByForms(Get),
+                id: id,
+                recId: editTableId,
+                module: buttonName
+              }}
+            >
+              <Button label={`Create a ${buttonName}`} />
+            </Link>
           </div>
-          <Link
-            to="/super-admin/CustomModule/being"
-            state={{
-              forms: groupByForms(Get),
-              id: id,
-              recId: editTableId,
-              module: buttonName
-            }}
-          >
-            <Button label={`Create a ${buttonName}`} />
-          </Link>
-        </div>
-      )}
-    </div>
-  )
+        )}
+      </div>
+    )
 
   const getColumnForCanvasView = (rowData: any) => {
     return (
-      <div className="canvas-col-container">
-        {rowData &&
-          Object.keys(rowData).map((key: any, index: any) => {
-            if (key !== "id" && userSelectedColumns?.includes(key)) {
-              return (
-                <div className="col-element" key={index}>
-                  <span className="title">{key}</span> :{" "}
-                  <span className="value">{rowData[key]}</span>
-                </div>
-              )
-            }
-          })}
+      <div className="flex align-items-center">
+        <div className="mr-3">
+          <img
+            id="formHeadImage"
+            src={rowData.formImage ? rowData.formImage : noImages}
+            style={{ width: "100px", height: "100px" }}
+          ></img>
+        </div>
+        <div className="canvas-col-container">
+          {rowData &&
+            Object.keys(rowData).map((key: any, index: any) => {
+              if (key !== "id" && userSelectedColumns?.includes(key)) {
+                return (
+                  <div className="col-element" key={index}>
+                    <span className="title">{key}</span> :{" "}
+                    <span className="value">{rowData[key]}</span>
+                  </div>
+                )
+              }
+            })}
+        </div>
       </div>
     )
   }
@@ -362,7 +381,7 @@ const FieldListTablePage = (props: any) => {
                     {listView.name === "List View" &&
                       userSelectedColumns.length > 0 &&
                       userSelectedColumns.map((column: any, index: any) => {
-                        return column !== "id" ? (
+                        return column !== "id" && column !== "formImage" ? (
                           <Column
                             key={index}
                             field={column}

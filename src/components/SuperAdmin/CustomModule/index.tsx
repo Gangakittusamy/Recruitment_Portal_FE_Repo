@@ -22,9 +22,12 @@ import {
   isValueAlreadyExist
 } from "../../../features/Modules/module"
 import { useNavigate } from "react-router-dom"
-import { leadGenerationTable } from "../../../features/Modules/leadGeneration"
 import { LoginUserDetails } from "../../../features/Auth/userDetails"
-import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration"
+import {
+  leadGenerationTable,
+  leadGenerationTableGet,
+  leadGenerationTableUpdate
+} from "../../../features/Modules/leadGeneration"
 import "./customModule.css"
 import { Toast } from "primereact/toast"
 import _ from "lodash"
@@ -47,8 +50,9 @@ const CustomModule = (props: any) => {
   const [singleColumnForms, setSingleColumnForms] = useState<string[]>([])
   const { editId } = useParams()
   const formImage = useRef<OverlayPanel>(null)
-  const [image, setImage] = useState<any>()
-  const [formImg, setFormImg] = useState<any>()
+  const [image, setImage] = useState<any>("")
+  const [formImg, setFormImg] = useState<any>("")
+  const [formImgChanged, setFormImgChanged] = useState<any>(false)
 
   useEffect(() => {
     setSingleColumnForms(count.dragAndDrop.singleColumnForms)
@@ -89,16 +93,30 @@ const CustomModule = (props: any) => {
         submittedElements.includes(ai)
       )
       if (isFormValid) {
-        let payload = {
-          recuriter: ids,
-          moduleId: recId,
-          tableData: {
-            tableData: [state]
-          }
+        let payload = new FormData()
+        const tableData: any = {
+          tableData: [state]
         }
+        payload.append("recuriter", ids)
+        payload.append("moduleId", recId)
+        payload.append("tableData", JSON.stringify(tableData))
+        payload.append("formImage", formImg)
         if (!editId) {
           const res = await dispatch(leadGenerationTable(payload))
           if (res.payload.status == "Form-tableData created successfully") {
+            navigate(-1)
+            await dispatch(leadGenerationTableGet(id))
+          }
+        } else {
+          const data = {
+            payload,
+            id: editId
+          }
+          const res = await dispatch(leadGenerationTableUpdate(data))
+          if (
+            res.payload.status ==
+            "Form-tableData and Form-Image data updated successfully"
+          ) {
             navigate(-1)
             await dispatch(leadGenerationTableGet(id))
           }
@@ -125,6 +143,7 @@ const CustomModule = (props: any) => {
     apple()
     if (editId) {
       setState(rowData)
+      setFormImg(rowData.formImage)
     }
   }, [])
 
@@ -157,7 +176,16 @@ const CustomModule = (props: any) => {
   const ChangeFormImage = (e: any) => {
     e.preventDefault()
     setFormImg(image)
+    setFormImgChanged(true)
     formImage.current?.hide()
+  }
+
+  const getFormImageUrl = (formImg: any) => {
+    let img = formImg
+    if (formImgChanged) {
+      img = URL.createObjectURL(formImg)
+    }
+    return img
   }
 
   return (
@@ -179,7 +207,7 @@ const CustomModule = (props: any) => {
                     icon: "pi pi-info-circle",
                     accept: () => {
                       setFormImg("")
-                    },
+                    }
                   })
                 }}
               >
@@ -193,7 +221,7 @@ const CustomModule = (props: any) => {
             >
               <img
                 id="formHeadImage"
-                src={formImg ? URL.createObjectURL(formImg) : noImages}
+                src={formImg ? getFormImageUrl(formImg) : noImages}
                 style={{ width: "100px", height: "100px" }}
               ></img>
             </span>
