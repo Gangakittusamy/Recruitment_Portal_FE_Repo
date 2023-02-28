@@ -170,11 +170,6 @@ const FieldListTablePage = (props: any) => {
           (sCol: { field: string }) => sCol.field === col.field
         )
       )
-      setSelectedColumns(selectedColumns)
-      let dup: any = []
-      duplicate.map((x: any, i: number) => {
-        dup.push({ field: x, header: x })
-      })
       setSelectedColumns(orderedSelectedColumns)
 
       let userColumns: any = []
@@ -182,30 +177,7 @@ const FieldListTablePage = (props: any) => {
         userColumns.push(x.field)
       })
       setUserSelectedColumns(userColumns)
-
-      const isSameUser = (columns: any, orderedSelectedColumns: any) =>
-        columns.field === orderedSelectedColumns.field &&
-        columns.header === orderedSelectedColumns.header
-
-      const onlyInLeft = (left: any, right: any, compareFunction: any) =>
-        left.filter(
-          (leftValue: any) =>
-            !right.some((rightValue: any) =>
-              compareFunction(leftValue, rightValue)
-            )
-        )
-
-      const onlyInA = onlyInLeft(columns, orderedSelectedColumns, isSameUser)
-      const onlyInB = onlyInLeft(orderedSelectedColumns, columns, isSameUser)
-
-      const result = [...onlyInA, ...onlyInB]
-
-      result.map((x: any, i: number) => {
-        const filteredArray = userSelectedColumns.filter((c: any) => {
-          return c !== x.field
-        })
-        setUserSelectedColumns(filteredArray)
-      })
+      
     } else {
       setSelectedColumns([])
       setUserSelectedColumns([])
@@ -435,7 +407,7 @@ const FieldListTablePage = (props: any) => {
 
                     {listView.name === "Canvas View" &&
                       userSelectedColumns.length > 0 && (
-                        <Column body={getColumnForCanvasView}></Column>
+                        <Column body={getColumnForCanvasView} header="Canvas View"></Column>
                       )}
 
                     {userSelectedColumns.length > 0 && (
