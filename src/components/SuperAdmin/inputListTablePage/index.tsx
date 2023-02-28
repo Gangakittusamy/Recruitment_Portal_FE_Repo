@@ -164,47 +164,52 @@ const FieldListTablePage = (props: any) => {
 
   function onColumnToggle(event: any) {
     let selectedColumns = event.value
-    let orderedSelectedColumns = columns.filter((col: any) =>
-      selectedColumns.some(
-        (sCol: { field: string }) => sCol.field === col.field
+    if (selectedColumns.length) {
+      let orderedSelectedColumns = columns.filter((col: any) =>
+        selectedColumns.some(
+          (sCol: { field: string }) => sCol.field === col.field
+        )
       )
-    )
-    setSelectedColumns(selectedColumns)
-    let dup: any = []
-    duplicate.map((x: any, i: number) => {
-      dup.push({ field: x, header: x })
-    })
-    setSelectedColumns(orderedSelectedColumns)
-
-    let userColumns: any = []
-    orderedSelectedColumns.map((x: any, i: number) => {
-      userColumns.push(x.field)
-    })
-    setUserSelectedColumns(userColumns)
-
-    const isSameUser = (columns: any, orderedSelectedColumns: any) =>
-      columns.field === orderedSelectedColumns.field &&
-      columns.header === orderedSelectedColumns.header
-
-    const onlyInLeft = (left: any, right: any, compareFunction: any) =>
-      left.filter(
-        (leftValue: any) =>
-          !right.some((rightValue: any) =>
-            compareFunction(leftValue, rightValue)
-          )
-      )
-
-    const onlyInA = onlyInLeft(columns, orderedSelectedColumns, isSameUser)
-    const onlyInB = onlyInLeft(orderedSelectedColumns, columns, isSameUser)
-
-    const result = [...onlyInA, ...onlyInB]
-
-    result.map((x: any, i: number) => {
-      const filteredArray = userSelectedColumns.filter((c: any) => {
-        return c !== x.field
+      setSelectedColumns(selectedColumns)
+      let dup: any = []
+      duplicate.map((x: any, i: number) => {
+        dup.push({ field: x, header: x })
       })
-      setUserSelectedColumns(filteredArray)
-    })
+      setSelectedColumns(orderedSelectedColumns)
+
+      let userColumns: any = []
+      orderedSelectedColumns.map((x: any, i: number) => {
+        userColumns.push(x.field)
+      })
+      setUserSelectedColumns(userColumns)
+
+      const isSameUser = (columns: any, orderedSelectedColumns: any) =>
+        columns.field === orderedSelectedColumns.field &&
+        columns.header === orderedSelectedColumns.header
+
+      const onlyInLeft = (left: any, right: any, compareFunction: any) =>
+        left.filter(
+          (leftValue: any) =>
+            !right.some((rightValue: any) =>
+              compareFunction(leftValue, rightValue)
+            )
+        )
+
+      const onlyInA = onlyInLeft(columns, orderedSelectedColumns, isSameUser)
+      const onlyInB = onlyInLeft(orderedSelectedColumns, columns, isSameUser)
+
+      const result = [...onlyInA, ...onlyInB]
+
+      result.map((x: any, i: number) => {
+        const filteredArray = userSelectedColumns.filter((c: any) => {
+          return c !== x.field
+        })
+        setUserSelectedColumns(filteredArray)
+      })
+    } else {
+      setSelectedColumns([])
+      setUserSelectedColumns([])
+    }
   }
 
   const groupByForms = (forms: any) => {
@@ -274,7 +279,7 @@ const FieldListTablePage = (props: any) => {
                 module: buttonName
               }}
             >
-              <Button label={`Create a ${buttonName}`} />
+              <Button label={`Create ${buttonName}`} />
             </Link>
           </div>
         )}
@@ -403,12 +408,16 @@ const FieldListTablePage = (props: any) => {
                     onSelectionChange={(e) => setSelectedProducts(e.value)}
                     onRowClick={openOverviewPage}
                   >
-                    <Column body={rowEditButton}></Column>
+                    {userSelectedColumns.length > 0 && (
+                      <Column body={rowEditButton}></Column>
+                    )}
 
-                    <Column
-                      selectionMode="multiple"
-                      headerStyle={{ width: "3rem" }}
-                    ></Column>
+                    {userSelectedColumns.length > 0 && (
+                      <Column
+                        selectionMode="multiple"
+                        headerStyle={{ width: "3rem" }}
+                      ></Column>
+                    )}
 
                     {listView.name === "List View" &&
                       userSelectedColumns.length > 0 &&
@@ -429,7 +438,9 @@ const FieldListTablePage = (props: any) => {
                         <Column body={getColumnForCanvasView}></Column>
                       )}
 
-                    <Column body={rowDeleteButton} header="Actions"></Column>
+                    {userSelectedColumns.length > 0 && (
+                      <Column body={rowDeleteButton} header="Actions"></Column>
+                    )}
                   </DataTable>
                 </div>
               </div>
