@@ -202,8 +202,12 @@
   top: 15px !important;
 }
 
-.createForm .single-col{
+.createForm .single-col {
   display: block !important;
+}
+
+.createForm .form-check-box {
+  left: 22px !important;
 }
 
 @media (min-width: 992px) {
@@ -267,5 +271,8 @@
   .section-add-btn {
     margin-top: -250px;
     width: 33.33%;
+  }
+  .createForm .form-check-box {
+    left: 8px !important;
   }
 }

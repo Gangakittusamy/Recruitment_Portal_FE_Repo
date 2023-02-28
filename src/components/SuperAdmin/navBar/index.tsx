@@ -24,8 +24,12 @@ import { OverlayPanel } from "primereact/overlaypanel"
 import { useNavigate } from "react-router-dom"
 import {
   ModuleNameGet,
-  ModuleNameGetFormsaa
+  ModuleNameGetFormsaa,
+  resetModuleForms
 } from "../../../features/Modules/module"
+import {
+  setSingleColumnForms
+} from "../../../features/counter/dragAndDrop"
 import {
   ProjectLogoName,
   LogoNameGet
@@ -95,6 +99,8 @@ const NavBar = (props: any) => {
     }
   }
   const NextPage = () => {
+    dispatch(resetModuleForms())
+    dispatch(setSingleColumnForms([]))
     navigate("/super-admin/create-form")
   }
   function handleChange(event: any) {
@@ -174,7 +180,15 @@ const NavBar = (props: any) => {
                     className="flex justify-content-end"
                     style={{ gap: "17px" }}
                   >
-                    <Button className="mt-2">Cancel</Button>
+                    <Button
+                      className="mt-2"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        title.current?.hide()
+                      }}
+                    >
+                      Cancel
+                    </Button>
                     <Button
                       type="submit"
                       className="mt-2 "

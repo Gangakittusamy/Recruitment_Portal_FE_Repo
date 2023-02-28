@@ -23,10 +23,16 @@ import { Link } from "react-router-dom"
 import React from "react"
 import { useParams } from "react-router-dom"
 import { ModuleNameGetFormsaa } from "../../../features/Modules/module"
-import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration"
+import {
+  leadGenerationTableGet,
+  leadGenerationTableDelete
+} from "../../../features/Modules/leadGeneration"
 import { LoginUserDetails } from "../../../features/Auth/userDetails"
 import { ProgressSpinner } from "primereact/progressspinner"
+import noImages from "../../../images//noimage.jpg"
+import FormSelectOptions from "./formSelectOptions"
 import _ from "lodash"
+import { confirmDialog } from "primereact/confirmdialog"
 
 //rolesGetForms
 const FieldListTablePage = (props: any) => {
@@ -35,7 +41,7 @@ const FieldListTablePage = (props: any) => {
   const [Get, setGet] = useState<any>([])
   const [forms, setForms] = useState<any>([])
   const [formData, setformData] = useState<any>([])
-  const [selectedProducts, setSelectedProducts] = useState(null)
+  const [selectedProducts, setSelectedProducts] = useState([])
   const [TableData, setTableData] = useState<any>([])
   const navigate: any = useNavigate()
   const dispatch: any = useAppDispatch()
@@ -48,6 +54,10 @@ const FieldListTablePage = (props: any) => {
   const [columns, setColumns] = useState<any>([])
   const [userSelectedColumns, setUserSelectedColumns] = useState<any>([])
   const [isLoading, setIsLoading] = useState<any>()
+  const [listView, setListView] = useState<any>({
+    name: "List View",
+    icon: "list"
+  })
 
   async function firstGetApi() {
     setIsLoading(true)
@@ -66,7 +76,7 @@ const FieldListTablePage = (props: any) => {
 
     let resp = response.payload.data
     resp = resp.map((x: any, i: number) => {
-      return x.tableData.tableData[0]
+      return { ...x.tableData.tableData[0], id: x._id, formImage: x.formImage }
     })
 
     setgetdata(resp)
@@ -114,6 +124,7 @@ const FieldListTablePage = (props: any) => {
   useEffect(() => {
     firstGetApi()
     setUserSelectedColumns([])
+    setSelectedProducts([])
   }, [editTableId])
 
   function removeDuplicates(result: any) {
@@ -130,7 +141,9 @@ const FieldListTablePage = (props: any) => {
 
       let dup: any = []
       res.map((x: any, i: number) => {
-        dup.push({ field: x, header: x })
+        if (x !== "id" && x !== "formImage") {
+          dup.push({ field: x, header: x })
+        }
       })
 
       setSelectedColumns(dup)
@@ -138,9 +151,11 @@ const FieldListTablePage = (props: any) => {
       let userColumns: any = []
 
       res.map((x: any, i: number) => {
-        userColumns.push(x)
-        const column = { field: x, header: x }
-        columns.push(column)
+        if (x !== "id" && x !== "formImage") {
+          userColumns.push(x)
+          const column = { field: x, header: x }
+          columns.push(column)
+        }
       })
       setUserSelectedColumns(userColumns)
       setColumns(columns)
@@ -149,47 +164,24 @@ const FieldListTablePage = (props: any) => {
 
   function onColumnToggle(event: any) {
     let selectedColumns = event.value
-    let orderedSelectedColumns = columns.filter((col: any) =>
-      selectedColumns.some(
-        (sCol: { field: string }) => sCol.field === col.field
+    if (selectedColumns.length) {
+      let orderedSelectedColumns = columns.filter((col: any) =>
+        selectedColumns.some(
+          (sCol: { field: string }) => sCol.field === col.field
+        )
       )
-    )
-    setSelectedColumns(selectedColumns)
-    let dup: any = []
-    duplicate.map((x: any, i: number) => {
-      dup.push({ field: x, header: x })
-    })
-    setSelectedColumns(orderedSelectedColumns)
+      setSelectedColumns(orderedSelectedColumns)
 
-    let userColumns: any = []
-    orderedSelectedColumns.map((x: any, i: number) => {
-      userColumns.push(x.field)
-    })
-    setUserSelectedColumns(userColumns)
-
-    const isSameUser = (columns: any, orderedSelectedColumns: any) =>
-      columns.field === orderedSelectedColumns.field &&
-      columns.header === orderedSelectedColumns.header
-
-    const onlyInLeft = (left: any, right: any, compareFunction: any) =>
-      left.filter(
-        (leftValue: any) =>
-          !right.some((rightValue: any) =>
-            compareFunction(leftValue, rightValue)
-          )
-      )
-
-    const onlyInA = onlyInLeft(columns, orderedSelectedColumns, isSameUser)
-    const onlyInB = onlyInLeft(orderedSelectedColumns, columns, isSameUser)
-
-    const result = [...onlyInA, ...onlyInB]
-
-    result.map((x: any, i: number) => {
-      const filteredArray = userSelectedColumns.filter((c: any) => {
-        return c !== x.field
+      let userColumns: any = []
+      orderedSelectedColumns.map((x: any, i: number) => {
+        userColumns.push(x.field)
       })
-      setUserSelectedColumns(filteredArray)
-    })
+      setUserSelectedColumns(userColumns)
+      
+    } else {
+      setSelectedColumns([])
+      setUserSelectedColumns([])
+    }
   }
 
   const groupByForms = (forms: any) => {
@@ -197,37 +189,167 @@ const FieldListTablePage = (props: any) => {
     return groupByForms
   }
 
-  const header = (
-    <div className="flex justify-content-between">
-      <MultiSelect
-        value={selectedColumns}
-        options={columns}
-        optionLabel="header"
-        onChange={onColumnToggle}
-        style={{ width: "20em" }}
-      />
-      {buttonName && (
+  const listViews = [
+    {
+      name: "List View",
+      icon: "list"
+    },
+    { name: "Canvas View", icon: "qrcode" }
+  ]
+
+  const selectedViewTemplate = (option: any, props: any) => {
+    if (option) {
+      return (
+        <div className="flex align-items-center">
+          <i className={`pi pi-${option.icon} m-2`}></i>
+        </div>
+      )
+    }
+    return <span>{props.placeholder}</span>
+  }
+
+  const ViewOptionTemplate = (option: any) => {
+    return (
+      <div className="flex align-items-center">
+        <i className={`pi pi-${option.icon} mr-2`}></i>
+        <div>{option.name}</div>
+      </div>
+    )
+  }
+
+  const header =
+    selectedProducts.length > 0 ? (
+      <FormSelectOptions selectedForms={selectedProducts} />
+    ) : (
+      <div className="flex justify-content-between align-items-center">
+        <MultiSelect
+          value={selectedColumns}
+          options={columns}
+          optionLabel="header"
+          onChange={onColumnToggle}
+          style={{ width: "20em", height: "3em" }}
+        />
+        {buttonName && (
+          <div className="flex align-items-center view-select">
+            <div>
+              <Dropdown
+                value={listView}
+                onChange={(e) => setListView(e.value)}
+                options={listViews}
+                valueTemplate={selectedViewTemplate}
+                itemTemplate={ViewOptionTemplate}
+                optionLabel="name"
+                className="w-full md:w-14rem"
+              />
+            </div>
+            <Link
+              to="/super-admin/CustomModule/being"
+              state={{
+                forms: groupByForms(Get),
+                id: id,
+                recId: editTableId,
+                module: buttonName
+              }}
+            >
+              <Button label={`Create ${buttonName}`} />
+            </Link>
+          </div>
+        )}
+      </div>
+    )
+
+  const getColumnForCanvasView = (rowData: any) => {
+    return (
+      <div className="flex align-items-center">
+        <div className="mr-3">
+          <img
+            id="formHeadImage"
+            src={rowData.formImage ? rowData.formImage : noImages}
+            style={{ width: "100px", height: "100px" }}
+          ></img>
+        </div>
+        <div className="canvas-col-container">
+          {rowData &&
+            Object.keys(rowData).map((key: any, index: any) => {
+              if (key !== "id" && userSelectedColumns?.includes(key)) {
+                return (
+                  <div className="col-element" key={index}>
+                    <span className="title">{key}</span> :{" "}
+                    <span className="value">{rowData[key]}</span>
+                  </div>
+                )
+              }
+            })}
+        </div>
+      </div>
+    )
+  }
+
+  const rowEditButton = (rowData: any) => {
+    return (
+      <div className="row-edit-icon">
         <Link
-          to="/super-admin/CustomModule/being"
+          to={`/super-admin/CustomModule/edit/${rowData.id}`}
           state={{
             forms: groupByForms(Get),
             id: id,
             recId: editTableId,
-            module: buttonName
+            module: buttonName,
+            rowData
           }}
         >
-          <Button label={`Create a ${buttonName}`} />
+          <Button icon="pi pi-pencil" />
         </Link>
-      )}
-    </div>
-  )
+      </div>
+    )
+  }
+
+  const rowDeleteButton = (rowData: any) => {
+    return (
+      <div
+        className="row-delete-icon"
+        onClick={() => {
+          confirmDialog({
+            message: "Do you want to remove this form?",
+            header: "Confirmation",
+            icon: "pi pi-info-circle",
+            accept: () => {
+              deleteRow(rowData.id)
+            }
+          })
+        }}
+      >
+        <Button icon="pi pi-trash" />
+      </div>
+    )
+  }
+
+  const deleteRow = async (id: any) => {
+    await dispatch(leadGenerationTableDelete(id)).then(() => {
+      firstGetApi()
+      setUserSelectedColumns([])
+      setSelectedProducts([])
+    })
+  }
+
+  const openOverviewPage = (e: any) => {
+    const rowData = e.data
+    navigate(`/super-admin/Form/Overview/${e.data.id}`, {
+      state: {
+        formElements: groupByForms(Get),
+        moduleId: editTableId,
+        moduleName: buttonName,
+        selectedForm: rowData
+      }
+    })
+  }
 
   return (
     <div style={{ background: "rgb(250, 250, 251)", height: "100vh" }}>
       <div>
         <NavBar />
         {isLoading && (
-          <div  className="create_form_main" >
+          <div className="create_form_main">
             <ProgressSpinner
               style={{ width: "50px", height: "75vh" }}
               strokeWidth="8"
@@ -250,29 +372,47 @@ const FieldListTablePage = (props: any) => {
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
                     rows={5}
                     rowsPerPageOptions={[5, 10, 15]}
-                    selectionMode="single"
+                    selectionMode="checkbox"
                     header={header}
                     resizableColumns
                     columnResizeMode="fit"
                     selection={selectedProducts}
                     onSelectionChange={(e) => setSelectedProducts(e.value)}
+                    onRowClick={openOverviewPage}
                   >
-                    <Column
-                      selectionMode="multiple"
-                      headerStyle={{ width: "3rem" }}
-                      exportable={false}
-                    ></Column>
+                    {userSelectedColumns.length > 0 && (
+                      <Column body={rowEditButton}></Column>
+                    )}
 
-                    {userSelectedColumns.length > 0 &&
+                    {userSelectedColumns.length > 0 && (
+                      <Column
+                        selectionMode="multiple"
+                        headerStyle={{ width: "3rem" }}
+                      ></Column>
+                    )}
+
+                    {listView.name === "List View" &&
+                      userSelectedColumns.length > 0 &&
                       userSelectedColumns.map((column: any, index: any) => {
-                        return (
+                        return column !== "id" && column !== "formImage" ? (
                           <Column
                             key={index}
                             field={column}
                             header={column}
                           ></Column>
+                        ) : (
+                          <Column />
                         )
                       })}
+
+                    {listView.name === "Canvas View" &&
+                      userSelectedColumns.length > 0 && (
+                        <Column body={getColumnForCanvasView} header="Canvas View"></Column>
+                      )}
+
+                    {userSelectedColumns.length > 0 && (
+                      <Column body={rowDeleteButton} header="Actions"></Column>
+                    )}
                   </DataTable>
                 </div>
               </div>

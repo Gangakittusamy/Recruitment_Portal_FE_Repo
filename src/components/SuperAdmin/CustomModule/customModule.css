@@ -21,11 +21,11 @@
 
 .formName {
   text-transform: capitalize;
-  margin: 0 0 1.5% 0;
+  margin: 0 0 1% 0;
 }
 
 .form-item {
-  width: 40%;
+  width: 45%;
 }
 
 .names {
@@ -33,16 +33,54 @@
 }
 
 .createForm .names .grey {
-  min-width: 40%;
+  min-width: 30%;
   display: flex;
   justify-content: flex-end;
-  margin-right: 20px;
+  margin: 10px 20px 10px 0;
+  align-items: center;
 }
 
 .createForm .names .required::after {
   content: "*";
   color: red;
   padding-left: 2px;
+}
+
+.createForm .p-inputtext {
+  min-width: 250px !important;
+}
+
+.createForm .p-dropdown .p-inputtext {
+  min-width: 200px !important;
+}
+
+.createForm .p-dropdown {
+  border: 1px solid #ced4da !important;
+  max-width: 250px !important;
+  margin: 10px 0 !important;
+}
+
+.createForm .field-container {
+  margin: 10px 0 !important;
+}
+
+.createForm .field-container .p-button {
+  min-width: 250px !important;
+}
+
+.module-profile .img-delete {
+  position: absolute;
+  left: 140px;
+  margin-top: -12px;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 50%;
+  padding: 3px;
+  font-size: 0.5rem;
+}
+
+.module-profile .img-delete:hover {
+  transform: scale(1.25);
 }
 
 @media (max-width: 992px) {

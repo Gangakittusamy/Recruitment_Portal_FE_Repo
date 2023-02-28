@@ -22,12 +22,19 @@ import {
   isValueAlreadyExist
 } from "../../../features/Modules/module"
 import { useNavigate } from "react-router-dom"
-import { leadGenerationTable } from "../../../features/Modules/leadGeneration"
 import { LoginUserDetails } from "../../../features/Auth/userDetails"
-import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration"
+import {
+  leadGenerationTable,
+  leadGenerationTableGet,
+  leadGenerationTableUpdate
+} from "../../../features/Modules/leadGeneration"
 import "./customModule.css"
 import { Toast } from "primereact/toast"
 import _ from "lodash"
+import NavBar from "../navBar"
+import { useParams } from "react-router-dom"
+import { OverlayPanel } from "primereact/overlaypanel"
+import { confirmDialog } from "primereact/confirmdialog"
 
 const CustomModule = (props: any) => {
   const [state, setState] = React.useState<any>([])
@@ -36,11 +43,16 @@ const CustomModule = (props: any) => {
 
   const [checked1, setChecked1] = useState(false)
   const location = useLocation()
-  const { forms, id, recId, module } = location.state
+  const { forms, id, recId, module, rowData } = location.state
   const navigate = useNavigate()
   const [ids, setIds] = useState<any>()
   const toast: any = useRef(null)
   const [singleColumnForms, setSingleColumnForms] = useState<string[]>([])
+  const { editId } = useParams()
+  const formImage = useRef<OverlayPanel>(null)
+  const [image, setImage] = useState<any>("")
+  const [formImg, setFormImg] = useState<any>("")
+  const [formImgChanged, setFormImgChanged] = useState<any>(false)
 
   useEffect(() => {
     setSingleColumnForms(count.dragAndDrop.singleColumnForms)
@@ -81,17 +93,33 @@ const CustomModule = (props: any) => {
         submittedElements.includes(ai)
       )
       if (isFormValid) {
-        let payload = {
-          recuriter: ids,
-          moduleId: recId,
-          tableData: {
-            tableData: [state]
-          }
+        let payload = new FormData()
+        const tableData: any = {
+          tableData: [state]
         }
-        const res = await dispatch(leadGenerationTable(payload))
-        if (res.payload.status == "Form-tableData created successfully") {
-          navigate(-1)
-          await dispatch(leadGenerationTableGet(id))
+        payload.append("recuriter", ids)
+        payload.append("moduleId", recId)
+        payload.append("tableData", JSON.stringify(tableData))
+        payload.append("formImage", formImg)
+        if (!editId) {
+          const res = await dispatch(leadGenerationTable(payload))
+          if (res.payload.status == "Form-tableData created successfully") {
+            navigate(-1)
+            await dispatch(leadGenerationTableGet(id))
+          }
+        } else {
+          const data = {
+            payload,
+            id: editId
+          }
+          const res = await dispatch(leadGenerationTableUpdate(data))
+          if (
+            res.payload.status ==
+            "Form-tableData and Form-Image data updated successfully"
+          ) {
+            navigate(-1)
+            await dispatch(leadGenerationTableGet(id))
+          }
         }
       } else {
         toast.current.show({
@@ -113,6 +141,10 @@ const CustomModule = (props: any) => {
 
   useEffect(() => {
     apple()
+    if (editId) {
+      setState(rowData)
+      setFormImg(rowData.formImage)
+    }
   }, [])
 
   async function apple() {
@@ -136,22 +168,99 @@ const CustomModule = (props: any) => {
     }
   }
 
+  const formImageHandler = (event: any) => {
+    const selectedFile = event.target.files[0]
+    setImage(selectedFile)
+  }
+
+  const ChangeFormImage = (e: any) => {
+    e.preventDefault()
+    setFormImg(image)
+    setFormImgChanged(true)
+    formImage.current?.hide()
+  }
+
+  const getFormImageUrl = (formImg: any) => {
+    let img = formImg
+    if (formImgChanged) {
+      img = URL.createObjectURL(formImg)
+    }
+    return img
+  }
+
   return (
     <div>
+      <NavBar />
       <Toast ref={toast} />
       <div>
         <div className="border-black-alpha-30 border-1 pb-7">
           <span className="contactName ">{`Create ${module}`}</span>
-          <div className="module-profile">
-            <span className="contactuntitle">{`${module} image`}</span>
-            <span className="ml-5">
+          <div className="module-profile" style={{ position: "relative" }}>
+            <span className="contactuntitle mb-4">{`${module} image`}</span>
+            {formImg && (
+              <div
+                className="img-delete"
+                onClick={(e: any) => {
+                  confirmDialog({
+                    message: "Do you want to remove this image?",
+                    header: "Confirmation",
+                    icon: "pi pi-info-circle",
+                    accept: () => {
+                      setFormImg("")
+                    }
+                  })
+                }}
+              >
+                <i className="pi pi-times"></i>
+              </div>
+            )}
+            <span
+              className="ml-5"
+              style={{ cursor: "pointer" }}
+              onClick={(e) => formImage.current?.toggle(e)}
+            >
               <img
-                src={noImages}
-                style={{ width: " 56px", height: "50px" }}
+                id="formHeadImage"
+                src={formImg ? getFormImageUrl(formImg) : noImages}
+                style={{ width: "100px", height: "100px" }}
               ></img>
             </span>
           </div>
-          {/* <span className="contactuntitle">Untitled Information </span> */}
+          <OverlayPanel
+            ref={formImage}
+            showCloseIcon
+            id="overlay_panel"
+            style={{ width: "350px" }}
+            className="overlaypanel-demo"
+          >
+            <div>
+              <form>
+                <InputText type="file" onChange={formImageHandler} />
+                <div
+                  className="flex justify-content-end"
+                  style={{ gap: "17px" }}
+                >
+                  <Button
+                    className="mt-2"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setImage("")
+                      formImage.current?.hide()
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="mt-2 "
+                    onClick={ChangeFormImage}
+                  >
+                    Change
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </OverlayPanel>
           <div>
             <div>
               <div className="createForm">
@@ -192,12 +301,8 @@ const CustomModule = (props: any) => {
                                     onChange={handleChange}
                                     style={{
                                       position: "relative",
-                                      left: "28px",
-                                      height: "34px",
-                                      top: "10px",
-                                      border: "1px solid lightgrey",
-                                      color: "#8083A3",
-                                      width: "-webkit-fill-available"
+                                      height: "30px",
+                                      color: "#8083A3"
                                     }}
                                     className="border-0"
                                   />
@@ -234,18 +339,21 @@ const CustomModule = (props: any) => {
                                       />
                                     </span>
                                   ) : item.DataHeader === "Currency" ? (
-                                    <span className="p-input-icon-left">
-                                      <i className="pi pi-dollar mt-0" />
-                                      <InputText
-                                        className="mt-3 "
-                                        name={item.value}
-                                        value={state[item.value]}
-                                        onChange={handleChange}
-                                        style={{ width: "190px" }}
-                                      />
-                                    </span>
+                                    <p className="field-container">
+                                      <span className="p-input-icon-left">
+                                        <i
+                                          className="pi pi-dollar mt-0"
+                                          style={{ top: "8px" }}
+                                        />
+                                        <InputText
+                                          name={item.value}
+                                          value={state[item.value]}
+                                          onChange={handleChange}
+                                        />
+                                      </span>
+                                    </p>
                                   ) : item.DataHeader === "Percent" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         name={item.value}
                                         value={state[item.value]}
@@ -254,7 +362,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Single Line" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         placeholder={
                                           item.unique ? "Unique Field" : ""
@@ -272,7 +380,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Untitled Name" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         placeholder={
                                           item.unique ? "Unique Field" : ""
@@ -290,14 +398,14 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Image Upload" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <Button
                                         label="+ Image Upload"
                                         className="bg-blue-100 text-primary"
                                       />
                                     </p>
                                   ) : item.DataHeader === "Email" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         placeholder={
                                           item.unique ? "Unique Field" : ""
@@ -315,14 +423,14 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "File Upload" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <Button
                                         label="+ File Upload"
                                         className="bg-blue-100 text-primary"
                                       />
                                     </p>
                                   ) : item.DataHeader === "Date/Time" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <Calendar
                                         name={item.value}
                                         value={state[item.value]}
@@ -333,7 +441,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Decimal" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         name={item.value}
                                         value={state[item.value]}
@@ -341,7 +449,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Long integer" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         name={item.value}
                                         value={state[item.value]}
@@ -349,7 +457,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "URL" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         placeholder={
                                           item.unique ? "Unique Field" : ""
@@ -368,7 +476,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Multi-Line" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputTextarea
                                         name={item.value}
                                         value={state[item.value]}
@@ -377,7 +485,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Date" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <Calendar
                                         name={item.value}
                                         value={state[item.value]}
@@ -392,7 +500,7 @@ const CustomModule = (props: any) => {
                                         name={item.value}
                                         style={{
                                           position: "relative",
-                                          right: "120px",
+                                          right: "228px",
                                           height: "44px",
                                           top: "15px",
                                           width: "-webkit-fill-available"
@@ -402,7 +510,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </div>
                                   ) : item.DataHeader === "Phone" ? (
-                                    <p>
+                                    <p className="field-container">
                                       {" "}
                                       <InputNumber
                                         placeholder={
@@ -425,7 +533,7 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Number" ? (
-                                    <p>
+                                    <p className="field-container">
                                       <InputText
                                         name={item.value}
                                         value={state[item.value]}
