@@ -64,6 +64,20 @@ export const leadGenerationTableGet: any = createAsyncThunk(
   }
 );
 
+export const leadGenerationTableDelete: any = createAsyncThunk(
+  "table/tableDelete",
+  async (id: any, thunkAPI) => {
+    try {
+      const response = await axios.delete(
+        `${BASEURL}/api/formdatas/deletetabledata/${id}`
+      );
+      return response
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const userReducer = createSlice({
   name: "logInVerification",
   initialState: initiallogInVerificationPage,

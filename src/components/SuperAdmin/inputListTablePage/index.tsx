@@ -23,12 +23,16 @@ import { Link } from "react-router-dom"
 import React from "react"
 import { useParams } from "react-router-dom"
 import { ModuleNameGetFormsaa } from "../../../features/Modules/module"
-import { leadGenerationTableGet } from "../../../features/Modules/leadGeneration"
+import {
+  leadGenerationTableGet,
+  leadGenerationTableDelete
+} from "../../../features/Modules/leadGeneration"
 import { LoginUserDetails } from "../../../features/Auth/userDetails"
 import { ProgressSpinner } from "primereact/progressspinner"
 import noImages from "../../../images//noimage.jpg"
 import FormSelectOptions from "./formSelectOptions"
 import _ from "lodash"
+import { confirmDialog } from "primereact/confirmdialog"
 
 //rolesGetForms
 const FieldListTablePage = (props: any) => {
@@ -238,7 +242,7 @@ const FieldListTablePage = (props: any) => {
 
   const header =
     selectedProducts.length > 0 ? (
-      <FormSelectOptions selectedProducts={selectedProducts}/>
+      <FormSelectOptions selectedForms={selectedProducts} />
     ) : (
       <div className="flex justify-content-between align-items-center">
         <MultiSelect
@@ -323,6 +327,34 @@ const FieldListTablePage = (props: any) => {
     )
   }
 
+  const rowDeleteButton = (rowData: any) => {
+    return (
+      <div
+        className="row-delete-icon"
+        onClick={() => {
+          confirmDialog({
+            message: "Do you want to remove this form?",
+            header: "Confirmation",
+            icon: "pi pi-info-circle",
+            accept: () => {
+              deleteRow(rowData.id)
+            }
+          })
+        }}
+      >
+        <Button icon="pi pi-trash" />
+      </div>
+    )
+  }
+
+  const deleteRow = async (id: any) => {
+    await dispatch(leadGenerationTableDelete(id)).then(() => {
+      firstGetApi()
+      setUserSelectedColumns([])
+      setSelectedProducts([])
+    })
+  }
+
   const openOverviewPage = (e: any) => {
     const rowData = e.data
     navigate(`/super-admin/Form/Overview/${e.data.id}`, {
@@ -396,6 +428,8 @@ const FieldListTablePage = (props: any) => {
                       userSelectedColumns.length > 0 && (
                         <Column body={getColumnForCanvasView}></Column>
                       )}
+
+                    <Column body={rowDeleteButton} header="Actions"></Column>
                   </DataTable>
                 </div>
               </div>

@@ -20,6 +20,12 @@
   max-width: 85px !important;
 }
 
+.view-select .p-button,
+.row-edit-icon .p-button {
+  background: black !important;
+  border: 1px solid black !important;
+}
+
 .canvas-col-container {
   width: 80%;
   display: flex;
@@ -74,4 +80,20 @@
   font-weight: 700 !important;
   color: #343a40 !important;
   text-align: center !important;
+}
+
+.create_form_main_division .p-checkbox .p-checkbox-box.p-highlight {
+  border-color: black !important;
+  background: black !important;
+}
+
+.row-delete-icon .p-button.p-button-icon-only{
+  width: 2rem;
+  padding: 0;
+  height: 30px;
+}
+
+.row-delete-icon .p-button {
+  background: #dc3545 !important;
+  border: 1px solid #dc3545 !important;
 }

@@ -1,0 +1,72 @@
+.task-form .form-element {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.task-form .form-element label {
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  width: 40%;
+  font-weight: 500;
+}
+
+.task-form .form-element .input {
+  width: 60%;
+}
+
+.task-form .form-element .input .p-inputtext,
+.task-form .form-element .input .p-calendar {
+  margin: 0 !important;
+  width: 90% !important;
+  border: none !important;
+}
+
+.task-form .form-element .input .p-inputtext:focus,
+.task-form .form-element .input .p-dropdown:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.task-form .form-element .input .p-dropdown {
+  margin: 0 !important;
+  width: max-content !important;
+  border: none !important;
+  background: none !important;
+}
+
+.task-form .form-element .input .p-dropdown:not(.p-disabled):focus,
+.task-form .form-element .input .p-dropdown:not(.p-disabled):hover {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.task-form .form-element .input .p-dropdown .p-dropdown-label {
+  font-weight: normal !important;
+}
+
+.task-form .form-element-desc {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  position: relative;
+  width: 100%;
+}
+
+.task-form .form-element-desc label{
+  font-weight: 500;
+}
+
+.task-form .form-element-desc .p-inputtextarea{
+  width: 100% !important;
+  border: none !important;
+  margin-top: 15px !important;
+}
+
+.task-form .form-element-desc .p-inputtextarea:focus{
+  border: none !important;
+  box-shadow: none !important;
+}
