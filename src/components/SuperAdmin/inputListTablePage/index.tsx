@@ -177,7 +177,6 @@ const FieldListTablePage = (props: any) => {
         userColumns.push(x.field)
       })
       setUserSelectedColumns(userColumns)
-      
     } else {
       setSelectedColumns([])
       setUserSelectedColumns([])
@@ -258,9 +257,20 @@ const FieldListTablePage = (props: any) => {
       </div>
     )
 
+  const getColumnForListView = (rowData: any, column: any) => {
+    return (
+      <div className="cursor-pointer" onClick={() => openOverviewPage(rowData)}>
+        <p>{rowData[column] ? rowData[column] : ""}</p>
+      </div>
+    )
+  }
+
   const getColumnForCanvasView = (rowData: any) => {
     return (
-      <div className="flex align-items-center">
+      <div
+        className="flex align-items-center cursor-pointer"
+        onClick={() => openOverviewPage(rowData)}
+      >
         <div className="mr-3">
           <img
             id="formHeadImage"
@@ -332,9 +342,8 @@ const FieldListTablePage = (props: any) => {
     })
   }
 
-  const openOverviewPage = (e: any) => {
-    const rowData = e.data
-    navigate(`/super-admin/Form/Overview/${e.data.id}`, {
+  const openOverviewPage = (rowData: any) => {
+    navigate(`/super-admin/Form/Overview/${rowData.id}`, {
       state: {
         formElements: groupByForms(Get),
         moduleId: editTableId,
@@ -378,7 +387,6 @@ const FieldListTablePage = (props: any) => {
                     columnResizeMode="fit"
                     selection={selectedProducts}
                     onSelectionChange={(e) => setSelectedProducts(e.value)}
-                    onRowClick={openOverviewPage}
                   >
                     {userSelectedColumns.length > 0 && (
                       <Column body={rowEditButton}></Column>
@@ -399,6 +407,9 @@ const FieldListTablePage = (props: any) => {
                             key={index}
                             field={column}
                             header={column}
+                            body={(rowData: any) =>
+                              getColumnForListView(rowData, column)
+                            }
                           ></Column>
                         ) : (
                           <Column />
@@ -407,7 +418,10 @@ const FieldListTablePage = (props: any) => {
 
                     {listView.name === "Canvas View" &&
                       userSelectedColumns.length > 0 && (
-                        <Column body={getColumnForCanvasView} header="Canvas View"></Column>
+                        <Column
+                          body={getColumnForCanvasView}
+                          header="Canvas View"
+                        ></Column>
                       )}
 
                     {userSelectedColumns.length > 0 && (

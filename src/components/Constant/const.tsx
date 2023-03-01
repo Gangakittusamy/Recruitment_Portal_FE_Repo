@@ -25,7 +25,7 @@ import subform from "../../assets/subform.svg";
 import url from "../../assets/url.svg";
 import rect from "../../assets/rect.svg";
 
-export const BASEURL = "http://54.152.227.71";
+export const BASEURL = process.env.REACT_APP_BASE_URL;
 
 export const SIDEBARITEMS = [
   {

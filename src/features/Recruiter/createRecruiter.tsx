@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../components/Constant/Api";
+import { BASEURL } from "../../components/Constant/const";
 
 interface useReducerState {
   initialTableValue: null;
@@ -20,7 +21,7 @@ export const RecruitersPostValue: any = createAsyncThunk(
   async (para1, thunkAPI) => {
     try {
       const response: any = await axios.post(
-        `http://54.152.227.71/api/auth/createuser`,
+        `${BASEURL}/api/auth/createuser`,
         para1
       );
 

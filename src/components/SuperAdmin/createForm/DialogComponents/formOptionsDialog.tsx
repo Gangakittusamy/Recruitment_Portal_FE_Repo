@@ -11,16 +11,20 @@ interface MultipleSelectProps {
   dialogVisible: boolean
   formDetails: any
   formIndex: any
+  formName: any
   closeDialog: any
   isSingleColumn: any
+  setFormNames: any
 }
 
 const FormOptionsDialog: React.FC<MultipleSelectProps> = ({
   dialogVisible,
   formDetails,
   formIndex,
+  formName,
   closeDialog,
-  isSingleColumn
+  isSingleColumn,
+  setFormNames
 }) => {
   const [forms, setForms] = useState<any>()
   const count: any = useAppSelector((state) => state)
@@ -38,10 +42,13 @@ const FormOptionsDialog: React.FC<MultipleSelectProps> = ({
   }
 
   const removeForm = () => {
+    let formNames = _.cloneDeep(formName)
     const currentForms = _.cloneDeep(forms)
     if (Object.keys(currentForms).length > 1) {
       const deletedKey = fetchCurrentFormKey()
       delete currentForms[deletedKey]
+      formNames = formNames.filter((f: any, index: any) => index !== formIndex)
+      setFormNames(formNames)
       dispatch(dragAndDropValueSuperAdmin(currentForms))
       closeDialog()
     } else {
