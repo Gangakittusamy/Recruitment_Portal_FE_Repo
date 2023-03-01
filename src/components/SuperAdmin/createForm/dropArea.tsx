@@ -524,6 +524,10 @@ const DropArea = (props: any) => {
                                             dialogVisible={formOptionsDialog}
                                             formDetails={x}
                                             formIndex={idx}
+                                            formName={formName}
+                                            setFormNames={(val: any) =>
+                                              setFormName(val)
+                                            }
                                             closeDialog={() => {
                                               setFormOptionsDialog(false)
                                               setCurrentForm("")
