@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { BASEURL } from "../../components/Constant/const";
 
 interface userReducerState {
   signUpPage: null;
@@ -14,7 +15,7 @@ export const signUp = createAsyncThunk(
   async (name: any, thunkAPI) => {
     try {
       const response = await axios.post(
-        'http://54.152.227.71/api/auth/register',
+        `${BASEURL}/api/auth/register`,
         name
       );
 
