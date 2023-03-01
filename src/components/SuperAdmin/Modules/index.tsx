@@ -114,7 +114,7 @@ const SettingsModules = (props: any) => {
   const filterTable = (searchText: any) => {
     const tableData = _.cloneDeep(state)
     if (searchText.length) {
-      const filteredModules = tableData.filter((m:any)=>{
+      const filteredModules = tableData.filter((m: any) => {
         return m.modulename.toLowerCase().includes(searchText.toLowerCase())
       })
       setTableData(filteredModules)
@@ -165,7 +165,7 @@ const SettingsModules = (props: any) => {
                         placeholder="Search"
                       />
                     </span>
-                    <span className="pl-1">
+                    <span className="pl-1 new-module-btn">
                       <Button
                         label="New Module"
                         icon="pi pi-plus"
@@ -195,7 +195,11 @@ const SettingsModules = (props: any) => {
                         field="created_at"
                         header="Last Modified"
                       ></Column>
-                      <Column body={editPolicy} header="Actions"></Column>
+                      <Column
+                        body={editPolicy}
+                        header="Actions"
+                        className="actions"
+                      ></Column>
                     </DataTable>
                   </div>
                 </div>

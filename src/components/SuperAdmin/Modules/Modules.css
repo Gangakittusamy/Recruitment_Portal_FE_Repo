@@ -22,9 +22,12 @@
   height: 10px !important;
   justify-content: flex-start !important;
 }
-.p-column-title{
+.p-column-title {
   color: black;
 }
 
-
-
+.new-module-btn .p-button,
+.actions .p-button {
+  background: black !important;
+  border: 1px solid black !important;
+}
