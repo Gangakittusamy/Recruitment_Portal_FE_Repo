@@ -352,7 +352,7 @@ const FieldListTablePage = (props: any) => {
       }
     })
   }
-
+  
   return (
     <div style={{ background: "rgb(250, 250, 251)", height: "100vh" }}>
       <div>

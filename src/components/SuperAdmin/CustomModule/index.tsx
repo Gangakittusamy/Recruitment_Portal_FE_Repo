@@ -35,6 +35,7 @@ import NavBar from "../navBar"
 import { useParams } from "react-router-dom"
 import { OverlayPanel } from "primereact/overlaypanel"
 import { confirmDialog } from "primereact/confirmdialog"
+import SubForm from "./subForm"
 
 const CustomModule = (props: any) => {
   const [state, setState] = React.useState<any>([])
@@ -552,6 +553,9 @@ const CustomModule = (props: any) => {
                     </div>
                   )
                 })}
+              </div>
+              <div className="indv-form-elem">
+                <SubForm />
               </div>
               <div className="flex  justify-content-end mt-2 mb-3 mr-5">
                 <Button

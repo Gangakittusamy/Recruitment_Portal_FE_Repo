@@ -1,0 +1,40 @@
+.price-section {
+  width: 100%;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: flex-end;
+}
+.price-table {
+  border: 1px solid #dddddd;
+  position: relative;
+  width: 350px;
+  z-index: 1;
+}
+
+.price-table .content {
+  width: 100%;
+  display: flex;
+  padding: 5px 20px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.price-table .content:last-child {
+  border-bottom: none !important;
+}
+
+.price-table .content span {
+  vertical-align: top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #313949;
+  font-size: 1rem;
+}
+.price-table .content span:first-child {
+  width: 42%;
+  font-weight: 600;
+}
+.price-table .content span:last-child {
+  width: 55%;
+  text-align: center;
+}

@@ -94,3 +94,14 @@
     width: 50%;
   }
 }
+
+.sub-form .p-inputtext {
+  width: 80% !important;
+}
+.sub-form .p-inputnumber {
+  width: 80% !important;
+}
+
+.sub-form .price-section {
+  justify-content: space-between !important;
+}

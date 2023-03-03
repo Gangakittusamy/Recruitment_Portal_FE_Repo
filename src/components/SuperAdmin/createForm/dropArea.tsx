@@ -32,6 +32,7 @@ import { useParams } from "react-router-dom"
 import _ from "lodash"
 import FieldOptionsDialog from "./DialogComponents/fieldOptionsDialog"
 import FormOptionsDialog from "./DialogComponents/formOptionsDialog"
+import SubForms from "./SubForms"
 
 interface formModel {
   name: string
@@ -748,6 +749,10 @@ const DropArea = (props: any) => {
             </div>
           )
         })}
+      </div>
+
+      <div className="sub-form-list">
+        <SubForms />
       </div>
 
       <div className="drop-form-submit">

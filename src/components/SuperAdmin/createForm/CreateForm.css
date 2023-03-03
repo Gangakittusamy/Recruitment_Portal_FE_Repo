@@ -159,7 +159,7 @@
   justify-content: flex-end;
   margin-top: 0.5rem;
   margin-right: 2rem;
-  margin-bottom: 1rem;
+  padding-bottom: 25px;
 }
 
 .dropped-item-info {
@@ -275,4 +275,10 @@
   .createForm .form-check-box {
     left: 8px !important;
   }
+}
+
+/* sub-form-list */
+
+.sub-form-list {
+  margin: 0 2rem;
 }
