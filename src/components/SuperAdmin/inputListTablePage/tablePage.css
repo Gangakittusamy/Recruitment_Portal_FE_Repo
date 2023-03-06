@@ -1,0 +1,99 @@
+.p-accordion .p-accordion-header .p-accordion-header-link {
+  padding: 1.25rem;
+  border: 1px solid gainsboro !important;
+  color: #6c757d;
+  background: gainsboro !important;
+  font-weight: 700;
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+}
+.p-paginator .p-dropdown {
+  margin-left: 0.5rem;
+  height: 2rem !important;
+}
+
+.p-checkbox .p-checkbox-box .p-checkbox-icon {
+  margin-right: 0 !important;
+}
+
+.view-select .p-dropdown {
+  max-width: 85px !important;
+}
+
+.view-select .p-button,
+.row-edit-icon .p-button {
+  background: black !important;
+  border: 1px solid black !important;
+}
+
+.canvas-col-container {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.canvas-col-container .col-element:not(:last-child)::after {
+  content: "|";
+  display: inline-block;
+  padding: 0 10px;
+}
+
+.canvas-col-container .col-element .title {
+  color: #949c9c;
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.canvas-col-container .col-element .value {
+  color: #3c4141;
+  font-size: 15px;
+  line-height: 15px;
+  font-weight: 500;
+}
+
+.row-edit-icon .p-button.p-button-icon-only {
+  width: 2rem;
+  padding: 0;
+  height: 30px;
+}
+
+.fso-btn {
+  border: 1px solid #ced4da !important;
+  width: 14rem !important;
+  color: #343a40 !important;
+  height: 31px !important;
+  background: linear-gradient(#fcfdff 0, #eaeef5 100%) no-repeat padding-box !important;
+  margin: 1rem 0;
+}
+
+.fso-dropdown {
+  background: linear-gradient(#fcfdff 0, #eaeef5 100%) no-repeat padding-box !important;
+  margin: 1rem 0;
+}
+
+.fso-btn .p-button-label {
+  font-size: 1rem !important;
+}
+
+.fso-dropdown .p-dropdown-label {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #343a40 !important;
+  text-align: center !important;
+}
+
+.create_form_main_division .p-checkbox .p-checkbox-box.p-highlight {
+  border-color: black !important;
+  background: black !important;
+}
+
+.row-delete-icon .p-button.p-button-icon-only{
+  width: 2rem;
+  padding: 0;
+  height: 30px;
+}
+
+.row-delete-icon .p-button {
+  background: #dc3545 !important;
+  border: 1px solid #dc3545 !important;
+}

@@ -25,9 +25,112 @@ import subform from "../../assets/subform.svg";
 import url from "../../assets/url.svg";
 import rect from "../../assets/rect.svg";
 
-export const BASEURL = "http://54.152.227.71/";
+export const BASEURL = process.env.REACT_APP_BASE_URL;
+
+export const SIDEBARITEMS = [
+  {
+    names: "Untitled Name",
+    icon: singleline,
+    id: uuidv4(),
+  },
+  {
+    names: "Single Line",
+    icon: singleline,
+    id: uuidv4(),
+  },
+  {
+    names: "Multi-Line",
+    icon: multiline,
+    id: uuidv4(),
+  },
+  {
+    names: "Email",
+    icon: mail,
+    id: uuidv4(),
+  },
+  {
+    names: "Phone",
+    icon: phone,
+    id: uuidv4(),
+  },
+  {
+    names: "Pick List",
+    icon: picklist,
+    id: uuidv4(),
+  },
+  {
+    names: "Date",
+    icon: date,
+    id: uuidv4(),
+  },
+  {
+    names: "Date/Time",
+    icon: dateandtime,
+    id: uuidv4(),
+  },
+  {
+    names: "Number",
+    icon: onetwothree,
+    id: uuidv4(),
+  },
+  {
+    names: "Currency",
+    icon: currency,
+    id: uuidv4(),
+  },
+  {
+    names: "Decimal",
+    icon: decimal,
+    id: uuidv4(),
+  },
+  {
+    names: "Percent",
+    icon: percent,
+    id: uuidv4(),
+  },
+  {
+    names: "Long integer",
+    icon: longint,
+    id: uuidv4(),
+  },
+  {
+    names: "Checkbox",
+    icon: check,
+    id: uuidv4(),
+  },
+  {
+    names: "URL",
+    icon: url,
+    id: uuidv4(),
+  },
+  {
+    names: "File Upload",
+    icon: fileupload,
+    id: uuidv4(),
+  },
+  {
+    names: "Image Upload",
+    icon: imageupload,
+    id: uuidv4(),
+  },
+  {
+    names: "lookup",
+    icon: lookup,
+    id: uuidv4(),
+  },
+  {
+    names: "Email Opt Out",
+    icon: mail,
+    id: uuidv4(),
+  },
+];
 
 export const ITEMS = [
+  {
+    names: "Untitled Name",
+    subName: "Untitled Name",
+    id: uuidv4(),
+  },
   {
     names: "Single Line",
     subName: "Single Line",
@@ -54,11 +157,6 @@ export const ITEMS = [
     id: uuidv4(),
   },
   {
-    names: "Multi-Select",
-    subName: "Multi-Select",
-    id: uuidv4(),
-  },
-  {
     names: "Date",
     subName: "Date",
     id: uuidv4(),
@@ -71,11 +169,6 @@ export const ITEMS = [
   {
     names: "Number",
     subName: "Number",
-    id: uuidv4(),
-  },
-  {
-    names: "Auto-Number",
-    subName: "Auto-Number",
     id: uuidv4(),
   },
   {
@@ -109,21 +202,6 @@ export const ITEMS = [
     id: uuidv4(),
   },
   {
-    names: "Lookup",
-    subName: "Lookup",
-    id: uuidv4(),
-  },
-  {
-    names: "Formula",
-    subName: "Formula",
-    id: uuidv4(),
-  },
-  {
-    names: "User",
-    subName: "User",
-    id: uuidv4(),
-  },
-  {
     names: "File Upload",
     subName: "File Upload",
     id: uuidv4(),
@@ -134,18 +212,13 @@ export const ITEMS = [
     id: uuidv4(),
   },
   {
-    names: "Multi-Select Lookup",
-    subName: "Multi-Select Lookup",
+    names: "lookup",
+    subName: "lookup",
     id: uuidv4(),
   },
   {
-    names: "Subform",
-    subName: "Subform",
-    id: uuidv4(),
-  },
-  {
-    names: "NEW SECTION",
-    subName: "NEW SECTION",
+    names: "Email Opt Out",
+    subName: "Email Opt Out",
     id: uuidv4(),
   },
 ];
@@ -169,21 +242,21 @@ export const QUICKITEMS = [
 ];
 
 export const COMPLETE = [
-  {
-    names: "Untitled Owner",
-    subName: "Untitled Owner",
-    id: uuidv4(),
-  },
-  {
-    names: "Untitled Name",
-    subName: "Untitled Name",
-    id: uuidv4(),
-  },
-  {
-    names: "Created By",
-    subName: "Created By",
-    id: uuidv4(),
-  },
+  // {
+  //   names: "Untitled Owner",
+  //   subName: "Untitled Owner",
+  //   id: uuidv4(),
+  // },
+  // {
+  //   names: "Untitled Name",
+  //   subName: "Untitled Name",
+  //   id: uuidv4(),
+  // },
+  // {
+  //   names: "Created By",
+  //   subName: "Created By",
+  //   id: uuidv4(),
+  // },
   // {
   //   names: "Secondary Email",
   //   subName: "Secondary Email",
@@ -254,128 +327,6 @@ export const SUPERADMINSIDEBAR = [
   },
 ];
 
-export const SIDEBARITEMS = [
-  {
-    names: "Single Line",
-    icon: singleline,
-    id: uuidv4(),
-  },
-  {
-    names: "Multi-Line",
-    icon: multiline,
-    id: uuidv4(),
-  },
-  {
-    names: "Email",
-    icon: mail,
-    id: uuidv4(),
-  },
-  {
-    names: "Phone",
-    icon: phone,
-    id: uuidv4(),
-  },
-  {
-    names: "Pick List",
-    icon: picklist,
-    id: uuidv4(),
-  },
-  // {
-  //   names: "Multi-Select",
-  //   icon: multiselect,
-  //   id: uuidv4(),
-  // },
-  {
-    names: "Date",
-    icon: date,
-    id: uuidv4(),
-  },
-  {
-    names: "Date/Time",
-    icon: dateandtime,
-    id: uuidv4(),
-  },
-  {
-    names: "Number",
-    icon: onetwothree,
-    id: uuidv4(),
-  },
-  // {
-  //   names: "Auto-Number",
-  //   icon: autonum,
-  //   id: uuidv4(),
-  // },
-  {
-    names: "Currency",
-    icon: currency,
-    id: uuidv4(),
-  },
-  {
-    names: "Decimal",
-    icon: decimal,
-    id: uuidv4(),
-  },
-  {
-    names: "Percent",
-    icon: percent,
-    id: uuidv4(),
-  },
-  {
-    names: "Long integer",
-    icon: longint,
-    id: uuidv4(),
-  },
-  {
-    names: "Checkbox",
-    icon: check,
-    id: uuidv4(),
-  },
-  {
-    names: "URL",
-    icon: url,
-    id: uuidv4(),
-  },
-  // {
-  //   names: "Lookup",
-  //   icon: lookup,
-  //   id: uuidv4(),
-  // },
-  // {
-  //   names: "Formula",
-  //   icon: fx,
-  //   id: uuidv4(),
-  // },
-  // {
-  //   names: "User",
-  //   icon: user,
-  //   id: uuidv4(),
-  // },
-  {
-    names: "File Upload",
-    icon: fileupload,
-    id: uuidv4(),
-  },
-  {
-    names: "Image Upload",
-    icon: imageupload,
-    id: uuidv4(),
-  },
-  // {
-  //   names: "Multi-Select Lookup",
-  //   icon: multilookup,
-  //   id: uuidv4(),
-  // },
-  // {
-  //   names: "Subform",
-  //   icon: subform,
-  //   id: uuidv4(),
-  // },
-  // {
-  //   names: "NEW SECTION",
-  //   icon: rect,
-  //   id: uuidv4(),
-  // },
-];
 export const CANDIDATETABLE = [
   {
     sno: 1,

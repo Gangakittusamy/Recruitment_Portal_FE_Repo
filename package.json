@@ -16,6 +16,7 @@
     "@types/react-router": "^5.1.19",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.2.1",
+    "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
     "js-cookie": "^3.0.1",
     "moment": "^2.29.4",
@@ -41,16 +42,18 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env.product1 react-scripts start",
+    "build:product1": "env-cmd -f .env.product1 react-scripts build",
+    "build:product2": "env-cmd -f .env.product2 react-scripts build",
+    "build:product3": "env-cmd -f .env.product3 react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app",
+    "rules": {
+      "@typescript-eslint/no-unused-vars": "off"
+    }
   },
   "browserslist": {
     "production": [

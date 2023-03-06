@@ -1,52 +1,24 @@
-import "./index.css";
-import React, { useState, useEffect } from "react";
-import SuperAdminSideBar from "./superAdminSideBar";
-import CreateRecruiterForm from "./createRecruiterForm";
-import CreateRecrutierTable from "./createRecruiterTable";
-import CandidateTable from "./CandidateTable";
-import StatusTable from "./StatusTable";
-import Dashboard from "../layouts/Dashboard-Main/dashboard";
-import FormCreation from "./formCreation";
-import SideBar from "../layouts/Sidebar/sidebar";
+import "./index.css"
+import React, { useState, useEffect } from "react"
+import { DragDropContext, DraggableLocation } from "react-beautiful-dnd"
+import { v4 as uuidv4 } from "uuid"
+import { ITEMS } from "../Constant/const"
 import {
-  DragDropContext,
-  Draggable,
-  DraggableLocation,
-  Droppable,
-} from "react-beautiful-dnd";
-import { v4 as uuidv4 } from "uuid";
-import {
-  ITEMS,
-  QUICKITEMS,
-  COMPLETE,
-  QUICKCREATECOMPLETE,
-} from "../Constant/const";
-
-import {
-  dragAndDropValue,
-  quickDragAndDropValue,
-  dragAndDropDialogOpenIndex,
   dragAndDropValueSuperAdmin,
+  formEditIdDragAndDrop,
   dragAndDropDialogIndexSuperAdmin,
-} from "../../features/counter/dragAndDrop";
-import { useSelector, useDispatch } from "react-redux";
-// import NavBar from "../layouts/Navbar/navbar";
-import FormSubmission from "./formSubmission";
-import CandidateList from "./candidateList";
-import NavBar from "./navBar";
-import CreateForm from "./createForm";
-
-const reorder = (
-  list: Iterable<unknown> | ArrayLike<unknown>,
-  startIndex: number,
-  endIndex: number
-) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
+  selectStructuredData,
+  setPickListDropDownData,
+  setSingleColumnForms,
+  setInitiallyUpdatedModuleData
+} from "../../features/counter/dragAndDrop"
+import { useSelector, useDispatch } from "react-redux"
+import NavBar from "./navBar"
+import CreateForm from "./createForm"
+import { useParams } from "react-router-dom"
+import { newSectionIndexData } from "../../features/counter/dragAndDrop"
+import { Button } from "primereact/button"
+import _ from "lodash"
 
 const copy = (
   source: Iterable<unknown> | ArrayLike<unknown>,
@@ -54,13 +26,14 @@ const copy = (
   droppableSource: DraggableLocation,
   droppableDestination: DraggableLocation
 ) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const item: any = sourceClone[droppableSource.index];
+  const sourceClone = Array.from(source)
+  const destClone = Array.from(destination)
+  const item: any = sourceClone[droppableSource.index]
 
-  destClone.splice(droppableDestination.index, 0, { ...item, id: uuidv4() });
-  return destClone;
-};
+  destClone.splice(droppableDestination.index, 0, { ...item, id: uuidv4() })
+
+  return destClone
+}
 
 const move = (
   source: Iterable<unknown> | ArrayLike<unknown>,
@@ -68,74 +41,285 @@ const move = (
   droppableSource: DraggableLocation,
   droppableDestination: DraggableLocation
 ) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
+  const sourceClone = Array.from(source)
+  const destClone = Array.from(destination)
+  const [removed] = sourceClone.splice(droppableSource.index, 1)
+  destClone.splice(droppableDestination.index, 0, removed)
+  const result: any = {}
+  result[droppableSource.droppableId] = sourceClone
+  result[droppableDestination.droppableId] = destClone
 
-  destClone.splice(droppableDestination.index, 0, removed);
-
-  const result: any = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
-
-  return result;
-};
+  return result
+}
 
 const SuperAdmin = () => {
-  const [id, setId] = useState();
+  const dispatch = useDispatch()
+  const { editId } = useParams()
+  const [id, setId] = useState()
+  const [editScreenUpdated, setEditScreenUpdated] = useState<any>(false)
+  const [editScreenModified, setEditScreenModified] = useState<any>(false)
 
   const [complete, setCompleted] = useState<any>({
-    [uuidv4()]: COMPLETE,
-  });
+    [uuidv4()]: []
+  })
+  const structureData = useSelector(selectStructuredData)
+  const [indexId, setIndexId] = useState<any>()
+  const count: any = useSelector((state) => state)
 
   useEffect(() => {
-    dispatch(dragAndDropValueSuperAdmin(complete));
-  }, [complete]);
+    if (window.location.pathname !== `/super-admin/edit/${editId}`) {
+      setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
+    } else {
+      if (editScreenUpdated) {
+        setCompleted(count.dragAndDrop.initialStartDragSuperAdmin)
+        setEditScreenModified(true)
+      }
+    }
+  }, [count.dragAndDrop.initialStartDragSuperAdmin])
+
+  const reorder = (
+    list: Iterable<unknown> | ArrayLike<unknown>,
+    startIndex: number,
+    endIndex: number,
+    res: any
+  ) => {
+    const result = Array.from(list)
+    const [removed] = result.splice(startIndex, 1)
+    result.splice(endIndex, 0, removed)
+    let app = Object.assign({}, complete)
+    app[res] = result
+    setCompleted(app)
+    return result
+  }
+
+  const addList = () => {
+    setCompleted({ ...complete, [uuidv4()]: [] })
+    let lent = Object.keys(complete).length
+    dispatch(newSectionIndexData(lent))
+  }
+
+  const applyFormChanges = () => {
+    let currentForm: any = { ...complete }
+    if (Object.keys(structureData).length > 0) {
+      let currentFormElements: any = { ...complete }
+      for (const key in currentFormElements) {
+        const currentFormId = key
+        const alteredFields = structureData[currentFormId]
+        let currentFields = currentFormElements[currentFormId]
+
+        if (alteredFields) {
+          const result: any = currentFields.map((o1: any, i: any) => {
+            if (alteredFields.some((o2: any) => o1.id === o2.inputIdValue)) {
+              let alteredValue = alteredFields.find((f: any) => {
+                return f.inputIdValue == currentFields[i].id
+              })
+              return {
+                names: alteredValue.names,
+                id: currentFields[i].id,
+                subName: currentFields[i].subName,
+                required: currentFields[i].required,
+                unique: currentFields[i].unique
+              }
+            } else {
+              return {
+                ...currentFields[i]
+              }
+            }
+          })
+          currentFormElements[key] = result
+        }
+      }
+      currentForm = currentFormElements
+      const sameArray = _.isEqual(complete, currentForm)
+      if (!sameArray) {
+        setCompleted(currentForm)
+      }
+    }
+    return currentForm
+  }
+
+  useEffect(() => {
+    if (window.location.pathname !== `/super-admin/edit/${editId}`) {
+      const ModifiedForm = applyFormChanges()
+      dispatch(dragAndDropValueSuperAdmin(ModifiedForm))
+    }
+
+    if (window.location.pathname === `/super-admin/edit/${editId}`) {
+      const result = applyFormChanges()
+
+      let totalValue = editScreenModified
+        ? complete
+        : count.module?.rolesGetForms
+
+      if (totalValue && !editScreenModified) {
+        dispatch(
+          setSingleColumnForms(
+            totalValue[0]?.singleColumnForms
+              ? totalValue[0]?.singleColumnForms
+              : []
+          )
+        )
+      }
+
+      let value = Object.assign(
+        {},
+        totalValue ? totalValue[0]?.moduleelements : {}
+      )
+      const value1 = Object.assign({}, complete)
+
+      let res1 = Object.keys(value)
+      let res2 = Object.keys(value1)
+
+      res1.map((x, i) => {
+        if (i + 1 < res1.length && res2.length < res1.length) {
+          let ab: any = [uuidv4()]
+          if (!editScreenUpdated) {
+            complete[ab] = []
+          } else {
+            if (complete[ab]) {
+              complete[ab] = []
+            }
+          }
+        }
+      })
+
+      dispatch(formEditIdDragAndDrop(res2))
+
+      for (let key in value) {
+        value[uuidv4()] = value[key]
+        delete value[key]
+      }
+
+      let keyss = Object.keys(complete)
+      let valuess = Object.values(value)
+
+      let app: any = []
+      let pickListDropdownData = _.cloneDeep(count.dragAndDrop.PickListData)
+      valuess.map((x: any, i) => {
+        x = x.map((y: any, o: number) => {
+          const newId = uuidv4()
+          if (y.options) {
+            const newItems = getDropdownItems(y.options, newId)
+            pickListDropdownData = pickListDropdownData.concat(newItems)
+          }
+          if (y.type === "Pick List") {
+            return {
+              names: y.fieldname,
+              subName: y.type,
+              id: newId,
+              required: y.required,
+              unique: y.unique
+            }
+          } else {
+            return {
+              names: y.type,
+              subName: y.fieldname,
+              id: newId,
+              required: y.required,
+              unique: y.unique
+            }
+          }
+        })
+        app.push([x])
+      })
+      dispatch(setPickListDropDownData(pickListDropdownData))
+
+      let resObj: any = {}
+      keyss.map((ke: any, idx: any) => {
+        if (app[idx] === undefined) {
+          resObj[ke] = []
+        } else {
+          resObj[ke] = app[idx][0]
+        }
+      })
+
+      let a1 = JSON.stringify(resObj)
+      let a2 = JSON.stringify(complete)
+
+      if (a1 !== a2) {
+        if (a1.length > a2.length) {
+          setCompleted(resObj)
+          dispatch(dragAndDropValueSuperAdmin(resObj))
+          if (!editScreenModified) {
+            dispatch(setInitiallyUpdatedModuleData(resObj))
+          }
+        }
+        if (a2.length > a1.length) {
+          const sameArray = _.isEqual(complete, result)
+          if (!sameArray) {
+            setCompleted(result)
+            dispatch(dragAndDropValueSuperAdmin(result))
+            if (!editScreenModified) {
+              dispatch(setInitiallyUpdatedModuleData(result))
+            }
+          }
+        }
+      }
+
+      if (a1 === a2) {
+        setCompleted(complete)
+      }
+
+      if (Object.keys(complete).length) {
+        dispatch(dragAndDropValueSuperAdmin(result))
+        if (!editScreenModified) {
+          dispatch(setInitiallyUpdatedModuleData(result))
+        }
+      }
+      setEditScreenUpdated(true)
+    }
+  }, [complete])
+
+  const getDropdownItems = (options: any, id: any) => {
+    const newItems = options.map((o: any) => {
+      return {
+        fieldLabel: o.fieldLabel,
+        formID: o.formID,
+        itemId: id,
+        type: o.type,
+        value: o.value
+      }
+    })
+    return newItems
+  }
 
   const handleClick = (e: any) => {
-    setId(e);
-  };
-
-  const dispatch = useDispatch();
+    setId(e)
+  }
 
   return (
     <div>
       <DragDropContext
         onDragEnd={(result) => {
-          const { source, destination } = result;
+          const { source, destination } = result
           if (!destination) {
-            return;
+            return
           }
-
           switch (source.droppableId) {
             case destination.droppableId:
-              // if (counter == 0) {
-              setCompleted({
-                [destination.droppableId]: reorder(
-                  complete[source.droppableId],
-                  source.index,
-                  destination.index
-                ),
-              });
-
-              break;
+              reorder(
+                complete[source.droppableId],
+                source.index,
+                destination.index,
+                destination.droppableId
+              )
+              break
             case "CHECKSUPERDRAGITEMS":
               setCompleted({
+                ...complete,
                 [destination.droppableId]: copy(
                   ITEMS,
                   complete[destination.droppableId],
                   source,
                   destination
-                ),
-              });
-
-              let indexOfDragable = result ? result.source.index : "";
-              dispatch(dragAndDropDialogIndexSuperAdmin(indexOfDragable));
-
-              break;
+                )
+              })
+              let indexOfDragable = result ? result.source.index : ""
+              dispatch(dragAndDropDialogIndexSuperAdmin(indexOfDragable))
+              setIndexId(indexOfDragable)
+              break
 
             default:
-              // if (counter == 0) {
               setCompleted(
                 move(
                   complete[source.droppableId],
@@ -143,39 +327,62 @@ const SuperAdmin = () => {
                   source,
                   destination
                 )
-              );
-
-              break;
+              )
+              break
           }
         }}
       >
-        <NavBar />
-        <div className="layout h-full">
-          <div className="sideContent">
-            <SuperAdminSideBar handleClick={handleClick} />
-          </div>
+        {window.location.pathname == "/super-admin/LayoutPage" ? (
+          ""
+        ) : (
+          <NavBar handleClick={handleClick} />
+        )}
+        <div className="layout h-full creat-form-sec">
           <div style={{ background: "#FAFAFB", height: "100vh" }}>
             <div className="mainContent">
-              {id === 1 ? (
-                <CreateRecruiterForm />
-              ) : id === 2 ? (
-                <CreateRecrutierTable />
-              ) : id === 4 ? (
-                <CandidateTable />
-              ) : id === 5 ? (
+              {window.location.pathname ==
+              "/super-admin/Settings/Modules/layoutpage" ? (
                 <CreateForm />
-              ) : id === 7 ? (
-                <CandidateList />
-              ) : id === 8 ? (
-                <StatusTable />
               ) : (
-                <CreateRecruiterForm />
+                ""
+              )}
+
+              {window.location.pathname == "/super-admin" ? (
+                <h2>Dashboard</h2>
+              ) : (
+                ""
+              )}
+              {window.location.pathname == "/super-admin/create-form" ? (
+                <>
+                  <CreateForm />
+                  <div className="section-add-btn">
+                    <Button
+                      label="+ Add New Section"
+                      onClick={() => addList()}
+                    />
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+              {window.location.pathname == `/super-admin/edit/${editId}` ? (
+                <>
+                  <CreateForm />
+                  <div className="section-add-btn">
+                    <Button
+                      label="+ Add New Section"
+                      onClick={() => addList()}
+                    />
+                  </div>
+                </>
+              ) : (
+                ""
               )}
             </div>
           </div>
         </div>
       </DragDropContext>
     </div>
-  );
-};
-export default React.memo(SuperAdmin);
+  )
+}
+export default React.memo(SuperAdmin)

@@ -21,11 +21,13 @@
 .left {
   left: 0;
   background: rgb(0, 0, 0);
-  background: linear-gradient(360deg,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(9, 13, 121, 1) 0%,
-      rgba(9, 16, 126, 1) 8%,
-      rgba(0, 91, 255, 1) 86%);
+  background: linear-gradient(
+    360deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(9, 13, 121, 1) 0%,
+    rgba(9, 16, 126, 1) 8%,
+    rgba(0, 91, 255, 1) 86%
+  );
 }
 
 .right {
@@ -40,6 +42,11 @@
   font-size: 43px;
   /* padding: 110px; */
   color: white;
+}
+
+.left-container {
+  padding: 100px;
+  margin-top: 5rem;
 }
 
 .radioButtonorder {
@@ -79,10 +86,10 @@
   margin-top: 11px;
   cursor: pointer;
 }
-.flexD{
+.flexD {
   display: flex;
 }
-.p-input-icon-left>.p-inputtext {
+.p-input-icon-left > .p-inputtext {
   padding-left: 35px !important;
 }
 
@@ -91,8 +98,46 @@
   color: red;
   font-weight: bold;
 }
-@media only screen and (max-width: 1000px){
-  .flexD{
+@media only screen and (max-width: 1000px) {
+  .flexD {
     display: contents;
+  }
+}
+
+@media (max-width: 992px) {
+  .split {
+    width: 100%;
+    z-index: auto;
+    position: relative;
+    padding-top: 0;
+  }
+  .splittwo {
+    width: 100%;
+    z-index: auto;
+    position: relative;
+    padding-top: 0;
+  }
+  .left-container {
+    padding: 5%;
+    margin-top: 0rem;
+  }
+  .left-container p {
+    text-align: center;
+  }
+  .lc-options {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .loginRightHeading {
+    padding: 0;
+    margin: 25px 0;
+  }
+}
+
+@media (min-width:445px) and (max-width:992px) {
+  .radioButtonorder {
+    margin-right: 1rem;
   }
 }

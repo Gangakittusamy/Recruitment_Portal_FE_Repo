@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { BASEURL } from "../../components/Constant/const";
 
 interface userReducerState {
   mailVerificationPage: null;
@@ -14,7 +15,7 @@ export const mailVerification = createAsyncThunk(
   async (name: any, thunkAPI) => {
     try {
       const response = await axios.get(
-        `http://54.152.227.71/api/auth/verifyemail/${name}`
+        `${BASEURL}/api/auth/verifyemail/${name}`
       );
 
       return response.data;

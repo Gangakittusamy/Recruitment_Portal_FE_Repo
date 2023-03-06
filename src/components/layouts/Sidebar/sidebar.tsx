@@ -4,46 +4,46 @@ import {
   AccordionItemHeading,
   AccordionItemButton,
   AccordionItemPanel,
-} from 'react-accessible-accordion';
-import 'react-accessible-accordion/dist/fancy-example.css';
-import './sidebar.css';
-import ButtonOptions from '../../CommonModules/ButtonOptions/buttons';
-import singleline from '../../../assets/singleline.svg';
-import onetwothree from '../../../assets/123.svg';
-import autonum from '../../../assets/autonum.svg';
-import check from '../../../assets/check.svg';
-import currency from '../../../assets/currency.svg';
-import date from '../../../assets/date.svg';
-import dateandtime from '../../../assets/dateandtime.svg';
-import decimal from '../../../assets/decimal.svg';
-import fileupload from '../../../assets/fileupload.svg';
-import fx from '../../../assets/fx.svg';
-import imageupload from '../../../assets/imageupload.svg';
-import longint from '../../../assets/longint.svg';
-import lookup from '../../../assets/lookup.svg';
-import mail from '../../../assets/mail.svg';
-import multiline from '../../../assets/multiline.svg';
-import multiselect from '../../../assets/multiselect.svg';
-import multilookup from '../../../assets/multi-lookup.svg';
-import percent from '../../../assets/percent.svg';
-import phone from '../../../assets/phone.svg';
-import picklist from '../../../assets/picklist.svg';
-import user from '../../../assets/user.svg';
-import subform from '../../../assets/subform.svg';
-import url from '../../../assets/url.svg';
-import rect from '../../../assets/rect.svg';
-import { InputText } from 'primereact/inputtext';
+} from "react-accessible-accordion";
+import "react-accessible-accordion/dist/fancy-example.css";
+import "./sidebar.css";
+import ButtonOptions from "../../CommonModules/ButtonOptions/buttons";
+import singleline from "../../../assets/singleline.svg";
+import onetwothree from "../../../assets/123.svg";
+import autonum from "../../../assets/autonum.svg";
+import check from "../../../assets/check.svg";
+import currency from "../../../assets/currency.svg";
+import date from "../../../assets/date.svg";
+import dateandtime from "../../../assets/dateandtime.svg";
+import decimal from "../../../assets/decimal.svg";
+import fileupload from "../../../assets/fileupload.svg";
+import fx from "../../../assets/fx.svg";
+import imageupload from "../../../assets/imageupload.svg";
+import longint from "../../../assets/longint.svg";
+import lookup from "../../../assets/lookup.svg";
+import mail from "../../../assets/mail.svg";
+import multiline from "../../../assets/multiline.svg";
+import multiselect from "../../../assets/multiselect.svg";
+import multilookup from "../../../assets/multi-lookup.svg";
+import percent from "../../../assets/percent.svg";
+import phone from "../../../assets/phone.svg";
+import picklist from "../../../assets/picklist.svg";
+import user from "../../../assets/user.svg";
+import subform from "../../../assets/subform.svg";
+import url from "../../../assets/url.svg";
+import rect from "../../../assets/rect.svg";
+import { InputText } from "primereact/inputtext";
 import {
   DragDropContext,
   Draggable,
   DraggableLocation,
   Droppable,
-} from 'react-beautiful-dnd';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { dragAndDropValue } from '../../../features/counter/dragAndDrop';
-import { SIDEBARITEMS } from '../../Constant/const';
+} from "react-beautiful-dnd";
+import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { dragAndDropValue } from "../../../features/counter/dragAndDrop";
+import { SIDEBARITEMS, ITEMS } from "../../Constant/const";
 
 const SideBar = () => {
   const [search, setsearch] = useState(true);
@@ -53,7 +53,7 @@ const SideBar = () => {
 
   const [uidv4, setUidv4] = useState<any>();
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
 
   const dispatch = useDispatch();
 
@@ -78,17 +78,17 @@ const SideBar = () => {
 
   const QUICKCREATEITEMS = [
     {
-      names: 'Single Line',
+      names: "Single Line",
       icon: singleline,
       id: uuidv4(),
     },
     {
-      names: 'Multi-Line',
+      names: "Multi-Line",
       icon: multiline,
       id: uuidv4(),
     },
     {
-      names: 'Email',
+      names: "Email",
       icon: mail,
       id: uuidv4(),
     },
@@ -175,7 +175,7 @@ const SideBar = () => {
               <InputText
                 type="text"
                 className=" mb-2 w-10 "
-                style={{ background: '#3b3f42' }}
+                style={{ background: "#3b3f42" }}
                 placeholder="search"
               />
               <span onClick={handleSearch}>
@@ -234,7 +234,7 @@ const SideBar = () => {
         <div>
           <span className="nameOne margin-10">Related List</span>
           <span className="detail margin-10">
-            All available related lists have been selected.{' '}
+            All available related lists have been selected.{" "}
           </span>
         </div>
       )}

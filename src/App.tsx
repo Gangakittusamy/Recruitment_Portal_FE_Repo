@@ -9,9 +9,21 @@ import SignUp from "./components/layouts/SignUp/SignUp";
 import { AuthRoute } from "../src/components/AuthRoute/AuthRoute";
 import SuperAdmin from "./components/SuperAdmin";
 import CreateRecruiterForm from "./components/SuperAdmin/createRecruiterForm/index";
+import Settings from "./components/SuperAdmin/Settings/index";
+import SettingsModules from "./components/SuperAdmin/Modules/index";
+import CreateForm from "./components/SuperAdmin/createForm/index";
+import NavigateFile from "./components/SuperAdmin/createForm/navigateFile";
+import LayoutPage from "./components/SuperAdmin/Layout/index";
+import FieldListTablePage from "./components/SuperAdmin/inputListTablePage/index";
+import CustomModule from "./components/SuperAdmin/CustomModule/index";
+import FormOverview from "./components/SuperAdmin/inputListTablePage/formOverview";
+
+
 // import axios from "./components/Constant/Api";
 import axios from "axios";
 import { ProgressSpinner } from "primereact/progressspinner";
+import NavBar from "./components/SuperAdmin/navBar";
+import createForm from "./components/SuperAdmin/createForm/index";
 
 function App() {
   const [show, setShow] = useState(false);
@@ -56,13 +68,37 @@ function App() {
               <Route element={<AuthRoute />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/selection" element={<Selection />} />
-                <Route path="/super-admin" element={<SuperAdmin />} />
+                <Route path="/super-admin">
+                  <Route index={true} element={<SuperAdmin />} />
+                  <Route path="create-form" element={<SuperAdmin />} />
+                    path="Settings/Modules"
+                    element={<SettingsModules />}
+                  />
+                  <Route
+                    path="Settings/Modules/layoutpage"
+                    element={<LayoutPage />}
+                  />
+                  <Route
+                    path="Table-List/:editTableId"
+                    element={<FieldListTablePage />}
+                  />
+                  <Route
+                    path="Form/Overview/:formId"
+                    element={<FormOverview />}
+                  />
+                  <Route path="CustomModule/being" element={<CustomModule />} />
+                  <Route path="CustomModule/edit/:editId" element={<CustomModule />} />
+                </Route>
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<SignUp />} />
               <Route
-                path="/CreateRecruiterForm"
-                element={<CreateRecruiterForm />}
+                path="*"
+                element={
+                  <h1 className="flex align-items-center justify-content-center">
+                    404 Page Not Found
+                  </h1>
+                }
               />
             </Routes>
           </section>

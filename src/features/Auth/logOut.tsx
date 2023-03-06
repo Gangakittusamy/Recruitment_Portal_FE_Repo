@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../components/Constant/Api";
+import { BASEURL } from "../../components/Constant/const";
 
 interface userReducerState {
   mailVerificationPage: null;
@@ -11,7 +12,7 @@ const initiaLogOutPage: userReducerState = {
 
 export const logOut = createAsyncThunk("auth/logOut", async () => {
   try {
-    const response = await axios.get(`http://54.152.227.71/api/auth/logout`);
+    const response = await axios.get(`${BASEURL}/api/auth/logout`);
     return response.data;
   } catch (error: any) {
     return error;

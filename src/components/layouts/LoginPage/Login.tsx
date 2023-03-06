@@ -1,34 +1,34 @@
-import "./Login.css";
-import { RadioButton } from "primereact/radiobutton";
-import { useState, useEffect } from "react";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
-import { useNavigate } from "react-router-dom";
-import { Toast } from "primereact/toast";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import React, { useRef } from "react";
-import Cookies from "js-cookie";
-import { logInVerification } from "../../../features/Auth/logIn";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { LoginUserDetails } from "../../../features/Auth/userDetails";
+import "./Login.css"
+import { RadioButton } from "primereact/radiobutton"
+import { useState, useEffect } from "react"
+import { InputText } from "primereact/inputtext"
+import { Button } from "primereact/button"
+import { useNavigate } from "react-router-dom"
+import { Toast } from "primereact/toast"
+import { useFormik } from "formik"
+import * as Yup from "yup"
+import React, { useRef } from "react"
+import Cookies from "js-cookie"
+import { logInVerification } from "../../../features/Auth/logIn"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { LoginUserDetails } from "../../../features/Auth/userDetails"
 
 const signUpSchema = Yup.object({
   email: Yup.string().email().required("Please enter your email"),
-  password: Yup.string().min(8).required("Please enter your password"),
-});
+  password: Yup.string().min(8).required("Please enter your password")
+})
 
 const initialValues = {
   email: "",
-  password: "",
-};
+  password: ""
+}
 
 const Login = () => {
-  const navigate = useNavigate();
-  const toast = useRef<any>(null);
-  const [city, setCity] = useState(null);
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.logIn);
+  const navigate = useNavigate()
+  const toast = useRef<any>(null)
+  const [city, setCity] = useState(null)
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.logIn)
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -37,46 +37,44 @@ const Login = () => {
       onSubmit: async (values, action) => {
         let val = {
           email: values.email,
-          password: values.password,
-        };
+          password: values.password
+        }
 
-        let res = await dispatch(logInVerification(val));
+        let res = await dispatch(logInVerification(val))
         Cookies.set("access_token", res.payload.access_token, {
-          expires: 1 / 24,
+          expires: 1 / 24
           // path: "/",
           // httpOnly: true,
-        });
-        let Ans: any = true;
+        })
+        let Ans: any = true
         Cookies.set("logged_in", Ans, {
           // path: "/",
           // expires: 1 / 24,
-        });
+        })
         Cookies.set("refresh_token", res.payload.access_token, {
-          expires: 1 / 24,
+          expires: 1 / 24
           // path: "/",
           // httpOnly: true,
-        });
+        })
 
         if (res.payload.access_token) {
-          let app = res.payload.access_token;
-          await dispatch(LoginUserDetails(app));
+          navigate("/super-admin")
+          let app = res.payload.access_token
+          await dispatch(LoginUserDetails(app))
         }
-
-        if (res.payload.access_token) {
-          navigate("/super-admin");
-        }
+        
         if (!res.payload.access_token) {
           await toast.current.show({
             severity: "error",
             summary: res.payload.message,
             detail: "",
-            life: 3000,
-          });
+            life: 3000
+          })
         }
 
         // action.resetForm();
-      },
-    });
+      }
+    })
 
   return (
     <div>
@@ -85,7 +83,7 @@ const Login = () => {
         <div className="containerLogin">
           <div className="lefts">
             <div className="centered">
-              <div style={{ padding: "100px" }} className="mt-8">
+              <div className="left-container">
                 <div className="HeadingStyle">
                   Recruiteas
                   <br />
@@ -94,44 +92,46 @@ const Login = () => {
                   Lorem ipsum is a pseudo-Latin text used in web design
                 </span>
 
-                <p className="text-2xl text-50 flexD">Who is Using?</p>
-                <div className="flexD gap ">
-                  <div className="field-radiobutton radioButtonorder">
-                    <RadioButton
-                      inputId="Human Resources"
-                      name="city"
-                      value="Human Resources"
-                      onChange={(e) => setCity(e.value)}
-                      checked={city === "Human Resources"}
-                    />
-                    <label htmlFor="Human Resources" className="text-50">
-                      Human Resources
-                    </label>
-                  </div>
-                  <div className="field-radiobutton  radioButtonorder">
-                    <RadioButton
-                      inputId="Assistance"
-                      name="city"
-                      value="Assistance"
-                      onChange={(e) => setCity(e.value)}
-                      checked={city === "Assistance"}
-                    />
-                    <label htmlFor="Assistance" className="text-50">
-                      Assistance
-                    </label>
-                  </div>
+                <p className="text-2xl text-50">Who is Using?</p>
+                <div className="lc-options">
+                  <div className="flexD gap ">
+                    <div className="field-radiobutton radioButtonorder">
+                      <RadioButton
+                        inputId="Human Resources"
+                        name="city"
+                        value="Human Resources"
+                        onChange={(e) => setCity(e.value)}
+                        checked={city === "Human Resources"}
+                      />
+                      <label htmlFor="Human Resources" className="text-50">
+                        Human Resources
+                      </label>
+                    </div>
+                    <div className="field-radiobutton  radioButtonorder">
+                      <RadioButton
+                        inputId="Assistance"
+                        name="city"
+                        value="Assistance"
+                        onChange={(e) => setCity(e.value)}
+                        checked={city === "Assistance"}
+                      />
+                      <label htmlFor="Assistance" className="text-50">
+                        Assistance
+                      </label>
+                    </div>
 
-                  <div className="field-radiobutton  radioButtonorder">
-                    <RadioButton
-                      inputId="Management"
-                      name="city"
-                      value="Management"
-                      onChange={(e) => setCity(e.value)}
-                      checked={city === "Management"}
-                    />
-                    <label htmlFor="Management" className="text-50">
-                      Management
-                    </label>
+                    <div className="field-radiobutton  radioButtonorder">
+                      <RadioButton
+                        inputId="Management"
+                        name="city"
+                        value="Management"
+                        onChange={(e) => setCity(e.value)}
+                        checked={city === "Management"}
+                      />
+                      <label htmlFor="Management" className="text-50">
+                        Management
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -207,7 +207,7 @@ const Login = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

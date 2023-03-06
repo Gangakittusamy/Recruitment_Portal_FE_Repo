@@ -66,9 +66,7 @@ const CreateRecrutierTable = () => {
               dispatch(RecruitersGetValue());
             }
           },
-          reject: () => {
-            console.log("reject");
-          },
+          reject: () => {},
         });
       },
     },
@@ -143,7 +141,7 @@ const CreateRecrutierTable = () => {
           <p>
             Designation:
             <br />
-            <InputText id="in" value={"Designation"} />
+            <InputText value={"Designation"} />
           </p>
         </div>
         <div className="flex justify-content-between">

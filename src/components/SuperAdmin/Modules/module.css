@@ -1,0 +1,71 @@
+.p-tree {
+  border: 0px solid #dee2e6 !important;
+  background: gainsboro !important;
+  color: #495057;
+  height: 464px !important;
+  overflow: auto !important;
+  padding: 0.25rem !important;
+  border-radius: 0px !important;
+}
+.card {
+  background-color: none !important;
+  width: 295px;
+  border: 0px solid #f6f5f5 !important;
+}
+a {
+  text-align: -webkit-match-parent;
+  display: block;
+  color: rgb(21, 21, 21) !important;
+  font-family: inherit;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 1rem;
+}
+.p-tree .p-treenode-children {
+  padding: 0 0 0 0rem !important;
+}
+.p-tabview-panels {
+  background: #f6f5f5 !important;
+  padding: 1.25rem;
+  border: 0 none;
+  color: #495057;
+  overflow: scroll;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  height: 535px !important;
+}
+
+.modulesList .nav-open-icon {
+  display: none;
+}
+
+.modulesList .create_form_main_division {
+  margin-left: 1rem;
+}
+
+@media (max-width: 992px) {
+  .modulesList .nav-open-icon {
+    display: block;
+  }
+  .modulesList .nav-open-icon i {
+    border: 1px solid black;
+    margin-left: 15px !important;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  .modulesList .side-nav-bar {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    padding: 10px 0;
+  }
+  .modulesList .show {
+    display: block !important;
+  }
+  .modulesList .create_form_main_division {
+    width: 100% !important;
+    margin-left: 0;
+  }
+}

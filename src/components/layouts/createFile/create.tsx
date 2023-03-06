@@ -34,7 +34,6 @@ const UntitleImage = () => {
     {
       names: 'Secondary email',
       subname: ' Single Line',
-
       id: 1,
     },
     {
@@ -183,14 +182,14 @@ const UntitleImage = () => {
       <Sidebar
         visible={sidebar}
         position="top"
-        style={{ width: '92vw', height: '50vw' }}
+        style={{ width: '100vw', height: '100vw' }}
         onHide={() => setSidebar(!sidebar)}
       >
         <div>
           <div className="flex  justify-content-center">
             <div className="dropdownBorderStyle">
               <span className="flex">
-                Preview layout as
+                2
                 <Dropdown
                   className="ml-2"
                   value={selectedCity1}

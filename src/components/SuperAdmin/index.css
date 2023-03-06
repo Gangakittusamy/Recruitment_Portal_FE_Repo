@@ -4,17 +4,23 @@
   background-color: #fafafb;
 }
 .mainContent {
-  width: 80%;
+  background-color: #fafafb;
+  width: 100%;
   float: right;
   
 }
-.sideContent {
+.layout h2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* .sideContent {
   background-color: #f4f4f4;
   height: 100vh;
   width: 20%;
   float: left;
   position: fixed;
-}
+} */
 @media only screen and (max-width: 750px) {
   .layout {
     display: grid;
@@ -26,11 +32,19 @@
   .mainContent {
     grid-area: m;
   }
-  .sideContent {
+  /* .sideContent {
     background-color: #f4f4f4;
     min-height: 90vh;
     width: 25%;
     float: left;
     position: fixed;
+  } */
+}
+
+@media only screen and (max-width: 992px) {
+  .layout h2{
+    justify-content: flex-start;
+    margin-left: 20px;
   }
 }
+

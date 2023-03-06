@@ -1,0 +1,18 @@
+.layout_Sidebar {
+     background: gainsboro;
+     width: 248px;
+     margin-left: 30px;
+     border-radius: 7px;
+ }
+ .layout_module_name{
+     font-size: 19px;
+     margin: 29px;
+     color: forestgreen;
+     font-family: 'Plus Jakarta Sans';
+     margin-left: 50px;
+     cursor: pointer;
+ }
+ .layout_module_name:hover {
+     font-size: 21px;
+     color: rgb(239, 7, 7);
+   }

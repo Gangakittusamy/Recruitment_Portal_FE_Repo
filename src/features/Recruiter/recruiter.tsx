@@ -21,7 +21,7 @@ export const RecruitersGetValue: any = createAsyncThunk(
   async (para1, thunkAPI) => {
     try {
       const response = await axios.get(
-        `http://54.152.227.71/api/auth/allusers`
+        `${BASEURL}/api/auth/allusers`
       );
 
       return response.data;
@@ -36,7 +36,7 @@ export const RecruiterTableDelete = createAsyncThunk(
   async (para1: any, thunkAPI) => {
     try {
       const response = await axios.delete(
-        `http://54.152.227.71/api/auth/deleteuser/${para1}`
+        `${BASEURL}/api/auth/deleteuser/${para1}`
       );
 
       return response;
@@ -51,7 +51,7 @@ export const RecruiterTableEdit = createAsyncThunk(
   async (para1: any, thunkAPI) => {
     try {
       const response = await axios.put(
-        `http://54.152.227.71/api/auth/updateuser/${para1}`
+        `${BASEURL}/api/auth/updateuser/${para1}`
       );
       return response;
     } catch (error) {
