@@ -71,6 +71,9 @@ function App() {
                 <Route path="/super-admin">
                   <Route index={true} element={<SuperAdmin />} />
                   <Route path="create-form" element={<SuperAdmin />} />
+                  <Route path="edit/:editId" element={<SuperAdmin />} />
+                  <Route index={false} path="Settings" element={<Settings />} />
+                  <Route
                     path="Settings/Modules"
                     element={<SettingsModules />}
                   />

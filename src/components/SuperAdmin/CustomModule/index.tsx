@@ -223,7 +223,7 @@ const CustomModule = (props: any) => {
               <img
                 id="formHeadImage"
                 src={formImg ? getFormImageUrl(formImg) : noImages}
-                style={{ width: "100px", height: "100px" }}
+                style={{ width: "100px", height: "100px", borderRadius: "50%" }}
               ></img>
             </span>
           </div>

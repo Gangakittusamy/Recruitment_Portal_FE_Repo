@@ -272,11 +272,13 @@ const FieldListTablePage = (props: any) => {
         onClick={() => openOverviewPage(rowData)}
       >
         <div className="mr-3">
-          <img
+          {
+            localStorage.getItem("moduleName") !== 'Deals' && <img
             id="formHeadImage"
             src={rowData.formImage ? rowData.formImage : noImages}
             style={{ width: "100px", height: "100px" }}
           ></img>
+          }
         </div>
         <div className="canvas-col-container">
           {rowData &&
