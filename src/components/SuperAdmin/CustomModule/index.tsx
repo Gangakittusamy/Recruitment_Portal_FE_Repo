@@ -189,6 +189,10 @@ const CustomModule = (props: any) => {
     return img
   }
 
+  const goToEditPage = () => {
+    navigate(`/super-admin/edit/${localStorage.getItem("moduleId")}`)
+  }
+
   return (
     <div>
       <NavBar />
@@ -197,7 +201,10 @@ const CustomModule = (props: any) => {
         <div className="border-black-alpha-30 border-1 pb-7">
           <span className="contactName ">{`Create ${module}`}</span>
           <div className="module-profile" style={{ position: "relative" }}>
-            <span className="contactuntitle mb-4">{`${module} image`}</span>
+            <div className="flex">
+              <span className="contactuntitle mb-4">{`${module} image`}</span>
+              <span onClick={goToEditPage} className="contactEditPage mb-3">Edit Page Layout</span>
+            </div>
             {formImg && (
               <div
                 className="img-delete"
@@ -270,11 +277,10 @@ const CustomModule = (props: any) => {
                     <div key={index} className="indv-form">
                       <h4 className="formName">{formName}</h4>
                       <div
-                        className={`indv-form-elem ${
-                          singleColumnForms.includes(formName)
-                            ? "single-col"
-                            : ""
-                        }`}
+                        className={`indv-form-elem ${singleColumnForms.includes(formName)
+                          ? "single-col"
+                          : ""
+                          }`}
                       >
                         {forms[formName].map((item: any, index: number) => {
                           return (
@@ -285,11 +291,10 @@ const CustomModule = (props: any) => {
                               {item.type === "Pick List" ? (
                                 <div className="names">
                                   <p
-                                    className={`grey ${
-                                      item.required && item.required === true
-                                        ? "required"
-                                        : ""
-                                    }`}
+                                    className={`grey ${item.required && item.required === true
+                                      ? "required"
+                                      : ""
+                                      }`}
                                   >
                                     {item.DataHeader}
                                   </p>
@@ -311,11 +316,10 @@ const CustomModule = (props: any) => {
                               ) : (
                                 <div className="names">
                                   <p
-                                    className={`grey ${
-                                      item.required && item.required === true
-                                        ? "required"
-                                        : ""
-                                    }`}
+                                    className={`grey ${item.required && item.required === true
+                                      ? "required"
+                                      : ""
+                                      }`}
                                   >
                                     {item.value}
                                   </p>

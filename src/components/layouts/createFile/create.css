@@ -97,6 +97,14 @@
   font-weight: bold;
 }
 
+.contactEditPage {
+  font-size: 15px;
+  margin: 20px;
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .previewCardAligment {
   display: grid;
   grid-template-columns: 1fr 1fr;

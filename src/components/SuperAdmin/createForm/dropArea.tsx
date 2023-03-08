@@ -752,7 +752,9 @@ const DropArea = (props: any) => {
       </div>
 
       <div className="sub-form-list">
+        { (props.moduleValue === 'Invoices' || props.moduleValue === 'Sales Orders' || props.moduleValue === 'Purchase Orders' || props.moduleValue === 'Quotes')  &&
         <SubForms />
+        }
       </div>
 
       <div className="drop-form-submit">

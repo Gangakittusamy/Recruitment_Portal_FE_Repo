@@ -122,6 +122,7 @@ const NavBar = (props: any) => {
   }
 
   const NavbarEdit = async (x: any) => {
+    localStorage.setItem("moduleId", x._id)
     localStorage.setItem("moduleName", x.modulename)
     navigate(`/super-admin/Table-List/${x._id}`)
   }

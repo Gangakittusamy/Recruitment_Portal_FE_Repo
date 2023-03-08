@@ -37,7 +37,7 @@ const ModuleSideBar = (props:any) => {
      },
      {
           key: "2",
-          label: 'Zoho Directory',
+          label: 'Synozon Directory',
           children: [
               { key: "2-0", label: 'Single Sign-On(SAML)', url: 'https://reactjs.org/docs/hello-world.html' },
               { key: "2-1", label: 'Security Policies', url: 'https://reactjs.org/docs/introducing-jsx.html' },
