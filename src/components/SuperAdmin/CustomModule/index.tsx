@@ -559,7 +559,10 @@ const CustomModule = (props: any) => {
                 })}
               </div>
               <div className="indv-form-elem">
-                <SubForm />
+                {
+                 (localStorage.getItem('moduleName') === 'Invoices' || localStorage.getItem('moduleName') === 'Sales Orders' || localStorage.getItem('moduleName') === 'Purchase Orders' || localStorage.getItem('moduleName') === 'Quotes') && 
+                 < SubForm />
+                }
               </div>
               <div className="flex  justify-content-end mt-2 mb-3 mr-5">
                 <Button
