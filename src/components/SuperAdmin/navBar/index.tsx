@@ -207,14 +207,13 @@ const NavBar = (props: any) => {
                 style={{ cursor: "pointer" }}
                 onClick={() => navigate(`/super-admin`)}
               >
-                <img src={Dashboard} width={16} height={16} />
                 <p
-                  className="font-bold"
+                  className="font-bold ml-4"
                   onClick={() => {
                     localStorage.setItem("moduleName", "")
                   }}
                 >
-                  Dashboard
+                  Home
                 </p>
               </div>
               {state
@@ -226,7 +225,7 @@ const NavBar = (props: any) => {
                       >
                         <div>
                           {" "}
-                          {index <= 5 ? (
+                          {index <= 8 ? (
                             <div>
                               <div
                                 className="nav_text capitalize"
@@ -288,7 +287,7 @@ const NavBar = (props: any) => {
                             <div key={index} className="">
                               <div className="">
                                 {" "}
-                                {index >= 6 ? (
+                                {index >= 9 ? (
                                   <div>
                                     <div
                                       className="nav_text_overlay capitalize"
