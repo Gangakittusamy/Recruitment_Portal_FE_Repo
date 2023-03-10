@@ -36,6 +36,9 @@ import { useParams } from "react-router-dom"
 import { OverlayPanel } from "primereact/overlaypanel"
 import { confirmDialog } from "primereact/confirmdialog"
 import SubForm from "./subForm"
+import {
+  NAME_PREFIX
+} from '../../Constant/const';
 
 const CustomModule = (props: any) => {
   const [state, setState] = React.useState<any>([])
@@ -70,6 +73,14 @@ const CustomModule = (props: any) => {
       ...state,
       [evt.target.name]: value
     })
+  }
+
+  function handleNamePrefixChange(evt: any, field: any) {
+    setState({
+      ...state,
+      [field]: evt.value + state[field]
+    })
+    console.log(state[field])
   }
 
   const saveForm = async () => {
@@ -191,6 +202,10 @@ const CustomModule = (props: any) => {
 
   const goToEditPage = () => {
     navigate(`/super-admin/edit/${localStorage.getItem("moduleId")}`)
+  }
+
+  const getNamePrefix = (name: any) => {
+    return name?.split('.').length > 1 ? name?.split('.')[0] : '-None-'
   }
 
   return (
@@ -367,7 +382,21 @@ const CustomModule = (props: any) => {
                                       />
                                     </p>
                                   ) : item.DataHeader === "Single Line" ? (
-                                    <p className="field-container">
+                                    <p className={(item.value === 'First Name' || item.value === 'First name' || item.value === 'Name') ? "namePrefix flex align-items-center " : "field-container"}>
+                                      {
+                                        (item.value === 'First Name' || item.value === 'First name' || item.value === 'Name') &&
+                                        <Dropdown
+                                          options={NAME_PREFIX}
+                                          optionLabel="title"
+                                          value={getNamePrefix(state[item.value])}
+                                          onChange={(evt) => handleNamePrefixChange(evt, item.value)}
+                                          style={{
+                                            color: "#8083A3",
+                                            height: "28px",
+                                          }}
+                                          className="border-0 col col-2"
+                                        />
+                                      }
                                       <InputText
                                         placeholder={
                                           item.unique ? "Unique Field" : ""

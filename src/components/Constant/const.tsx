@@ -845,3 +845,24 @@ export const CREATERECRUITERTABLE = [
     actions: "...",
   },
 ];
+
+export const NAME_PREFIX = [
+  {
+    title: '-None-', value: ''
+  },
+  {
+    title: 'Mr.', value: 'Mr.'
+  },
+  {
+    title: 'Mrs.', value: 'Mrs.'
+  },
+  {
+    title: 'Ms.', value: 'Ms.'
+  },
+  {
+    title: 'Dr.', value: 'Dr.'
+  },
+  {
+    title: 'Prof.', value: 'Prof.'
+  },
+];

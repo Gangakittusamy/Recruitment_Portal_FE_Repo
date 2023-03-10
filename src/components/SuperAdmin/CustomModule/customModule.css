@@ -98,10 +98,37 @@
 .sub-form .p-inputtext {
   width: 80% !important;
 }
+
 .sub-form .p-inputnumber {
   width: 80% !important;
 }
 
 .sub-form .price-section {
   justify-content: space-between !important;
+}
+
+.namePrefix {
+  margin: 0 !important;
+  margin-left: 38px !important;
+}
+
+.namePrefix .p-dropdown-trigger-icon {
+  margin-left: 29px !important;
+}
+
+.namePrefix .p-dropdown {
+  border-right: unset !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.namePrefix .p-dropdown .p-inputtext {
+  min-width: unset !important;
+}
+
+.namePrefix .p-inputtext {
+  min-width: unset !important;
+  width: 180px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
