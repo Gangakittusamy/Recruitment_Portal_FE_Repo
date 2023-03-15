@@ -1,0 +1,32 @@
+.Left_Bar {
+    height: 50px;
+    background-color: #fff;
+    border: 1px solid #d7e2ed;
+    border-radius: 6px;
+    vertical-align: middle;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.Quick_Chart_box {
+    border: 1px solid #c0c6cc;
+    padding: 30px 0;
+    width: 180px;
+    height: 150px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.Quick_Chart_title {
+    color: #313949;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.Chart_Preview {
+    border: 1px solid #c0c6cc;
+    height: 180px;
+    border-radius: 4px;
+}

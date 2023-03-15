@@ -21,7 +21,7 @@ import TablePageSideBar from "./listTableSidebar"
 import "./tablePage.css"
 import { Link } from "react-router-dom"
 import React from "react"
-import { useParams } from "react-router-dom"
+import { useParams, Routes, Route } from "react-router-dom"
 import { ModuleNameGetFormsaa } from "../../../features/Modules/module"
 import {
   leadGenerationTableGet,
@@ -33,6 +33,7 @@ import noImages from "../../../images//noimage.jpg"
 import FormSelectOptions from "./formSelectOptions"
 import _ from "lodash"
 import { confirmDialog } from "primereact/confirmdialog"
+import AnalyticsOverview from "../Analytics/index"
 
 //rolesGetForms
 const FieldListTablePage = (props: any) => {
@@ -274,10 +275,10 @@ const FieldListTablePage = (props: any) => {
         <div className="mr-3">
           {
             localStorage.getItem("moduleName") !== 'Deals' && <img
-            id="formHeadImage"
-            src={rowData.formImage ? rowData.formImage : noImages}
-            style={{ width: "100px", height: "100px" }}
-          ></img>
+              id="formHeadImage"
+              src={rowData.formImage ? rowData.formImage : noImages}
+              style={{ width: "100px", height: "100px" }}
+            ></img>
           }
         </div>
         <div className="canvas-col-container">
@@ -354,7 +355,7 @@ const FieldListTablePage = (props: any) => {
       }
     })
   }
-  
+
   return (
     <div style={{ background: "rgb(250, 250, 251)", height: "100vh" }}>
       <div>
@@ -370,68 +371,75 @@ const FieldListTablePage = (props: any) => {
         )}
         {!isLoading && (
           <div className="flex mt-3 create_form_main">
-            <div style={{ background: "gainsboro" }}>
-              <TablePageSideBar />
+            <div >
+              <Routes>
+              <Route path="/" element={<TablePageSideBar />} />
+
+                <Route path="/dashboards" element={<AnalyticsOverview />} />
+
+              </Routes>
             </div>
             <div className="create_form_main_division ml-3">
-              <div>
+              {localStorage.getItem('moduleName') !== 'Analytics' &&
                 <div>
-                  <DataTable
-                    value={getdata}
-                    paginator
-                    responsiveLayout="scroll"
-                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
-                    rows={5}
-                    rowsPerPageOptions={[5, 10, 15]}
-                    selectionMode="checkbox"
-                    header={header}
-                    resizableColumns
-                    columnResizeMode="fit"
-                    selection={selectedProducts}
-                    onSelectionChange={(e) => setSelectedProducts(e.value)}
-                  >
-                    {userSelectedColumns.length > 0 && (
-                      <Column body={rowEditButton}></Column>
-                    )}
+                  <div>
+                    <DataTable
+                      value={getdata}
+                      paginator
+                      responsiveLayout="scroll"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+                      rows={5}
+                      rowsPerPageOptions={[5, 10, 15]}
+                      selectionMode="checkbox"
+                      header={header}
+                      resizableColumns
+                      columnResizeMode="fit"
+                      selection={selectedProducts}
+                      onSelectionChange={(e) => setSelectedProducts(e.value)}
+                    >
+                      {userSelectedColumns.length > 0 && (
+                        <Column body={rowEditButton}></Column>
+                      )}
 
-                    {userSelectedColumns.length > 0 && (
-                      <Column
-                        selectionMode="multiple"
-                        headerStyle={{ width: "3rem" }}
-                      ></Column>
-                    )}
-
-                    {listView.name === "List View" &&
-                      userSelectedColumns.length > 0 &&
-                      userSelectedColumns.map((column: any, index: any) => {
-                        return column !== "id" && column !== "formImage" ? (
-                          <Column
-                            key={index}
-                            field={column}
-                            header={column}
-                            body={(rowData: any) =>
-                              getColumnForListView(rowData, column)
-                            }
-                          ></Column>
-                        ) : (
-                          <Column />
-                        )
-                      })}
-
-                    {listView.name === "Canvas View" &&
-                      userSelectedColumns.length > 0 && (
+                      {userSelectedColumns.length > 0 && (
                         <Column
-                          body={getColumnForCanvasView}
-                          header="Canvas View"
+                          selectionMode="multiple"
+                          headerStyle={{ width: "3rem" }}
                         ></Column>
                       )}
 
-                    {userSelectedColumns.length > 0 && (
-                      <Column body={rowDeleteButton} header="Actions"></Column>
-                    )}
-                  </DataTable>
+                      {listView.name === "List View" &&
+                        userSelectedColumns.length > 0 &&
+                        userSelectedColumns.map((column: any, index: any) => {
+                          return column !== "id" && column !== "formImage" ? (
+                            <Column
+                              key={index}
+                              field={column}
+                              header={column}
+                              body={(rowData: any) =>
+                                getColumnForListView(rowData, column)
+                              }
+                            ></Column>
+                          ) : (
+                            <Column />
+                          )
+                        })}
+
+                      {listView.name === "Canvas View" &&
+                        userSelectedColumns.length > 0 && (
+                          <Column
+                            body={getColumnForCanvasView}
+                            header="Canvas View"
+                          ></Column>
+                        )}
+
+                      {userSelectedColumns.length > 0 && (
+                        <Column body={rowDeleteButton} header="Actions"></Column>
+                      )}
+                    </DataTable>
+                  </div>
                 </div>
-              </div>
+              }
             </div>
           </div>
         )}

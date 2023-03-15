@@ -17,6 +17,7 @@ import LayoutPage from "./components/SuperAdmin/Layout/index";
 import FieldListTablePage from "./components/SuperAdmin/inputListTablePage/index";
 import CustomModule from "./components/SuperAdmin/CustomModule/index";
 import FormOverview from "./components/SuperAdmin/inputListTablePage/formOverview";
+import AnalyticsOverview from "./components/SuperAdmin/Analytics/index"
 
 
 // import axios from "./components/Constant/Api";
@@ -84,7 +85,13 @@ function App() {
                   <Route
                     path="Table-List/:editTableId"
                     element={<FieldListTablePage />}
-                  />
+                  >
+                    <Route
+                      path="dashboards"
+                      element={<AnalyticsOverview />}
+                    />
+                  </Route>
+
                   <Route
                     path="Form/Overview/:formId"
                     element={<FormOverview />}

@@ -84,3 +84,7 @@ a {
       "footer";
   }
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
