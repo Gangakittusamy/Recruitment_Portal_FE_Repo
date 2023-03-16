@@ -27,6 +27,17 @@
 
 .Chart_Preview {
     border: 1px solid #c0c6cc;
-    height: 180px;
     border-radius: 4px;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+    padding: 0 1rem !important;
+    height: 35px !important;
+    font-size: 14px;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+    padding: 0 1rem !important;
+    height: 35px !important;
+    font-size: 14px;
 }

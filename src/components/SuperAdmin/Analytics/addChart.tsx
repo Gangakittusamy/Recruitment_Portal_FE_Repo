@@ -3,9 +3,17 @@ import { Dialog } from 'primereact/dialog';
 import { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from "primereact/dropdown"
+import CoulmnChart from "./Charts/columnChart";
+import DonutChart from "./Charts/donutChart"
+import PieChart from "./Charts/pieChart"
+import BarChart from "./Charts/barChart"
+import TableChart from "./Charts/tableChart";
 
 const AddChart = (props: any) => {
-
+    const chartList = [
+        'Column chart', 'Donut chart', 'Pie chart', 'Bar chart', 'Line chart', 'Table chart', 'Funnel chart', 'Area chart', 'Heat map'
+    ]
+    const [selectedChart, setSelectedChart] = useState(null);
     return (
         <div>
             <Dialog
@@ -77,18 +85,26 @@ const AddChart = (props: any) => {
                         </div>
                     </div>
                     <div className="col ml-2">
-                        <Dropdown
-                            optionLabel="name"
-                            placeholder="Select chart"
-                            style={{ height: "30px" }}
-                        />
-                        <div className="Chart_Preview mt-4">
 
+                        <div className="flex justify-content-end">
+                            <Dropdown
+                                value={selectedChart}
+                                options={chartList}
+                                placeholder="Select chart"
+                                style={{ height: "30px", width: "max-content" }}
+                                onChange={(e) => setSelectedChart(e.value)}
+                            />
+                        </div>
+                        <div className="Chart_Preview mt-4 p-4">
+                            {selectedChart === 'Column chart' &&
+                                <CoulmnChart style={{ width: '100%' }} /> || selectedChart === 'Donut chart' && <DonutChart />
+                                || selectedChart === 'Pie chart' && <PieChart /> || selectedChart === 'Bar chart' && <BarChart />
+                                || selectedChart === 'Table chart' && <TableChart />}
                         </div>
                     </div>
                 </div>
             </Dialog >
-        </div>
+        </div >
     );
 };
 export default AddChart;
