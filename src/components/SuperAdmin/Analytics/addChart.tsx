@@ -8,6 +8,9 @@ import DonutChart from "./Charts/donutChart"
 import PieChart from "./Charts/pieChart"
 import BarChart from "./Charts/barChart"
 import TableChart from "./Charts/tableChart";
+import LineChart from "./Charts/lineChart";
+import AreaChart from "./Charts/areaChart";
+import HeatMap from "./Charts/heatMap";
 
 const AddChart = (props: any) => {
     const chartList = [
@@ -99,7 +102,9 @@ const AddChart = (props: any) => {
                             {selectedChart === 'Column chart' &&
                                 <CoulmnChart style={{ width: '100%' }} /> || selectedChart === 'Donut chart' && <DonutChart />
                                 || selectedChart === 'Pie chart' && <PieChart /> || selectedChart === 'Bar chart' && <BarChart />
-                                || selectedChart === 'Table chart' && <TableChart />}
+                                || selectedChart === 'Table chart' && <TableChart /> ||
+                                selectedChart === 'Line chart' && <LineChart /> ||
+                                selectedChart === 'Area chart' && <AreaChart /> || selectedChart === 'Heat map' && <HeatMap />}
                         </div>
                     </div>
                 </div>
