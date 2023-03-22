@@ -1,6 +1,6 @@
 import "./analytics.css";
 import { Dialog } from 'primereact/dialog';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from "primereact/dropdown"
 import CoulmnChart from "./Charts/columnChart";
@@ -11,12 +11,32 @@ import TableChart from "./Charts/tableChart";
 import LineChart from "./Charts/lineChart";
 import AreaChart from "./Charts/areaChart";
 import HeatMap from "./Charts/heatMap";
+import FunnelChart from "./Charts/FunnelChart";
+import { ModuleNameGet } from "../../../features/Modules/module";
+import { useAppDispatch } from "../../../app/hooks"
+
 
 const AddChart = (props: any) => {
+
+    const dispatch = useAppDispatch()
+
+    const GetModuleName = async () => {
+        let res = await dispatch(ModuleNameGet())
+        setModules(res.payload.data.user)
+    }
+
     const chartList = [
         'Column chart', 'Donut chart', 'Pie chart', 'Bar chart', 'Line chart', 'Table chart', 'Funnel chart', 'Area chart', 'Heat map'
     ]
     const [selectedChart, setSelectedChart] = useState(null);
+    const [modules, setModules] = useState()
+    const [selectedModule, setSelectedModule] = useState({})
+
+
+    useEffect(() => {
+        GetModuleName()
+    }, []);
+
     return (
         <div>
             <Dialog
@@ -45,10 +65,13 @@ const AddChart = (props: any) => {
                             <div className="col">2. Module(s)</div>
                             <div className="col">
                                 <Dropdown
+                                    options={modules}
                                     className="ml-2"
-                                    optionLabel="name"
+                                    optionLabel="modulename"
                                     placeholder="Select Module"
                                     style={{ height: "30px" }}
+                                    value={selectedModule}
+                                    onChange={(ev) => setSelectedModule(ev.value)}
                                 />
                                 <Dropdown
                                     className="ml-2 mt-2"
@@ -104,7 +127,8 @@ const AddChart = (props: any) => {
                                 || selectedChart === 'Pie chart' && <PieChart /> || selectedChart === 'Bar chart' && <BarChart />
                                 || selectedChart === 'Table chart' && <TableChart /> ||
                                 selectedChart === 'Line chart' && <LineChart /> ||
-                                selectedChart === 'Area chart' && <AreaChart /> || selectedChart === 'Heat map' && <HeatMap />}
+                                selectedChart === 'Area chart' && <AreaChart /> || selectedChart === 'Heat map' && <HeatMap /> ||
+                                selectedChart === 'Funnel chart' && <FunnelChart />}
                         </div>
                     </div>
                 </div>

@@ -28,6 +28,7 @@
 .Chart_Preview {
     border: 1px solid #c0c6cc;
     border-radius: 4px;
+    min-height: 200px;
 }
 
 .p-datatable .p-datatable-thead > tr > th {
