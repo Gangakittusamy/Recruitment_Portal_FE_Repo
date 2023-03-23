@@ -14,6 +14,7 @@ import HeatMap from "./Charts/heatMap";
 import FunnelChart from "./Charts/FunnelChart";
 import { ModuleNameGet } from "../../../features/Modules/module";
 import { useAppDispatch } from "../../../app/hooks"
+import { Button } from 'primereact/button';
 
 
 const AddChart = (props: any) => {
@@ -131,6 +132,14 @@ const AddChart = (props: any) => {
                                 selectedChart === 'Funnel chart' && <FunnelChart />}
                         </div>
                     </div>
+                </div>
+                <div className="flex justify-content-end">
+                    <Button
+                        label="Cancel"
+                        onClick={() =>props.closeDig()}
+                        className="surface-300 border-300 text-color mr-5 mt-2"
+                    />
+                    <Button type="submit" label="Submit" className="mt-2" />
                 </div>
             </Dialog >
         </div >
